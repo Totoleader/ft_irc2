@@ -11,12 +11,14 @@ class Server;
 class Pass : public ACommand
 {
 	private:
-		std::string new_User;
+		std::string	_msg;
+		std::string	_pass;
 
+		void	parse();
 	public:
-		Pass( std::string msg, Server &server, User &sender);
+		Pass(std::string msg, Server &server, User &sender);
 		~Pass();
-
+		
 		void	exec();
 };
 

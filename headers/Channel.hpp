@@ -29,11 +29,15 @@ public:
 
 	// GETTERS
 	const std::string &	getName() const;
+	const std::string &	getTopic() const;
 	const std::string &	getPassword() const;
-	const bool		isOperator(User &u) const;
-	const bool		isInviteOnly() const;
-	const bool		isInvited(User &u) const;
+	const bool			isOperator(User &u) const;
+	const bool			isInviteOnly() const;
+	const bool			isInvited(User &u) const;
 	
+	// SETTERS
+	void	setTopic(const std::string & new_topic);
+	void	setPassword(const std::string & new_pass); // mode +k 123
 };
 
 #endif // __CHANNEL_H__

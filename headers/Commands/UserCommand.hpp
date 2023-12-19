@@ -14,7 +14,7 @@ class UserCommand : public ACommand
 		std::string new_User;
 
 	public:
-		UserCommand( std::string msg, Server &server, User &sender);
+		UserCommand(std::string msg, Server &server, User &sender);
 		~UserCommand();
 
 		void	exec();

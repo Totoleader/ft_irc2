@@ -3,8 +3,6 @@
 
 int main()
 {
-	std::string hi;
-	
 	Server serveur("123");
 
 	serveur.init();

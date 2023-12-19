@@ -27,8 +27,9 @@ bool	Channel::operator==(Channel const & rhs)
 	GETTERS
 *********************/
 const std::string &	Channel::getName() const		{ return _name; }
+const std::string & Channel::getTopic() const		{ return _topic; }
 const std::string &	Channel::getPassword() const	{ return _password; }
-const bool		Channel::isInviteOnly()	const 	{ return _isInviteOnly; }
+const bool			Channel::isInviteOnly()	const 	{ return _isInviteOnly; }
 
 const bool	Channel::isOperator(User &u) const
 {
