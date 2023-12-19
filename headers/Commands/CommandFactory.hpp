@@ -13,17 +13,16 @@
 class CommandFactory
 {
 	private:
-		static const std::string cmds[3];
-		static ACommand * (CommandFactory::*f[3])(std::string, Server&, User&);
-
-	
-	public:
 		ACommand *NickFactory(std::string, Server&, User&);
 		ACommand *UserFactory(std::string, Server&, User&);
 		ACommand *PassFactory(std::string, Server&, User&);
-		
-		CommandFactory(std::string msg);
+	public:
+		CommandFactory();		
 		~CommandFactory();
+
+		ACommand *getCommand(std::string msg, Server &serv, User &u);
+
+		
 };
 
 

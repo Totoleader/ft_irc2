@@ -12,10 +12,10 @@ class Channel;
 class Server
 {
 	private:
-		std::vector<struct pollfd>		fds;
-		std::vector<User>				_users;
-		std::map<std::string, Channel>		_channels;
-		std::string							_password;
+		std::list<struct pollfd>		_fds;
+		std::list<User>					_users;
+		std::map<std::string, Channel>	_channels;
+		std::string						_password;
 		addrinfo						*_servinfo;
 
 		bool check_password(char *buf);
@@ -25,10 +25,14 @@ class Server
 		Server(std::string password);
 		~Server();
 
-		// void init();
-		// void listenForEvents();
+		void init();
+		void listenForEvents();
 
+		void new_client();
+		void new_server(int fd);
 
+		User *getUser(int fd);
+		User *getUser(std::string nick);
 
 
 

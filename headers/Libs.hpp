@@ -2,6 +2,7 @@
 #define __LIBS_H__
 
 
+#define SERVER_FD 0
 
 //Libs
 #include <stdio.h>
@@ -20,6 +21,7 @@
 #include <fcntl.h>
 #include <sstream>
 #include <algorithm>
+#include <cstdlib>
 
 
 

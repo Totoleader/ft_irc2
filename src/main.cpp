@@ -7,8 +7,8 @@ int main()
 	
 	Server serveur("123");
 
-	// serveur.init();
-	// serveur.listenForEvents();
+	serveur.init();
+	serveur.listenForEvents();
 
 	return (0);
 }
