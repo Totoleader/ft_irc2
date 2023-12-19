@@ -14,7 +14,7 @@ class Pass : public ACommand
 		std::string new_User;
 
 	public:
-		Pass( std::string msg, Server &server, User &sender);// : ACommand(Sever &serv, User &sender); // sam
+		Pass( std::string msg, Server &server, User &sender);
 		~Pass();
 
 		void	exec();

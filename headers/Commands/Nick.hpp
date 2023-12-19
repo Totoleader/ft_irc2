@@ -14,7 +14,7 @@ class Nick : public ACommand
 	private:
 		std::string new_nick;
 	public:
-		Nick( std::string msg, Server &server, User &sender);// : ACommand(Sever &serv, User &sender); // sam
+		Nick(std::string msg, Server &server, User &sender);
 		~Nick();
 
 		void	exec();
