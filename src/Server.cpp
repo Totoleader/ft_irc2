@@ -33,13 +33,13 @@ void Server::init()
 	servSocket = socket(_servinfo->ai_family, _servinfo->ai_socktype, _servinfo->ai_protocol);
 	new_server(servSocket);
 
-	if (bind(_fds[0].fd, _servinfo->ai_addr, _servinfo->ai_addrlen) != 0)
+	if (bind(_fds[SERVER_FD].fd, _servinfo->ai_addr, _servinfo->ai_addrlen) != 0)
 	{
 		std::cerr << "Bind failed." << std::endl;
 		exit (EXIT_FAILURE);
 	}
 
-	listen(_fds[0].fd, 10);//!!!10 = max connection
+	listen(_fds[SERVER_FD].fd, 10);//!!!10 = max connection
 }
 
 //boucle principale d'ecoute du serveur
@@ -82,7 +82,7 @@ void Server::new_client()
 	new_fd = accept(_fds[0].fd, (struct sockaddr *)&cl, &addr_size);
 	fcntl(new_fd, F_SETFL, O_NONBLOCK);
 
-	User newUser(new_fd, &cl);
+	User newUser(new_fd, (struct sockaddr*)&cl);
 	_users.push_back(newUser);
 	
 	newClient.events = POLLIN;

@@ -21,9 +21,6 @@ class User
 	
 		std::string					buffer;
 
-
-		void setIp();
-
 	public:
 		User();
 		User(int fd, struct sockaddr *cl);
@@ -36,12 +33,12 @@ class User
 		const std::string&	getName() const;
 		const std::string&	getIp()	const;
 		const std::string&	getPort() const;
-		const std::string&	getID() const;
+		const std::string	getID() const;
 		const int&			getFd() const;
 		void				setSock(struct sockaddr_storage *s);
 		const bool&			isFirstMsg() const;
-		const bool&			isConnected();
-		const struct sockaddr_storage&	*getSock() const;
+		const bool&			isConnected() const;
+		struct sockaddr_storage	*getSock();
 
 		//set
 		void	setIp();

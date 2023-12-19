@@ -5,7 +5,7 @@ User::User()
 {
 }
 
-User::User(int fd, struct sockaddr *cl):_fd(fd), _sock(cl) 
+User::User(int fd, struct sockaddr *cl): _fd(fd), _sock((struct sockaddr_storage*)cl) 
 {
 	setIp();
 }
@@ -32,37 +32,37 @@ void User::setIp()
 
 //getset crap->>
 
-std::string User::getIp()
+const std::string & User::getIp() const
 {
 	return _ip;
 }
 
-std::string User::getPort()
+const std::string & User::getPort() const
 {
 	return _port;
 }
 
-std::string User::getNick()
+const std::string & User::getNick() const
 {
 	return _nick;
 }
 
-std::string User::getUser()
+const std::string & User::getUser() const
 {
 	return _login_name;
 }
 
-std::string User::getName()
+const std::string & User::getName() const
 {
 	return _real_name;
 }
 
-std::string User::getID()
+const std::string User::getID() const
 {
 	return ":" + getNick() + "!" + getUser() + "@127.0.0.1:" + getPort();
 }
 
-struct sockaddr_storage	*User::getSock() const
+struct sockaddr_storage	* User::getSock()
 {
 	return (_sock);
 }
@@ -72,7 +72,7 @@ void User::setSock(struct sockaddr_storage *s)
 	_sock = s;
 }
 
-int User::getFd() const
+const int & User::getFd() const
 {
 	return (_fd);
 }
@@ -82,7 +82,7 @@ void User::setFd(int fd)
 	_fd = fd;
 }
 
-bool User::isConnected()
+const bool & User::isConnected() const
 {
 	return _connected;
 }

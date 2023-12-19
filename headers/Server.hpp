@@ -12,8 +12,8 @@ class Channel;
 class Server
 {
 	private:
-		std::list<struct pollfd>		_fds;
-		std::list<User>					_users;
+		std::vector<struct pollfd>		_fds;
+		std::vector<User>				_users;
 		std::map<std::string, Channel>	_channels;
 		std::string						_password;
 		addrinfo						*_servinfo;

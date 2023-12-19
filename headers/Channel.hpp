@@ -14,7 +14,7 @@ private:
 	std::string 				_topic;
 	std::string 				_password;
 
-	std::list<User&>			_channelUsers;
+	std::list<User>				_channelUsers;
 	std::list<std::string>		_operators;		// utiliser Nick
 
 	//mode
@@ -30,9 +30,9 @@ public:
 	// GETTERS
 	const std::string &	getName() const;
 	const std::string &	getPassword() const;
-	bool		isOperator(User &u) const;
-	bool		isInviteOnly();
-	bool		isInvited(User &u);
+	const bool		isOperator(User &u) const;
+	const bool		isInviteOnly() const;
+	const bool		isInvited(User &u) const;
 	
 };
 
