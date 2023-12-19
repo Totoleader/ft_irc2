@@ -26,6 +26,7 @@ class User
 		User(int fd, struct sockaddr *cl);
 		~User();
 
+		bool	operator==(User const & rhs) const;
 
 		//get
 		const std::string&	getNick() const;
