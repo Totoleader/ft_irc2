@@ -28,24 +28,24 @@ public:
 	bool		operator==(Channel const & rhs) const;
 
 	// **** METHODS ****
+	
 	void				addUser(User & u);
 	void				addOperator(User & u);
 
 	void				removeUser(User & u);
 	void				removeOperator(User & op);
 
-	void				partUser(User &u); // enleve les infos d'un user du channel, delete le channel si dernier, choisi nouveau op si dernier
-
 	// **** GETTERS ****
 
 	const std::string &	getName() const;
 	const std::string &	getTopic() const;
 	const std::string &	getPassword() const;
-	const bool			isOperator(User & u) const;
-	const bool			isInviteOnly() const;
-	const bool			isInvited(User & u) const;
-	const bool			isInChannel(User & u) const;
-	const int			countUsers() const;
+	bool				isOperator(User & u) const;
+	bool				isInviteOnly() const;
+	bool				isInvited(User & u) const;
+	bool				isInChannel(User & u) const;
+	int					countUsers() const;
+	int					countOperators() const;
 	
 	// **** SETTERS ****
 

@@ -3,7 +3,7 @@
 
 Pass_Command::Pass_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg)
 {
-	
+	std::cout << "Pass command created" << std::endl;
 }
 
 Pass_Command::~Pass_Command()

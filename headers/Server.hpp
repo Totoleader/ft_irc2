@@ -12,7 +12,7 @@ class Server
 	private:
 		std::vector<struct pollfd>		_fds;
 		std::vector<User>				_users;
-		std::map<std::string, Channel>	_channels;
+		std::vector<Channel>			_channels;
 		std::string						_password;
 		addrinfo						*_servinfo;
 

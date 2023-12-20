@@ -8,7 +8,7 @@ class User
 {
 	private:
 		std::string				_nick; 
-		std::string				_login_name;
+		std::string				_username;
 		std::string				_real_name;
 		std::string				_ip;
 		std::string				_port;
@@ -29,7 +29,7 @@ class User
 
 		//get
 		const std::string&	getNick() const;
-		const std::string&	getUser() const;
+		const std::string&	getUsername() const;
 		const std::string&	getName() const;
 		const std::string&	getIp()	const;
 		const std::string&	getPort() const;
@@ -41,6 +41,9 @@ class User
 		struct sockaddr_storage	*getSock();
 
 		//set
+		void	setNick(std::string const & nick);
+		void	setUsername(std::string const & username);
+		void	setName(std::string const & name);
 		void	setIp();
 		void	setFd(int fd);
 		void	msgReceived();

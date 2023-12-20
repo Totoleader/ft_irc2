@@ -47,11 +47,6 @@ void	Channel::removeOperator(User & op)
 		_operators.erase(it);
 }
 
-void	Channel::partUser(User &u)
-{
-	
-}
-
 /********************
 	GETTERS
 *********************/
@@ -59,22 +54,23 @@ void	Channel::partUser(User &u)
 const std::string &	Channel::getName() const		{ return _name; }
 const std::string & Channel::getTopic() const		{ return _topic; }
 const std::string &	Channel::getPassword() const	{ return _password; }
-const bool			Channel::isInviteOnly()	const 	{ return _isInviteOnly; }
-const int			Channel::countUsers() const		{ return _channelUsers.size(); }
+bool				Channel::isInviteOnly()	const 	{ return _isInviteOnly; }
+int			Channel::countUsers() const		{ return _channelUsers.size(); }
+int			Channel::countOperators() const	{ return _operators.size(); }
 
-const bool	Channel::isOperator(User &u) const
+bool	Channel::isOperator(User &u) const
 {
 	std::list<std::string>::const_iterator it = std::find(_operators.begin(), _operators.end(), u.getNick());
 	return (it != _operators.end());
 }
 
-const bool	Channel::isInvited(User &u) const
+bool	Channel::isInvited(User &u) const
 {
 	std::list<std::string>::const_iterator it = std::find(_inviteList.begin(), _inviteList.end(), u.getNick());
 	return (it != _inviteList.end());
 }
 
-const bool	Channel::isInChannel(User & u) const
+bool	Channel::isInChannel(User & u) const
 {
 	std::list<User>::const_iterator it = std::find(_channelUsers.begin(), _channelUsers.end(), u);
 	return (it != _channelUsers.end());

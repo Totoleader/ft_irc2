@@ -57,9 +57,9 @@ const std::string & User::getNick() const
 	return _nick;
 }
 
-const std::string & User::getUser() const
+const std::string & User::getUsername() const
 {
-	return _login_name;
+	return _username;
 }
 
 const std::string & User::getName() const
@@ -69,12 +69,27 @@ const std::string & User::getName() const
 
 const std::string User::getID() const
 {
-	return ":" + getNick() + "!" + getUser() + "@127.0.0.1:" + getPort();
+	return ":" + getNick() + "!" + getUsername() + "@127.0.0.1:" + getPort();
 }
 
 struct sockaddr_storage	* User::getSock()
 {
 	return (_sock);
+}
+
+void User::setNick(std::string const & nick)
+{
+	_nick = nick;
+}
+
+void User::setUsername(std::string const & username)
+{
+	_username = username;
+}
+
+void User::setName(std::string const & name)
+{
+	_real_name = name;
 }
 
 void User::setSock(struct sockaddr_storage *s)

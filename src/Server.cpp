@@ -6,7 +6,7 @@ Server::Server()
 	
 }
 
-Server::Server(std::string password)
+Server::Server(std::string password) : _password(password)
 {
 	
 }
