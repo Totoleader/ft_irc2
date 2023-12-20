@@ -46,6 +46,7 @@ public:
 	const bool			isInvited(User & u) const;
 	const bool			isInChannel(User & u) const;
 	const int			countUsers() const;
+	bool 				isWhitelisted(User &u);
 	
 	// **** SETTERS ****
 
