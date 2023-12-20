@@ -12,7 +12,7 @@ class Pass_Command : public ACommand
 		std::string _password;
 
 	public:
-		Pass_Command( std::string msg, Server &server, User &sender);
+		Pass_Command(std::string msg, Server &server, User &sender);
 		~Pass_Command();
 
 		bool	parse();
