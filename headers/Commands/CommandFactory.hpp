@@ -3,9 +3,7 @@
 
 
 #include "Libs.hpp"
-# include "Commands/User_Command.hpp"
-# include "Commands/Nick_Command.hpp"
-# include "Commands/Pass_Command.hpp"
+
 
 class ACommand;
 class CommandFactory
