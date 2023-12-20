@@ -14,6 +14,11 @@ User::~User()
 {
 }
 
+bool User::operator==(User const & rhs) const
+{
+	return this->_nick == rhs.getNick();
+}
+
 void User::setIp()
 {
 	struct sockaddr_in *addrin = (struct sockaddr_in*)(_sock);

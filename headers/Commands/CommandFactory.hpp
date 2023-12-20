@@ -13,7 +13,7 @@ class CommandFactory
 		ACommand *UserFactory(std::string, Server&, User&);
 		ACommand *PassFactory(std::string, Server&, User&);
 	public:
-		CommandFactory();		
+		CommandFactory();
 		~CommandFactory();
 
 		ACommand *getCommand(std::string msg, Server &serv, User &u);
