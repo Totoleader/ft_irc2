@@ -23,7 +23,12 @@ void User::setIp()
 	_port = std::to_string(addrin->sin_port);
 }
 
-
+void User::clean_buffer(size_t *trail)
+{
+	_buffer = _buffer.substr(*trail + 2);
+	*trail = getBuffer().find("\r\n");
+	// msgReceived();
+}
 
 
 
@@ -94,10 +99,10 @@ void User::setConnected(bool is_connected)
 
 void User::setBuffer(char *buf)
 {
-	buffer += buf;
+	_buffer += buf;
 }
 
 std::string User::getBuffer() const
 {
-	return (buffer);
+	return (_buffer);
 }

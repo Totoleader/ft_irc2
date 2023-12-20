@@ -3,11 +3,9 @@
 
 
 #include "Libs.hpp"
-# include "Commands/ACommand.hpp"
-# include "User.hpp"
-# include "Channel.hpp"
 
 class Channel;
+class User;
 
 class Server
 {
@@ -30,7 +28,9 @@ class Server
 
 		void new_client();
 		void new_server(int fd);
+		void handle_event(int client_i);
 
+		const std::string &getPassword() const;
 		User *getUser(int fd);
 		User *getUser(std::string nick);
 

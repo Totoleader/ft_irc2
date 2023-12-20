@@ -60,7 +60,7 @@ void Server::listenForEvents()
 		{
 			if (_fds[i].revents & POLLIN)
 			{
-				// handle_client(i);
+				handle_event(i);
 				poll_events--;
 			}
 		}
@@ -101,6 +101,39 @@ void Server::new_server(int fd)
 }
 
 
+void Server::handle_event(int client_i)
+{
+	char buf[100];
+	std::string command;
+	size_t		trail;
+	int i;
+	i = client_i - 1;
+	memset(buf, 0, 100); // memset bad
+	CommandFactory factory;
+	ACommand *cmd_to_exec;
+	if (recv(_fds[client_i].fd, buf, 100, 0) <= 0)
+	{
+		// disconnect_user(client_i); 
+		return ;
+	}
+
+	_users[i].setBuffer(buf);
+	trail = _users[i].getBuffer().find("\r\n");
+	while (trail != std::string::npos)
+	{
+		command = _users[i].getBuffer().substr(0, trail);
+		
+		cmd_to_exec = factory.getCommand(command, *this, _users[i]);
+		if (cmd_to_exec)
+		{
+			cmd_to_exec->execute();
+			delete cmd_to_exec;
+		}
+		std::cout << std::endl << "client send: " << command.c_str() << std::endl;
+		_users[i].clean_buffer(&trail);
+	}
+}
+
 
 //get
 
@@ -122,4 +155,9 @@ User *Server::getUser(std::string nick)
 			return &_users[i];
 	}
 	return (NULL);
+}
+
+const std::string& Server::getPassword() const
+{
+	return (_password);
 }

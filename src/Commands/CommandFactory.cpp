@@ -25,15 +25,15 @@ ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 
 ACommand *CommandFactory::NickFactory(std::string msg, Server &server, User &sender)
 {
-	return (new Nick(msg, server, sender));
+	return (new Nick_Command(msg, server, sender));
 }
 
 ACommand *CommandFactory::UserFactory(std::string msg, Server &server, User &sender)
 {
-	return (new UserCommand(msg, server, sender));
+	return (new User_Command(msg, server, sender));
 }
 
 ACommand *CommandFactory::PassFactory(std::string msg, Server &server, User &sender)
 {
-	return (new Pass(msg, server, sender));
+	return (new Pass_Command(msg, server, sender));
 }
