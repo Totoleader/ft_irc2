@@ -16,7 +16,9 @@ Server::~Server()
 	
 }
 
-
+/********************
+	SOCKETS
+*********************/
 
 void Server::init()
 {
@@ -66,11 +68,6 @@ void Server::listenForEvents()
 		}
 	}
 }
-
-
-
-
-
 
 void Server::new_client()
 {
@@ -134,8 +131,22 @@ void Server::handle_event(int client_i)
 	}
 }
 
+/********************
+	METHODS
+*********************/
+bool	Server::isNickTaken(std::string const & nick)
+{
+	std::vector<User>::iterator it;
 
-//get
+	for (it = _users.begin(); it != _users.end(); it++)
+		if (it->getNick() == nick)
+			return true;
+	return false;
+}
+
+/********************
+	GETTERS
+*********************/
 
 User *Server::getUser(int fd)
 {

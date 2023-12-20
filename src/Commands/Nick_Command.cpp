@@ -27,7 +27,12 @@ void Nick_Command::execute()
 	// 	return ; // ERR OR DISCONNECT
 	if (parse() == ERROR)
 		return ; // ERR MSG
+	if (_server.isNickTaken(_new_nick))
+	{
+		std::cout << "ERROR nick is taken" << std::endl;
+		return ; // ERR NICK TAKEN
+	}
 	_sender.setNick(_new_nick);
-	if (!_sender.getUsername().empty() && !_sender.getName().empty())
+	if (!_sender.isConnected() && !_sender.getUsername().empty() && !_sender.getName().empty())
 		_connectUser();
 }

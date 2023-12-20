@@ -37,6 +37,6 @@ void User_Command::execute()
 		return ; // ERR 
 	_sender.setUsername(_username);
 	_sender.setName(_realname);
-	if (!_sender.getUsername().empty() && !_sender.getName().empty())
+	if (!_sender.isConnected() && !_sender.getUsername().empty() && !_sender.getName().empty())
 		_connectUser();
 }

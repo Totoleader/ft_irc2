@@ -6,7 +6,6 @@
 
 class Channel;
 class User;
-
 class Server
 {
 	private:
@@ -23,16 +22,22 @@ class Server
 		Server(std::string password);
 		~Server();
 
-		void init();
-		void listenForEvents();
+		// **** SOCKETS ****
 
-		void new_client();
-		void new_server(int fd);
-		void handle_event(int client_i);
+		void	init();
+		void	listenForEvents();
+		void	new_client();
+		void	new_server(int fd);
+		void	handle_event(int client_i);
 
-		const std::string &getPassword() const;
-		User *getUser(int fd);
-		User *getUser(std::string nick);
+		// **** METHODS ****
+		bool	isNickTaken(std::string const & nick);
+
+		// **** GETTERS ****
+
+		const std::string &	getPassword() const;
+		User *				getUser(int fd);
+		User *				getUser(std::string nick);
 
 
 
@@ -46,20 +51,13 @@ class Server
 		// void sendMessage(User &u , std::string message);
 		// void changeMode(User &u , std::string message);
 
-		// void new_client();
-		// void new_client(int fd);
 		// void disconnect_user(int client_i);
-		// void parse_UserCommandinfo(int client_i, std::string parseUserInfo);
 
 		// //utils
 		// void createChannelMsg(User &u, std::string chan) const;
 		// void getAndJoinChannels(User &u, std::string channels);
 
-		// User	*getUser(int fd);
-		// User	*getUser(std::string nick);
-
 		// void 		setPassword(std::string newPassword);
-		// const char	*getPassword()	const;
 		// int			getSocket()		const;
 
 		// 	//AJOUT DE ALEX // 
