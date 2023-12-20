@@ -67,11 +67,6 @@ void Server::listenForEvents()
 	}
 }
 
-
-
-
-
-
 void Server::new_client()
 {
 	struct pollfd			newClient;
@@ -113,7 +108,7 @@ void Server::handle_event(int client_i)
 	ACommand *cmd_to_exec;
 	if (recv(_fds[client_i].fd, buf, 100, 0) <= 0)
 	{
-		// disconnect_user(client_i); 
+		disconnect_user(_users[client_i - 1]); 
 		return ;
 	}
 
@@ -133,6 +128,64 @@ void Server::handle_event(int client_i)
 		_users[i].clean_buffer(&trail);
 	}
 }
+
+void Server::disconnect_user(User &user)
+{
+	std::cout << std::endl << "User " << user.getNick() << " disconnected.(message to client not implemented)" << std::endl;
+	//déconnecter de chaque channel<----!!!!! @@@
+	disconnect_fdList(user);
+	disconnect_userList(user);
+
+	//disconnect message here <---
+}
+
+
+
+
+
+
+//PRIVATE////////////////////////////////////////////////////////////
+
+void Server::disconnect_fdList(User &user)
+{
+	int fd = user.getFd();
+
+	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
+	{
+		if (fd == (*it).fd)
+		{
+			close((*it).fd);
+			_fds.erase(it); 
+			return;
+		}
+	}
+}
+
+void Server::disconnect_userList(User &user)
+{
+	std::string nick = user.getNick();
+
+	for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+	{
+		if (nick == (*it).getNick())
+		{
+			_users.erase(it); 
+			return;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //get
@@ -161,3 +214,4 @@ const std::string& Server::getPassword() const
 {
 	return (_password);
 }
+

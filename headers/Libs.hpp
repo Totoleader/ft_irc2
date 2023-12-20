@@ -24,6 +24,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cstdlib>
+#include <unistd.h>
 
 # include "Server.hpp"
 # include "User.hpp"

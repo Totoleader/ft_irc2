@@ -17,6 +17,8 @@ class Server
 		addrinfo						*_servinfo;
 
 		bool check_password(char *buf);
+		void disconnect_userList(User &user);
+		void disconnect_fdList(User &user);
 
 	public:
 		Server();
@@ -29,6 +31,9 @@ class Server
 		void new_client();
 		void new_server(int fd);
 		void handle_event(int client_i);
+
+		void disconnect_user(User &user);
+
 
 		const std::string &getPassword() const;
 		User *getUser(int fd);
