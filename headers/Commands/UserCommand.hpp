@@ -7,7 +7,6 @@
 # include "ACommand.hpp"
 # include "User.hpp"
 
-class Server;
 class UserCommand : public ACommand
 {
 	private:
