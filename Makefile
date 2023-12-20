@@ -9,9 +9,9 @@ SRCS	:=	src/main.cpp \
 			src/User.cpp \
 			src/Channel.cpp \
 			src/Commands/CommandFactory.cpp \
-			src/Commands/UserCommand.cpp \
-			src/Commands/Nick.cpp \
-			src/Commands/Pass.cpp \
+			src/Commands/User_Command.cpp \
+			src/Commands/Nick_Command.cpp \
+			src/Commands/Pass_Command.cpp \
 			src/Commands/ACommand.cpp \
 
 OBJS	:= $(patsubst src/%.cpp,bin/%.o,$(SRCS))

@@ -4,6 +4,7 @@
 
 #include "Libs.hpp"
 # include "Commands/ACommand.hpp"
+# include "Commands/CommandFactory.hpp"
 # include "User.hpp"
 # include "Channel.hpp"
 
@@ -30,6 +31,7 @@ class Server
 
 		void new_client();
 		void new_server(int fd);
+		void handle_event(int client_i);
 
 		User *getUser(int fd);
 		User *getUser(std::string nick);

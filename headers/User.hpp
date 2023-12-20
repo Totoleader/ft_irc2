@@ -19,13 +19,14 @@ class User
 		bool					_first_msg;//?
 		struct sockaddr_storage	*_sock;
 	
-		std::string					buffer;
+		std::string					_buffer;
 
 	public:
 		User();
 		User(int fd, struct sockaddr *cl);
 		~User();
 
+		void clean_buffer(size_t *trail);
 
 		//get
 		const std::string&	getNick() const;
