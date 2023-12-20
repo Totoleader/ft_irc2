@@ -3,6 +3,8 @@
 
 
 #define SERVER_FD 0
+#define ERROR 0
+#define SUCCESS 1
 
 //Libs
 #include <stdio.h>
@@ -22,6 +24,16 @@
 #include <sstream>
 #include <algorithm>
 #include <cstdlib>
+
+# include "Server.hpp"
+# include "User.hpp"
+# include "Channel.hpp"
+
+# include "Commands/ACommand.hpp"
+# include "Commands/CommandFactory.hpp"
+# include "Commands/User_Command.hpp"
+# include "Commands/Nick_Command.hpp"
+# include "Commands/Pass_Command.hpp"
 
 
 

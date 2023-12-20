@@ -3,13 +3,9 @@
 
 
 #include "Libs.hpp"
-# include "Server.hpp"
-# include "User.hpp"
-# include "UserCommand.hpp"
-# include "Commands/Nick.hpp"
-# include "Commands/Pass.hpp"
 
-// class UserCommand;
+
+class ACommand;
 class CommandFactory
 {
 	private:

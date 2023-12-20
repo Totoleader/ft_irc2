@@ -3,8 +3,7 @@
 
 
 # include "Libs.hpp"
-# include "Server.hpp"
-# include "User.hpp"
+
 
 class Server;
 class User;
@@ -13,14 +12,15 @@ class ACommand
 	protected:
 		Server	& _server;
 		User	& _sender;
-
-		// virtual void parse() = 0;
+		std::string	_msg;
 	public:
-		ACommand(Server & server, User & sender);
-		~ACommand();
+		// ACommand();
+		ACommand(Server & server, User & sender, std::string msg);
+		virtual ~ACommand();
 	
 		
-		// virtual void	exec() = 0;
+		
+		virtual void	execute() = 0;
 };
 
 

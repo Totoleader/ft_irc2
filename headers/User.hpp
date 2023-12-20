@@ -3,8 +3,6 @@
 
 
 #include "Libs.hpp"
-# include "Server.hpp"
-# include "Commands/ACommand.hpp"
 
 class User
 {
@@ -19,7 +17,7 @@ class User
 		bool					_first_msg;//?
 		struct sockaddr_storage	*_sock;
 	
-		std::string					buffer;
+		std::string					_buffer;
 
 	public:
 		User();
@@ -27,6 +25,7 @@ class User
 		~User();
 
 		bool	operator==(User const & rhs) const;
+		void clean_buffer(size_t *trail);
 
 		//get
 		const std::string&	getNick() const;
