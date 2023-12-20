@@ -12,11 +12,13 @@ class Server
 	private:
 		std::vector<struct pollfd>		_fds;
 		std::vector<User>				_users;
-		std::map<std::string, Channel>	_channels;
+		std::vector<Channel>			_channels;
 		std::string						_password;
 		addrinfo						*_servinfo;
 
 		bool check_password(char *buf);
+		void disconnect_userList(User &user);
+		void disconnect_fdList(User &user);
 
 	public:
 		Server();
@@ -30,10 +32,13 @@ class Server
 		void new_server(int fd);
 		void handle_event(int client_i);
 
+		void disconnect_user(User &user);
+
+
 		const std::string &getPassword() const;
 		User *getUser(int fd);
 		User *getUser(std::string nick);
-
+		Channel *getChannel(std::string channel_name);
 
 
 

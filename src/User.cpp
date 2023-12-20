@@ -111,3 +111,8 @@ std::string User::getBuffer() const
 {
 	return (_buffer);
 }
+
+void User::passwordAccepted()
+{
+	_pass_ok = true;
+}
