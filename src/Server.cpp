@@ -6,7 +6,7 @@ Server::Server()
 	
 }
 
-Server::Server(std::string password) : _password(password)
+Server::Server(std::string password): _password(password)
 {
 	
 }
@@ -110,7 +110,7 @@ void Server::handle_event(int client_i)
 	ACommand *cmd_to_exec;
 	if (recv(_fds[client_i].fd, buf, 100, 0) <= 0)
 	{
-		// disconnect_user(client_i); 
+		disconnect_user(_users[client_i - 1]); 
 		return ;
 	}
 
@@ -147,6 +147,95 @@ bool	Server::isNickTaken(std::string const & nick)
 /********************
 	GETTERS
 *********************/
+struct RemoveUserFunctor {
+    User& user;
+    RemoveUserFunctor(User& u) : user(u) {}
+    void operator()(Channel& channel) {
+        channel.removeUser(user);
+    }
+};
+
+void Server::disconnect_user(User &user)
+{
+	std::cout << std::endl << "User " << user.getNick() << " disconnected.(message to client not implemented)" << std::endl;
+	//déconnecter de chaque channel<----!!!!! @@@
+
+
+	std::for_each(_channels.begin(), _channels.end(), RemoveUserFunctor(user));///////////////////////////////////
+	// std::for_each(_channels.begin(), _channels.end(), Channel::removeOperator(user));///////////////////////////////////
+	// std::for_each(_channels.begin(), _channels.end(), Channel::remove);///////////////////////////////////
+	disconnect_fdList(user);
+	disconnect_userList(user);
+
+	//disconnect message here <---
+}
+
+
+
+
+
+//PRIVATE////////////////////////////////////////////////////////////
+
+void Server::disconnect_fdList(User &user)
+{
+	int fd = user.getFd();
+
+	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
+	{
+		if (fd == (*it).fd)
+		{
+			close((*it).fd);
+			_fds.erase(it); 
+			return;
+		}
+	}
+}
+
+void Server::disconnect_userList(User &user)
+{
+	// std::string nick = user.getNick();
+
+	// for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+	// {
+	// 	if (nick == (*it).getNick())
+	// 	{
+	// 		_users.erase(it); 
+	// 		return;
+	// 	}
+	// }
+	std::vector<User>::iterator it = std::find(_users.begin(), _users.end(), user);
+	if (it != _users.end())
+		_users.erase(it);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/********************
+	METHODS
+*********************/
+bool	Server::isNickTaken(std::string const & nick)
+{
+	std::vector<User>::iterator it;
+
+	for (it = _users.begin(); it != _users.end(); it++)
+		if (it->getNick() == nick)
+			return true;
+	return false;
+}
+
+/********************
+	GETTERS
+*********************/
 
 User *Server::getUser(int fd)
 {
@@ -166,6 +255,16 @@ User *Server::getUser(std::string nick)
 			return &_users[i];
 	}
 	return (NULL);
+}
+
+Channel *Server::getChannel(std::string channel)
+{
+	for (unsigned int i = 0; i < _users.size(); i++)
+	{
+		if (channel == _channels[i].getName())
+			return &_channels[i];
+	}
+	return NULL;
 }
 
 const std::string& Server::getPassword() const

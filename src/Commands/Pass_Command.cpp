@@ -15,7 +15,7 @@ bool Pass_Command::parse()
 {
 	if (_sender.isConnected())
 	{
-		//error 462
+		// ### send client is already connected msg (462) ###
 		return (ERROR);
 	}
 
@@ -30,12 +30,22 @@ bool Pass_Command::parse()
 void Pass_Command::execute()
 {
 	const std::string server_pass = _server.getPassword();
-	
+
 	if (parse() == ERROR || server_pass == "")
 		return ;
 	
+	if (_password == "")
+	{
+		// ### send client no password enter msg ###
+	}
 	if (_password != server_pass)
 	{
-		// _server.disconnect_user(_sender);
+		std::cout << "Password refused." << std::endl;
+		_server.disconnect_user(_sender);
+	}
+	else
+	{
+		std::cout << "Password accepted." << std::endl;
+		_sender.passwordAccepted();
 	}
 }

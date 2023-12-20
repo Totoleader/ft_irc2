@@ -14,7 +14,7 @@ class User
 		std::string				_port;
 		bool					_connected;
 		int						_fd;
-		bool					_first_msg;//?
+		bool					_pass_ok;
 		struct sockaddr_storage	*_sock;
 	
 		std::string					_buffer;
@@ -50,6 +50,7 @@ class User
 		void	setConnected(bool is_connected);
 		void	setBuffer(char *buf);
 		std::string	getBuffer() const;
+		void	passwordAccepted();
 	};
 
 
