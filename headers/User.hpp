@@ -24,6 +24,7 @@ class User
 		User(int fd, struct sockaddr *cl);
 		~User();
 
+		bool	operator==(User const & rhs) const;
 		void clean_buffer(size_t *trail);
 
 		//get
