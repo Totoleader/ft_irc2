@@ -13,7 +13,8 @@ class Topic_Command : public ACommand
 		{
 			SHOW,
 			CHANGE,
-			CLEAR
+			CLEAR,
+			ERR
 		} t_action;
 
 		std::string _new_topic;

@@ -33,7 +33,7 @@ class Server
 		void handle_event(int client_i);
 
 		void disconnect_user(User &user);
-
+		bool isNickTaken(std::string const & nick);
 
 		const std::string &getPassword() const;
 		User *getUser(int fd);
