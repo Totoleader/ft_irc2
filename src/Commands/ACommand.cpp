@@ -1,7 +1,6 @@
 #include "Libs.hpp"
 #include "Commands/ACommand.hpp"
 
-
 ACommand::ACommand(Server & server, User & sender, std::string msg): _server(server), _sender(sender), _msg(msg)
 {
 	
@@ -25,3 +24,4 @@ void ACommand::_connectUser()
 	send(_sender.getFd(), msg004.c_str(), msg004.length(), 0);
 	_sender.setConnected(true);
 }
+

@@ -52,6 +52,15 @@ void	Channel::partUser(User &u)
 	
 }
 
+void Channel::sendToChannelExcept(std::string message, User &except)
+{
+	for (std::vector<User>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
+    {
+		if (it->getNick() != except.getNick())
+    		send(it->getFd(), message.c_str(), message.length(), 0);
+    }
+}
+
 bool Channel::isWhitelisted(User &u)
 {
 	for (std::vector<User>::iterator it = _inviteList.begin(); it != _inviteList.end(); it++)
@@ -60,6 +69,11 @@ bool Channel::isWhitelisted(User &u)
 			return true;
 	}
 	return false;
+}
+
+void	Channel::addToWhiteList(User &newUser)
+{
+	_inviteList.push_back(newUser);
 }
 
 /********************

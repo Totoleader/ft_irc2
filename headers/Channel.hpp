@@ -18,6 +18,7 @@ private:
 	//mode
 	bool						_isInviteOnly;
 	std::vector<User>			_inviteList;
+  
 public:
 	Channel();
 	Channel(std::string name, User &creator, std::string pass);
@@ -35,6 +36,9 @@ public:
 	void				removeOperator(User & op);
 
 	void				partUser(User &u); // enleve les infos d'un user du channel, delete le channel si dernier, choisi nouveau op si dernier
+
+	void 				sendToChannelExcept(std::string message, User &except);
+	void				addToWhiteList(User &newUser);
 
 	// **** GETTERS ****
 
