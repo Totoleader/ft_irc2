@@ -9,7 +9,7 @@ class User;
 class Nick_Command : public ACommand
 {
 	private:
-		std::string new_Nick_Command;
+		std::string _new_nick;
 
 	public:
 		Nick_Command(std::string msg, Server &server, User &sender);

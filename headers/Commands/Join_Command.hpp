@@ -11,7 +11,7 @@ class User;
 class Join_Command : public ACommand
 {
 private:
-	vector<pair<string, string>> _channelNamePass;
+	vector<pair<string, string> > _channelNamePass;
 public:
 	Join_Command(std::string msg, Server &server, User &sender);
 	~Join_Command();

@@ -10,7 +10,8 @@ class User;
 class User_Command : public ACommand
 {
 	private:
-		std::string new_User;
+		std::string _username;
+		std::string _realname;
 
 	public:
 		User_Command( std::string msg, Server &server, User &sender);

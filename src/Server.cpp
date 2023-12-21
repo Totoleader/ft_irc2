@@ -16,8 +16,6 @@ Server::~Server()
 	
 }
 
-
-
 void Server::init()
 {
 	addrinfo hints;
@@ -154,7 +152,15 @@ void Server::disconnect_user(User &user)
 	//disconnect message here <---
 }
 
-
+bool Server::isNickTaken(std::string const & nick)
+{
+	for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+	{
+		if (it->getNick() == nick)
+			return true;
+	}
+	return false;
+}
 
 
 
