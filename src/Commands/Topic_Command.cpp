@@ -17,5 +17,4 @@ bool Topic_Command::parse()
 
 void Topic_Command::execute()
 {
-
 }

@@ -7,13 +7,14 @@
 class Privmsg_Command : public ACommand
 {
 	private:
-		std::string _channel;
-		std::string _userName;
+		Channel 	*_channel;
+		std::string	_message;
 		
 	public:
 		Privmsg_Command( std::string msg, Server &server, User &sender );
 		~Privmsg_Command();
 
+		bool parse();
 		void execute();
 };
 

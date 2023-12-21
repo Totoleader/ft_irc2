@@ -12,12 +12,12 @@ private:
 	std::string 				_topic;
 	std::string 				_password;
 
-	std::list<User>				_channelUsers;
-	std::list<std::string>		_operators;		// utiliser Nick
+	std::vector<User>				_channelUsers;
+	std::vector<User>				_operators;		// utiliser Nick
 
 	//mode
-	bool						_isInviteOnly;
-	std::list<std::string>		_inviteList;	// utiliser Nick
+	bool							_isInviteOnly;
+	std::vector<User>				_inviteList;	// utiliser Nick
 public:
 	Channel();
 	Channel(std::string name, User &creator, std::string pass);
@@ -35,6 +35,9 @@ public:
 	void				removeOperator(User & op);
 
 	void				partUser(User &u); // enleve les infos d'un user du channel, delete le channel si dernier, choisi nouveau op si dernier
+
+	void 				sendToChannelExcept(std::string message, User &except);
+	void				addToWhiteList(User &newUser);
 
 	// **** GETTERS ****
 

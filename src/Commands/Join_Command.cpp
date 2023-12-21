@@ -32,7 +32,7 @@ bool Join_Command::parse()
 		pair.first = channel_token;
 		pair.second = password_token;
 		_channelNamePass.push_back(pair);
-	}	
+	}
 }
 
 // void joinChannel()

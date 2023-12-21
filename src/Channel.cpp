@@ -11,7 +11,7 @@ _topic(""),
 _password(pass)
 {
 	this->_channelUsers.push_back(creator);
-	this->_operators.push_back(creator.getNick());
+	this->_operators.push_back(creator);
 }
 
 Channel::~Channel()
@@ -31,18 +31,18 @@ bool	Channel::operator==(Channel const & rhs) const
 *********************/
 
 void	Channel::addUser(User & u)		{ _channelUsers.push_back(u); }
-void	Channel::addOperator(User & u)	{ _operators.push_back(u.getNick()); }
+void	Channel::addOperator(User & u)	{ _operators.push_back(u); }
 
 void	Channel::removeUser(User & u)
 {
-	std::list<User>::const_iterator it = std::find(_channelUsers.begin(), _channelUsers.end(), u);
+	std::vector<User>::const_iterator it = std::find(_channelUsers.begin(), _channelUsers.end(), u);
 	if (it != _channelUsers.end())
 		_channelUsers.erase(it);
 }
 
 void	Channel::removeOperator(User & op)
 {
-	std::list<std::string>::const_iterator it = std::find(_operators.begin(), _operators.end(), op.getNick());
+	std::vector<User>::const_iterator it = std::find(_operators.begin(), _operators.end(), op);
 	if (it != _operators.end())
 		_operators.erase(it);
 }
@@ -52,14 +52,28 @@ void	Channel::partUser(User &u)
 	
 }
 
+void Channel::sendToChannelExcept(std::string message, User &except)
+{
+	for (std::vector<User>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
+    {
+		if (it->getNick() != except.getNick())
+    		send(it->getFd(), message.c_str(), message.length(), 0);
+    }
+}
+
 bool Channel::isWhitelisted(User &u)
 {
-	for (std::list<std::string>::iterator it = _inviteList.begin(); it != _inviteList.end(); it++)
+	for (std::vector<User>::iterator it = _inviteList.begin(); it != _inviteList.end(); it++)
 	{
-		if (u.getNick() == *it)
+		if (u == *it)
 			return true;
 	}
 	return false;
+}
+
+void	Channel::addToWhiteList(User &newUser)
+{
+	_inviteList.push_back(newUser);
 }
 
 /********************
@@ -74,19 +88,19 @@ const int			Channel::countUsers() const		{ return _channelUsers.size(); }
 
 const bool	Channel::isOperator(User &u) const
 {
-	std::list<std::string>::const_iterator it = std::find(_operators.begin(), _operators.end(), u.getNick());
+	std::vector<User>::const_iterator it = std::find(_operators.begin(), _operators.end(), u.getNick());
 	return (it != _operators.end());
 }
 
 const bool	Channel::isInvited(User &u) const
 {
-	std::list<std::string>::const_iterator it = std::find(_inviteList.begin(), _inviteList.end(), u.getNick());
+	std::vector<User>::const_iterator it = std::find(_inviteList.begin(), _inviteList.end(), u.getNick());
 	return (it != _inviteList.end());
 }
 
 const bool	Channel::isInChannel(User & u) const
 {
-	std::list<User>::const_iterator it = std::find(_channelUsers.begin(), _channelUsers.end(), u);
+	std::vector<User>::const_iterator it = std::find(_channelUsers.begin(), _channelUsers.end(), u);
 	return (it != _channelUsers.end());
 }
 
