@@ -11,14 +11,16 @@ CommandFactory::~CommandFactory()
 
 ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 {
-	const std::string cmds[3] = { "NICK ", "USER ", "PASS " }; // si /NICK sans espace???
+	const std::string cmds[3] = { "NICK", "USER", "PASS" };
 	ACommand * (CommandFactory::*f[3])(std::string, Server&, User&) = { &CommandFactory::NickFactory, &CommandFactory::UserFactory, &CommandFactory::PassFactory};
 	
 	for (int i = 0; i < 3; i++)
 	{
 		std::string cmd_check = msg.substr(0, cmds[i].length());
+		if ( !isspace( msg.at(cmds[i].length() )))
+			continue ;
 		if (cmd_check == cmds[i])
-			return (this->*(f[i]))(msg.substr(cmds[i].length()), serv, u);
+			return (this->*(f[i]))(msg.substr(cmds[i].length() + 1), serv, u);
 	}
 	return NULL;
 }
