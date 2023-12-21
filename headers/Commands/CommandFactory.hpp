@@ -12,6 +12,7 @@ class CommandFactory
 		ACommand *NickFactory(std::string, Server&, User&);
 		ACommand *UserFactory(std::string, Server&, User&);
 		ACommand *PassFactory(std::string, Server&, User&);
+		ACommand *TopicFactory(std::string, Server&, User&);
 	public:
 		CommandFactory();
 		~CommandFactory();

@@ -65,7 +65,7 @@ bool Channel::isWhitelisted(User &u)
 {
 	for (std::vector<User>::iterator it = _inviteList.begin(); it != _inviteList.end(); it++)
 	{
-		if (u == *it)
+		if (u.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -88,13 +88,13 @@ const int			Channel::countUsers() const		{ return _channelUsers.size(); }
 
 const bool	Channel::isOperator(User &u) const
 {
-	std::vector<User>::const_iterator it = std::find(_operators.begin(), _operators.end(), u.getNick());
+	std::vector<User>::const_iterator it = std::find(_operators.begin(), _operators.end(), u);
 	return (it != _operators.end());
 }
 
 const bool	Channel::isInvited(User &u) const
 {
-	std::vector<User>::const_iterator it = std::find(_inviteList.begin(), _inviteList.end(), u.getNick());
+	std::vector<User>::const_iterator it = std::find(_inviteList.begin(), _inviteList.end(), u);
 	return (it != _inviteList.end());
 }
 

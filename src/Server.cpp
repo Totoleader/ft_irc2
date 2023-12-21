@@ -235,7 +235,7 @@ User *Server::getUser(std::string nick)
 
 Channel *Server::getChannel(std::string channel)
 {
-	for (unsigned int i = 0; i < _users.size(); i++)
+	for (unsigned int i = 0; i < _channels.size(); i++)
 	{
 		if (channel == _channels[i].getName())
 			return &_channels[i];

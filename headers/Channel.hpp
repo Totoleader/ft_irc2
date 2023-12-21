@@ -12,12 +12,13 @@ private:
 	std::string 				_topic;
 	std::string 				_password;
 
-	std::vector<User>				_channelUsers;
-	std::vector<User>				_operators;		// utiliser Nick
+	std::vector<User>			_channelUsers;
+	std::vector<User>			_operators;
 
 	//mode
-	bool							_isInviteOnly;
-	std::vector<User>				_inviteList;	// utiliser Nick
+	bool						_isInviteOnly;
+	std::vector<User>			_inviteList;
+  
 public:
 	Channel();
 	Channel(std::string name, User &creator, std::string pass);
