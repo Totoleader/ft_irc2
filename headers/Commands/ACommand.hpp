@@ -13,6 +13,8 @@ class ACommand
 		Server	& _server;
 		User	& _sender;
 		std::string	_msg;
+
+		void	_connectUser();
 	public:
 		// ACommand();
 		ACommand(Server & server, User & sender, std::string msg);
