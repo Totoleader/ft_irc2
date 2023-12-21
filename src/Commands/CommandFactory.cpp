@@ -11,10 +11,11 @@ CommandFactory::~CommandFactory()
 
 ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 {
-	const std::string cmds[3] = { "NICK", "USER", "PASS" };
-	ACommand * (CommandFactory::*f[3])(std::string, Server&, User&) = { &CommandFactory::NickFactory, &CommandFactory::UserFactory, &CommandFactory::PassFactory};
+	const int N_CMDS = 4;
+	const std::string cmds[N_CMDS] = { "NICK", "USER", "PASS", "TOPIC" };
+	ACommand * (CommandFactory::*f[N_CMDS])(std::string, Server&, User&) = { &CommandFactory::NickFactory, &CommandFactory::UserFactory, &CommandFactory::PassFactory, &CommandFactory::TopicFactory};
 	
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < N_CMDS; i++)
 	{
 		std::string cmd_check = msg.substr(0, cmds[i].length());
 		if ( !isspace( msg.at(cmds[i].length() )))
@@ -38,4 +39,9 @@ ACommand *CommandFactory::UserFactory(std::string msg, Server &server, User &sen
 ACommand *CommandFactory::PassFactory(std::string msg, Server &server, User &sender)
 {
 	return (new Pass_Command(msg, server, sender));
+}
+
+ACommand *CommandFactory::TopicFactory(std::string msg, Server &server, User &sender)
+{
+	return (new Topic_Command(msg, server, sender));
 }

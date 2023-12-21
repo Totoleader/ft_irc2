@@ -35,6 +35,7 @@
 # include "Commands/User_Command.hpp"
 # include "Commands/Nick_Command.hpp"
 # include "Commands/Pass_Command.hpp"
+# include "Commands/Topic_Command.hpp"
 
 
 

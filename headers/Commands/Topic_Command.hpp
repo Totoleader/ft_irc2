@@ -11,10 +11,9 @@ class Topic_Command : public ACommand
 	private:
 		typedef enum e_action
 		{
-			SHOW,
-			CHANGE,
-			CLEAR,
-			ERR
+			SHOW,	//	/TOPIC #channel
+			CHANGE,	//	/TOPIC #channel :Supa channel ou /TOPIC #channel Cool
+			CLEAR	//	/TOPIC #channel :
 		} t_action;
 
 		std::string _new_topic;
