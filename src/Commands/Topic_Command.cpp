@@ -12,7 +12,7 @@ Topic_Command::~Topic_Command()
 bool Topic_Command::parse()
 {
 	if (_msg.empty())
-		_action = SHOW;
+		_action = ERR;
 }
 
 void Topic_Command::execute()

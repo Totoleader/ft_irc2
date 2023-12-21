@@ -54,9 +54,9 @@ void	Channel::partUser(User &u)
 
 bool Channel::isWhitelisted(User &u)
 {
-	for (std::vector<User>::iterator it = _inviteList.begin(); it != _inviteList.end(); it++)
+	for (std::list<std::string>::iterator it = _inviteList.begin(); it != _inviteList.end(); it++)
 	{
-		if (u.getNick() == (*it).getNick())
+		if (u.getNick() == *it)
 			return true;
 	}
 	return false;
