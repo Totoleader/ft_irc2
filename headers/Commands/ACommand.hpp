@@ -19,7 +19,8 @@ class ACommand
 		// ACommand();
 		ACommand(Server & server, User & sender, std::string msg);
 		virtual ~ACommand();
-	
+		string errorMessage(int key, string param1, string param2, string param3);
+
 		
 		
 		virtual void	execute() = 0;
