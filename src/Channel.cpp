@@ -104,7 +104,7 @@ const bool	Channel::isInChannel(User & u) const
 	return (it != _channelUsers.end());
 }
 
-const std::string &	Channel::getUserList()
+const std::string Channel::getUserList()
 {
 	std::vector<User>::iterator it = _channelUsers.begin();
 	std::string	userList = "";

@@ -51,7 +51,7 @@ public:
 	const bool			isInChannel(User & u) const;
 	const int			countUsers() const;
 	bool 				isWhitelisted(User &u);
-	const std::string &	getUserList();
+	const std::string	getUserList();
 	
 	// **** SETTERS ****
 
