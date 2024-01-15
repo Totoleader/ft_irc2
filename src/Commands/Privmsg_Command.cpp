@@ -42,7 +42,7 @@ bool Privmsg_Command::parse()
 {
 	std::string channelName;
 
-	channelName = _msg.substr(0, ' ');
+	channelName = _msg.substr(0, _msg.find(" "));
 	_channel = _server.getChannel(channelName);
 	if (_channel == NULL)
 	{
@@ -56,11 +56,12 @@ bool Privmsg_Command::parse()
 		return ERROR;
 	}
 
-	_message = _msg.substr(' ');
+	_message = _msg.substr(_msg.find(' '));
 	if (_message == "")
 	{
 		return ERROR;
 	}
+	_msg = _sender.getID() + " PRIVMSG " + _msg + "\r\n";
 	return SUCCESS;
 }
 
@@ -68,5 +69,5 @@ void Privmsg_Command::execute()
 {
 	if (parse() == ERROR)
 		return ;
-	_channel->sendToChannelExcept(_message, _sender);
+	_channel->sendToChannelExcept(_msg, _sender);
 }

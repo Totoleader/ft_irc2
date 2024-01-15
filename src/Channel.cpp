@@ -66,7 +66,9 @@ void Channel::sendToChannelExcept(std::string message, User &except)
 	for (std::vector<User>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
     {
 		if (it->getNick() != except.getNick())
+		{
     		send(it->getFd(), message.c_str(), message.length(), 0);
+		}	
     }
 }
 
