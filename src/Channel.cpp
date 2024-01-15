@@ -61,6 +61,14 @@ void	Channel::partUser(User &u)
 	
 }
 
+void Channel::sendToChannel(std::string message)
+{
+	for (std::vector<User>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
+    {
+    	send(it->getFd(), message.c_str(), message.length(), 0);
+    }
+}
+
 void Channel::sendToChannelExcept(std::string message, User &except)
 {
 	for (std::vector<User>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
