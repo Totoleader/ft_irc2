@@ -50,12 +50,15 @@ void Topic_Command::execute()
 	switch (_action)
 	{
 	case SHOW:
-		/* send topic reply to user */
+		std::cout << "TOPIC :" << _channel->getTopic() << std::endl; // !!! RPL_TOPIC au user
 		break;
-	case CHANGE:
 	case CLEAR:
 		// Check mode +t
 		// Check isOperator si restriction
+		_new_topic = "";
+	case CHANGE:
+		
+		std::cout << "TOPIC set to :" << _new_topic << std::endl;
 		_channel->setTopic(_new_topic);
 		break;
 	

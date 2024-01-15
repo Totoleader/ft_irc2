@@ -30,7 +30,7 @@ void Nick_Command::execute()
 	if (_server.isNickTaken(_new_nick))
 	{
 		std::cout << "ERROR nick is taken" << std::endl;
-		return ; // ERR NICK TAKEN
+		return ; // !!! ERR NICK TAKEN + disconnect
 	}
 
 	// Broadcast aux channels du user: "old_nick is now known as new_nick" et resend la list des users
