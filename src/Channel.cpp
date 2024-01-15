@@ -104,6 +104,24 @@ const bool	Channel::isInChannel(User & u) const
 	return (it != _channelUsers.end());
 }
 
+const std::string &	Channel::getUserList()
+{
+	std::vector<User>::iterator it = _channelUsers.begin();
+	std::string	userList = "";
+
+	for (; it != _channelUsers.end(); it++)
+	{
+		std::string user = "";
+		if (isOperator(*it))
+			user += "@";
+		user += it->getNick();
+		if (std::next(it) != _channelUsers.end())
+			user += " ";
+		userList += user;
+	}
+	return userList;
+}
+
 /********************
 	SETTERS
 *********************/

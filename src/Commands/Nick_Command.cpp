@@ -32,7 +32,11 @@ void Nick_Command::execute()
 		std::cout << "ERROR nick is taken" << std::endl;
 		return ; // ERR NICK TAKEN
 	}
+
+	// Broadcast aux channels du user: "old_nick is now known as new_nick" et resend la list des users
 	_sender.setNick(_new_nick);
+
+	// Connect user s'il n'est pas connecte
 	if (!_sender.isConnected() && !_sender.getUsername().empty() && !_sender.getName().empty())
 		_connectUser();
 }
