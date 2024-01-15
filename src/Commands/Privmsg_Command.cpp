@@ -61,7 +61,7 @@ bool Privmsg_Command::parse()
 	{
 		return ERROR;
 	}
-
+	return SUCCESS;
 }
 
 void Privmsg_Command::execute()

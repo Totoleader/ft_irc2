@@ -83,7 +83,8 @@ void Server::new_client()
 	_fds.push_back(newClient);
 }
 
-Channel& Server::new_channel(std::string channelName, User &sender, std::string password)
+
+void Server::new_channel(std::string channelName, User &sender, std::string password)
 {
 	Channel newChannel(channelName, sender, password);
 	_channels.push_back(newChannel);
@@ -206,7 +207,20 @@ void Server::disconnect_userList(User &user)
 }
 
 
+void Server::joinExistingChannel(User &u, Channel &chan)
+{
+	std::string	join = u.getID() + " JOIN " + chan.getName() + "\r\n";
+	std::string listBegin = ":127.0.0.1 353 " + u.getNick() + " = " + chan.getName() + " :";
+	std::string listEnd = ":127.0.0.1 366 " + u.getNick() + " " + chan.getName() + " :End of /NAMES list.\r\n";
+	send(u.getFd(), join.c_str(), join.length(), 0);
+	chan.sendToChannelExcept(join, u);
 
+	listBegin += chan.getUserList();
+	listBegin += "\r\n";
+	std::cout << listBegin << std::endl;
+	send(u.getFd(), listBegin.c_str(), listBegin.length(), 0);
+	send(u.getFd(), listEnd.c_str(), listEnd.length(), 0);
+}
 
 
 

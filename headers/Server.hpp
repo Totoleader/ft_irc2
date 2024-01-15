@@ -29,7 +29,7 @@ class Server
 		void listenForEvents();
 
 		void new_client();
-		Channel& new_channel(std::string channelName, User &sender, std::string password);
+		void new_channel(std::string channelName, User &sender, std::string password);
 		void new_server(int fd);
 		void handle_event(int client_i);
 
@@ -40,6 +40,7 @@ class Server
 		User *getUser(int fd);
 		User *getUser(std::string nick);
 		Channel *getChannel(std::string channel_name);
+		void joinExistingChannel(User &u, Channel &chan);
 
 
 
