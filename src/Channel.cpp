@@ -14,6 +14,15 @@ _password(pass)
 	this->_operators.push_back(creator);
 }
 
+Channel::Channel(std::string name, User &creator) :
+_name(name),
+_topic(""),
+_password("")
+{
+	this->_channelUsers.push_back(creator);
+	this->_operators.push_back(creator);
+}
+
 Channel::~Channel()
 {
 }

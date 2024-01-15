@@ -11,8 +11,10 @@ class CommandFactory
 	private:
 		ACommand *NickFactory(std::string, Server&, User&);
 		ACommand *UserFactory(std::string, Server&, User&);
+		ACommand *JoinFactory(std::string, Server&, User&);
 		ACommand *PassFactory(std::string, Server&, User&);
 		ACommand *TopicFactory(std::string, Server&, User&);
+		ACommand *PrivmsgFactory(std::string, Server&, User&);
 	public:
 		CommandFactory();
 		~CommandFactory();

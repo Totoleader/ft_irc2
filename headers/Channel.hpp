@@ -22,6 +22,7 @@ private:
 public:
 	Channel();
 	Channel(std::string name, User &creator, std::string pass);
+	Channel(std::string name, User &creator);
 	~Channel();
 
 	// **** OPERATORS ****
@@ -52,7 +53,7 @@ public:
 	const int			countUsers() const;
 	bool 				isWhitelisted(User &u);
 	const std::string	getUserList();
-	
+
 	// **** SETTERS ****
 
 	void	setTopic(const std::string & new_topic);
