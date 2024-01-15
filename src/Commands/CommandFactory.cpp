@@ -17,11 +17,12 @@ ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 	
 	for (int i = 0; i < N_CMDS; i++)
 	{
-		std::string cmd_check = msg.substr(0, cmds[i].length());
-		if ( !isspace( msg.at(cmds[i].length() )))
+		size_t cmd_len = cmds[i].length();
+		std::string cmd_check = msg.substr(0, cmd_len);
+		if ( msg.length() >= cmd_len && !isspace( msg.at(cmd_len)))
 			continue ;
 		if (cmd_check == cmds[i])
-			return (this->*(f[i]))(msg.substr(cmds[i].length() + 1), serv, u);
+			return (this->*(f[i]))(msg.substr(cmd_len + 1), serv, u);
 	}
 	return NULL;
 }
