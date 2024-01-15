@@ -83,6 +83,13 @@ void Server::new_client()
 	_fds.push_back(newClient);
 }
 
+Channel& Server::new_channel(std::string channelName, User &sender, std::string password)
+{
+	Channel newChannel(channelName, sender, password);
+	_channels.push_back(newChannel);
+	// new channel created message !!!
+}
+
 void Server::new_server(int fd)
 {
 	struct pollfd	newClient;

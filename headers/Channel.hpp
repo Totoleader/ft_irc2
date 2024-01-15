@@ -22,6 +22,7 @@ private:
 public:
 	Channel();
 	Channel(std::string name, User &creator, std::string pass);
+	Channel(std::string name, User &creator);
 	~Channel();
 
 	// **** OPERATORS ****
