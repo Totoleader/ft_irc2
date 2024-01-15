@@ -14,6 +14,15 @@ _password(pass)
 	this->_operators.push_back(creator);
 }
 
+Channel::Channel(std::string name, User &creator) :
+_name(name),
+_topic(""),
+_password("")
+{
+	this->_channelUsers.push_back(creator);
+	this->_operators.push_back(creator);
+}
+
 Channel::~Channel()
 {
 }
@@ -104,7 +113,7 @@ const bool	Channel::isInChannel(User & u) const
 	return (it != _channelUsers.end());
 }
 
-const std::string &	Channel::getUserList()
+const std::string	Channel::getUserList()
 {
 	std::vector<User>::iterator it = _channelUsers.begin();
 	std::string	userList = "";

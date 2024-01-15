@@ -34,8 +34,10 @@
 # include "Commands/CommandFactory.hpp"
 # include "Commands/User_Command.hpp"
 # include "Commands/Nick_Command.hpp"
+# include "Commands/Join_Command.hpp"
 # include "Commands/Pass_Command.hpp"
 # include "Commands/Topic_Command.hpp"
+# include "Commands/Privmsg_Command.hpp"
 
 
 
