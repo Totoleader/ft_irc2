@@ -35,13 +35,13 @@ class User
 		const std::string&	getIp()	const;
 		const std::string&	getPort() const;
 		const std::string	getID() const;
-		const int&			getFd() const;
+		int					getFd() const;
 		struct sockaddr_storage	*getSock();
 		std::string	getBuffer() const;
 		
-		const bool			isFirstMsg() const;
-		const bool			isConnected() const;
-		bool				isPassAccepted() const;
+		bool			isFirstMsg() const;
+		bool			isConnected() const;
+		bool			isPassAccepted() const;
 		
 		//set
 		void		setNick(std::string const & nick);

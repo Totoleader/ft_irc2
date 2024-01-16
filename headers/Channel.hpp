@@ -45,11 +45,11 @@ public:
 	const std::string &	getName() const;
 	const std::string &	getTopic() const;
 	const std::string &	getPassword() const;
-	const bool			isOperator(User & u) const;
-	const bool			isInviteOnly() const;
-	const bool			isInvited(User & u) const;
-	const bool			isInChannel(const User & u) const;
-	const int			countUsers() const;
+	bool			isOperator(User & u) const;
+	bool			isInviteOnly() const;
+	bool			isInvited(User & u) const;
+	bool			isInChannel(const User & u) const;
+	int			countUsers() const;
 	bool 				isWhitelisted(User &u);
 	const std::string	getUserList();
 
