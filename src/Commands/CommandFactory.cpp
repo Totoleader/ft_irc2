@@ -11,8 +11,8 @@ CommandFactory::~CommandFactory()
 
 ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 {
-	const int N_CMDS = 7;
-	const std::string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART" };
+	const int N_CMDS = 9;
+	const std::string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART", "INVITE", "KICK"};
 	ACommand * (CommandFactory::*f[N_CMDS])(std::string, Server&, User&) = {
 		&CommandFactory::NickFactory,
 		&CommandFactory::UserFactory,
@@ -20,7 +20,10 @@ ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 		&CommandFactory::PassFactory,
 		&CommandFactory::TopicFactory,
 		&CommandFactory::PrivmsgFactory,
-		&CommandFactory::PartFactory
+		&CommandFactory::PartFactory,
+		&CommandFactory::InviteFactory,
+		&CommandFactory::KickFactory
+
 	};
 	
 	for (int i = 0; i < N_CMDS; i++)
@@ -68,4 +71,14 @@ ACommand *CommandFactory::PrivmsgFactory(std::string msg, Server &server, User &
 ACommand *CommandFactory::PartFactory(std::string msg, Server &server, User &sender)
 {
 	return (new Part_Command(msg, server, sender));
+}
+
+ACommand *CommandFactory::InviteFactory(std::string msg, Server &server, User &sender)
+{
+	return (new Invite_Command(msg, server, sender));
+}
+
+ACommand *CommandFactory::KickFactory(std::string msg, Server &server, User &sender)
+{
+	return (new Kick_Command(msg, server, sender));
 }

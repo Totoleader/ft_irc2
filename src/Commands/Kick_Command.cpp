@@ -26,12 +26,13 @@ bool Kick_Command::has_operator_rights()
 
 void Kick_Command::parse_message(std::stringstream &separator_stream)
 {
-	while (separator_stream >> _message)
+	std::string msg;
+
+	separator_stream >> _message;
+	while (separator_stream >> msg)
 	{
-		_message += " ";
+		_message += " " + msg;
 	}
-	if (_message.size() > 0 && _message.at(0) == ':')
-		_message.erase(0, 1);
 }
 
 bool Kick_Command::parse_channels(std::stringstream &separator_stream)
@@ -63,6 +64,7 @@ bool Kick_Command::parse_users(std::stringstream &separator_stream)
 	std::string rawUsers;
 	std::string user_token;
 
+	separator_stream >> rawUsers;
 	std::stringstream user_stream(rawUsers);
 	while (std::getline(user_stream, user_token, ','))
 	{
@@ -107,7 +109,7 @@ bool Kick_Command::parse()
 
 std::string Kick_Command::formatMessage(Channel &channel, User &user)
 {
-	return (user.getID() + " KICK " + channel.getName() + " " + user.getNick() + "\r\n");
+	return (_sender.getID() + " KICK " + channel.getName() + " " + user.getNick() + " " + _message + "\r\n");
 }
 
 void Kick_Command::execute()
@@ -134,8 +136,8 @@ void Kick_Command::execute()
 			}
 			else if (channel.isInChannel(user))
 			{
-				channel.removeUser(user);
 				channel.sendToChannel(formatMessage(channel, user));
+				channel.removeUser(user);
 			}
 			else
 			{
