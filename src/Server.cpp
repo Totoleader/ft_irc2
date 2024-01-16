@@ -136,7 +136,7 @@ void Server::handle_event(int client_i)
 }
 
 
-//
+//WTF
 struct RemoveUserFunctor {
     User& user;
     RemoveUserFunctor(User& u) : user(u) {}
@@ -170,6 +170,26 @@ bool Server::isNickTaken(std::string const & nick)
 	return false;
 }
 
+void Server::removeChannel(Channel & c)
+{
+	std::vector<Channel>::const_iterator it = std::find(_channels.begin(), _channels.end(), c);
+	if (it != _channels.end())
+		_channels.erase(it);
+}
+
+void Server::partUserFromChannel(User & u, Channel & c)
+{
+	if (!c.isInChannel(u))
+		return ;
+
+	if (c.isOperator(u))
+	{
+		c.removeOperator(u); // TODO: appointe nouveau operateur si vide
+	}
+	c.removeUser(u);
+	if (c.countUsers() == 0)
+		removeChannel(c);
+}
 
 
 //PRIVATE////////////////////////////////////////////////////////////

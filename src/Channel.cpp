@@ -58,11 +58,6 @@ void	Channel::removeOperator(User & op)
 		_operators.erase(it);
 }
 
-void	Channel::partUser(User &u)
-{
-	
-}
-
 void Channel::sendToChannel(std::string message)
 {
 	for (std::vector<User>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
@@ -119,7 +114,7 @@ const bool	Channel::isInvited(User &u) const
 	return (it != _inviteList.end());
 }
 
-const bool	Channel::isInChannel(User & u) const
+const bool	Channel::isInChannel(const User & u) const
 {
 	std::vector<User>::const_iterator it = std::find(_channelUsers.begin(), _channelUsers.end(), u);
 	return (it != _channelUsers.end());
