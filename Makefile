@@ -15,6 +15,7 @@ SRCS	:=	src/main.cpp \
 			src/Commands/Join_Command.cpp \
 			src/Commands/Privmsg_Command.cpp \
 			src/Commands/Topic_Command.cpp \
+			src/Commands/Part_Command.cpp \
 			src/Commands/ACommand.cpp \
 
 OBJS	:= $(patsubst src/%.cpp,bin/%.o,$(SRCS))

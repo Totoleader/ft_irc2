@@ -34,6 +34,9 @@ class Server
 		void handle_event(int client_i);
 
 		void disconnect_user(User &user);
+		void removeChannel(Channel & c);
+		void partUserFromChannel(User & u, Channel & c);
+
 		bool isNickTaken(std::string const & nick);
 
 		const std::string &getPassword() const;
