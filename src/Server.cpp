@@ -271,3 +271,15 @@ const std::string& Server::getPassword() const
 	return (_password);
 }
 
+std::vector<Channel *> Server::getUserChannels(User & user)
+{
+	std::vector<Channel *> out;
+	std::vector<Channel>::iterator it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++)
+	{
+		if (it->isInChannel(user))
+			out.push_back(getChannel(it->getName()));
+	}
+	return out;
+}
