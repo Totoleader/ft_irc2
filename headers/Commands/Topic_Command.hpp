@@ -1,7 +1,6 @@
 #ifndef __TOPIC_COMMAND_H_
 #define __TOPIC_COMMAND_H_
 
-
 #include "Libs.hpp"
 
 class Server;
@@ -19,8 +18,6 @@ class Topic_Command : public ACommand
 		std::string _new_topic;
 		Channel *	_channel;
 		t_action	_action;
-
-		
 
 	public:
 		Topic_Command(std::string msg, Server &server, User &sender);

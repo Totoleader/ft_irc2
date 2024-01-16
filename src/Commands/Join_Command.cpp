@@ -14,11 +14,11 @@ Join_Command::~Join_Command()
 
 bool Join_Command::parse()
 {
-	std::pair<string, string> pair;
-	string channels;
-	string passwords;
-	string channel_token;
-	string password_token;
+	std::pair<std::string, std::string> pair;
+	std::string channels;
+	std::string passwords;
+	std::string channel_token;
+	std::string password_token;
 
 	channels = _msg.substr(0, _msg.find(' '));
 	if (_msg.find(' ') != std::string::npos)
@@ -44,18 +44,18 @@ bool Join_Command::parse()
 
 // }
 
-bool Join_Command::passIsOk(Channel *channel, string password)
+bool Join_Command::passIsOk(Channel *channel, std::string password)
 {
 	if (password == channel->getPassword())
 		return SUCCESS;
 	return ERROR;
 }
 
-void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
+void Join_Command::joinChannel(std::pair<std::string, std::string> *channel_name_pass)
 {
 	Channel	*channel = _server.getChannel(channel_name_pass->first);
-	string 	channelName = channel_name_pass->first;
-	string 	password = channel_name_pass->second;
+	std::string 	channelName = channel_name_pass->first;
+	std::string 	password = channel_name_pass->second;
 
 	if (channel == NULL)//si le channel n'existe pas
 	{
@@ -89,7 +89,7 @@ void Join_Command::execute()
 		std::cout << "Cannot join, user not connected" << std::endl;
 		return ;
 	}
-	for (vector< pair<string, string> >::iterator it  = _channelNamePass.begin(); it != _channelNamePass.end(); it++)
+	for (std::vector< std::pair<std::string, std::string> >::iterator it  = _channelNamePass.begin(); it != _channelNamePass.end(); it++)
 	{
 		joinChannel(&(*it));
 	}

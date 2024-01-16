@@ -1,9 +1,7 @@
 #ifndef __ACOMMAND_H__
 #define __ACOMMAND_H__
 
-
 # include "Libs.hpp"
-
 
 class Server;
 class User;
@@ -15,13 +13,12 @@ class ACommand
 		std::string	_msg;
 
 		void	_connectUser();
+
 	public:
 		// ACommand();
 		ACommand(Server & server, User & sender, std::string msg);
 		virtual ~ACommand();
-	
-		
-		
+
 		virtual void	execute() = 0;
 };
 

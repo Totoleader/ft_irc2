@@ -2,7 +2,7 @@
 
 #include "Commands/Kick_Command.hpp"
 
-Kick_Command::Kick_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Kick_Command::Kick_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)
 {
 }
 

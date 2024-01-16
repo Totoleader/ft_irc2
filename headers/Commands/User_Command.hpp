@@ -1,9 +1,7 @@
 #ifndef __User_Command_H__
 #define __User_Command_H__
 
-
 #include "Libs.hpp"
-
 
 class Server;
 class User;

@@ -5,18 +5,18 @@
 
 class Part_Command : public ACommand
 {
-private:
-	std::vector<Channel *>		_channelsToPart;
-	std::string					_partMessage;
-public:
-	Part_Command(std::string msg, Server &server, User &sender);
-	~Part_Command();
+	private:
+		std::vector<Channel *>		_channelsToPart;
+		std::string					_partMessage;
 
-	void fillChannels(std::string channelStringList);
+	public:
+		Part_Command(std::string msg, Server &server, User &sender);
+		~Part_Command();
 
-	bool parse();
-	void execute();
+		void fillChannels(std::string channelStringList);
+
+		bool parse();
+		void execute();
 };
 
-
-#endif
+#endif //__Part_Command_H__

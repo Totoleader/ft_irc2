@@ -1,7 +1,6 @@
 #ifndef __Nick_Command_H__
 #define __Nick_Command_H__
 
-
 #include "Libs.hpp"
 
 class Server;

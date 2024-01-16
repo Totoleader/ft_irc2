@@ -1,7 +1,6 @@
 #ifndef __Pass_Command_H__
 #define __Pass_Command_H__
 
-
 #include "Libs.hpp"
 
 class Server;
