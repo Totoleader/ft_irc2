@@ -36,8 +36,6 @@ public:
 	void				removeUser(User & u);
 	void				removeOperator(User & op);
 
-	void				partUser(User &u); // enleve les infos d'un user du channel, delete le channel si dernier, choisi nouveau op si dernier
-
 	void				sendToChannel(std::string message);
 	void 				sendToChannelExcept(std::string message, User &except);
 	void				addToWhiteList(User &newUser);
@@ -50,7 +48,7 @@ public:
 	const bool			isOperator(User & u) const;
 	const bool			isInviteOnly() const;
 	const bool			isInvited(User & u) const;
-	const bool			isInChannel(User & u) const;
+	const bool			isInChannel(const User & u) const;
 	const int			countUsers() const;
 	bool 				isWhitelisted(User &u);
 	const std::string	getUserList();

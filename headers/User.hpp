@@ -43,7 +43,6 @@ class User
 		const bool			isConnected() const;
 		bool				isPassAccepted() const;
 		
-
 		//set
 		void		setNick(std::string const & nick);
 		void		setUsername(std::string const & username);
@@ -54,7 +53,6 @@ class User
 		void		setConnected(bool is_connected);
 		void		setBuffer(char *buf);
 		void		setSock(struct sockaddr_storage *s);
-
 		void		passwordAccepted();
 	};
 

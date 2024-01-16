@@ -3,7 +3,6 @@
 
 #include "Libs.hpp"
 
-
 class Privmsg_Command : public ACommand
 {
 	private:

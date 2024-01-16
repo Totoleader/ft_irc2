@@ -11,9 +11,17 @@ CommandFactory::~CommandFactory()
 
 ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 {
-	const int N_CMDS = 6;
-	const std::string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG"};
-	ACommand * (CommandFactory::*f[N_CMDS])(std::string, Server&, User&) = { &CommandFactory::NickFactory, &CommandFactory::UserFactory, &CommandFactory::JoinFactory , &CommandFactory::PassFactory, &CommandFactory::TopicFactory, &CommandFactory::PrivmsgFactory};
+	const int N_CMDS = 7;
+	const std::string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART" };
+	ACommand * (CommandFactory::*f[N_CMDS])(std::string, Server&, User&) = {
+		&CommandFactory::NickFactory,
+		&CommandFactory::UserFactory,
+		&CommandFactory::JoinFactory,
+		&CommandFactory::PassFactory,
+		&CommandFactory::TopicFactory,
+		&CommandFactory::PrivmsgFactory,
+		&CommandFactory::PartFactory
+	};
 	
 	for (int i = 0; i < N_CMDS; i++)
 	{
@@ -55,4 +63,9 @@ ACommand *CommandFactory::TopicFactory(std::string msg, Server &server, User &se
 ACommand *CommandFactory::PrivmsgFactory(std::string msg, Server &server, User &sender)
 {
 	return (new Privmsg_Command(msg, server, sender));
+}
+
+ACommand *CommandFactory::PartFactory(std::string msg, Server &server, User &sender)
+{
+	return (new Part_Command(msg, server, sender));
 }

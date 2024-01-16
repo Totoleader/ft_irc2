@@ -38,6 +38,7 @@
 # include "Commands/Pass_Command.hpp"
 # include "Commands/Topic_Command.hpp"
 # include "Commands/Privmsg_Command.hpp"
+# include "Commands/Part_Command.hpp"
 
 
 
