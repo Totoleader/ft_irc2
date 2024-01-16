@@ -1,7 +1,7 @@
 #include "Libs.hpp"
 #include "Commands/Invite_Command.hpp"
 
-Invite_Command::Invite_Command()
+Invite_Command::Invite_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)
 {
 }
 
@@ -19,7 +19,7 @@ bool Invite_Command::parse()
 	_userToInvite = _server.getUser(userName);
 	if (_userToInvite == NULL)
 	{
-		// ** User not found **
+		// User not found message !!!
 		return ERROR;
 	}
 
@@ -27,19 +27,25 @@ bool Invite_Command::parse()
 	_channel = _server.getChannel(channelName);
 	if (_channel == NULL)
 	{
-		// **  Channel not found **
+		// Channel not found message !!!
 		return ERROR;
 	}
 
 	if (!_channel->isInviteOnly())
 	{
-		// ** no need to invite **
+		// no need to invite message !!!
+		return ERROR;
+	}
+
+	if (!_channel->isOperator(_sender))
+	{
+		// Don't have Operator rights message !!!
 		return ERROR;
 	}
 
 	if (_channel->isInChannel(*_userToInvite))
 	{
-		// ** User already in the channel **
+		// User already in the channel !!!
 		return ERROR;
 	}
 
@@ -51,4 +57,5 @@ void Invite_Command::execute()
 	if (parse() == ERROR)
 		return ;
 	_channel->addToWhiteList(*_userToInvite);
+	//added to whitelist message !!!
 }
