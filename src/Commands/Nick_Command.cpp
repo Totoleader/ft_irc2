@@ -23,8 +23,11 @@ bool Nick_Command::parse()
 
 void Nick_Command::execute()
 {
-	// if (!_sender.) check pass
-	// 	return ; // ERR OR DISCONNECT
+	if (!_sender.isPassAccepted())
+	{
+		std::cout << "User has not entered password yet." << std::endl;
+		return ; // ERR OR DISCONNECT
+	}
 	if (parse() == ERROR)
 		return ; // ERR MSG
 	if (_server.isNickTaken(_new_nick))

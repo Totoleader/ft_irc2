@@ -8,7 +8,8 @@ Channel::Channel()
 Channel::Channel(std::string name, User &creator, std::string pass) :
 _name(name),
 _topic(""),
-_password(pass)
+_password(pass),
+_isInviteOnly(false)
 {
 	this->_channelUsers.push_back(creator);
 	this->_operators.push_back(creator);
@@ -17,7 +18,8 @@ _password(pass)
 Channel::Channel(std::string name, User &creator) :
 _name(name),
 _topic(""),
-_password("")
+_password(""),
+_isInviteOnly(false)
 {
 	this->_channelUsers.push_back(creator);
 	this->_operators.push_back(creator);
@@ -123,6 +125,7 @@ const bool	Channel::isInChannel(User & u) const
 	return (it != _channelUsers.end());
 }
 
+// TODO: mettre les ops en 1er dans la liste
 const std::string Channel::getUserList()
 {
 	std::vector<User>::iterator it = _channelUsers.begin();

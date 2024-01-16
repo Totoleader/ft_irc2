@@ -5,7 +5,7 @@ User::User()
 {
 }
 
-User::User(int fd, struct sockaddr *cl): _fd(fd), _sock((struct sockaddr_storage*)cl) 
+User::User(int fd, struct sockaddr *cl): _fd(fd), _sock((struct sockaddr_storage*)cl), _pass_ok(false), _connected(false)
 {
 	setIp();
 }
@@ -107,9 +107,14 @@ void User::setFd(int fd)
 	_fd = fd;
 }
 
-const bool & User::isConnected() const
+const bool User::isConnected() const
 {
 	return _connected;
+}
+
+bool User::isPassAccepted() const
+{
+	return _pass_ok;
 }
 
 void User::setConnected(bool is_connected)
