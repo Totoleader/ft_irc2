@@ -1,3 +1,5 @@
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.2.2
+
 #include "Commands/Part_Command.hpp"
 
 Part_Command::Part_Command(std::string msg, Server &server, User &sender) :

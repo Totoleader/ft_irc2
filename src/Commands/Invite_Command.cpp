@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.2.7
+
 #include "Commands/Invite_Command.hpp"
 
 Invite_Command::Invite_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)

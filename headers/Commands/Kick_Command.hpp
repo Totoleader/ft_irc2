@@ -17,7 +17,7 @@ class Kick_Command : public ACommand
 		std::string formatMessage(Channel &channel, User &user);
 
 	public:
-		Kick_Command(string msg, Server &server, User &sender);
+		Kick_Command(std::string msg, Server &server, User &sender);
 		~Kick_Command();
 
 		bool parse();

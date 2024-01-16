@@ -1,4 +1,3 @@
-#include "Libs.hpp"
 #include "Commands/CommandFactory.hpp"
 
 CommandFactory::CommandFactory()
@@ -30,7 +29,7 @@ ACommand *CommandFactory::getCommand(std::string msg, Server &serv, User &u)
 	{
 		size_t cmd_len = cmds[i].length();
 		std::string cmd_check = msg.substr(0, cmd_len);
-		if ( msg.length() >= cmd_len && !isspace( msg.at(cmd_len)))
+		if ( msg.length() > cmd_len && !isspace( msg.at(cmd_len)))
 			continue ;
 		if (cmd_check == cmds[i])
 			return (this->*(f[i]))(msg.substr(cmd_len + 1), serv, u);
