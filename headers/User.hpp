@@ -12,9 +12,10 @@ class User
 		std::string				_realname;
 		std::string				_ip;
 		std::string				_port;
+		bool					_pass_ok;	// !! Initialise a true si pas de server pass
 		bool					_connected;
 		int						_fd;
-		bool					_pass_ok;
+		
 		struct sockaddr_storage	*_sock;
 	
 		std::string					_buffer;
@@ -38,8 +39,9 @@ class User
 		struct sockaddr_storage	*getSock();
 		std::string	getBuffer() const;
 		
-		const bool&			isFirstMsg() const;
-		const bool&			isConnected() const;
+		const bool			isFirstMsg() const;
+		const bool			isConnected() const;
+		bool				isPassAccepted() const;
 		
 
 		//set

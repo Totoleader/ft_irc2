@@ -83,6 +83,11 @@ void Join_Command::execute()
 	// vector< pair<string, string> >::iterator it  = _channelNamePass.begin();
 	if (parse() == ERROR)
 		return ;
+	if (!_sender.isConnected())
+	{
+		std::cout << "Cannot join, user not connected" << std::endl;
+		return ;
+	}
 	for (vector< pair<string, string> >::iterator it  = _channelNamePass.begin(); it != _channelNamePass.end(); it++)
 	{
 		joinChannel(&(*it));

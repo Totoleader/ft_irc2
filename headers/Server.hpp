@@ -40,9 +40,8 @@ class Server
 		User *getUser(int fd);
 		User *getUser(std::string nick);
 		Channel *getChannel(std::string channel_name);
+		std::vector<Channel *> getUserChannels(User & user);
 		void joinExistingChannel(User &u, Channel &chan);
-
-
 
 		// void handle_client(int new_fd);
 

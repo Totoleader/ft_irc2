@@ -215,11 +215,10 @@ void Server::joinExistingChannel(User &u, Channel &chan)
 	send(u.getFd(), join.c_str(), join.length(), 0);
 	chan.sendToChannelExcept(join, u);
 
-	listBegin += chan.getUserList();
-	listBegin += "\r\n";
+	listBegin += chan.getUserList() + "\r\n";
 	std::cout << listBegin << std::endl;
-	chan.sendToChannelExcept(listBegin, u);
-	chan.sendToChannelExcept(listEnd, u);
+	// chan.sendToChannelExcept(listBegin, u);
+	// chan.sendToChannelExcept(listEnd, u);
 	send(u.getFd(), listBegin.c_str(), listBegin.length(), 0);
 	send(u.getFd(), listEnd.c_str(), listEnd.length(), 0);
 }
@@ -271,3 +270,15 @@ const std::string& Server::getPassword() const
 	return (_password);
 }
 
+std::vector<Channel *> Server::getUserChannels(User & user)
+{
+	std::vector<Channel *> out;
+	std::vector<Channel>::iterator it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++)
+	{
+		if (it->isInChannel(user))
+			out.push_back(getChannel(it->getName()));
+	}
+	return out;
+}
