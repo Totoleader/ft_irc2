@@ -25,5 +25,4 @@ class ACommand
 		virtual void	execute() = 0;
 };
 
-
 #endif // __ACOMMAND_H__
