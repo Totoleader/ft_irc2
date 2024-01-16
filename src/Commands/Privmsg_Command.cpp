@@ -44,6 +44,7 @@ bool Privmsg_Command::parse()
 
 	channelName = _msg.substr(0, _msg.find(" "));
 	_channel = _server.getChannel(channelName);
+
 	if (_channel == NULL)
 	{
 		// ** Channel not found **

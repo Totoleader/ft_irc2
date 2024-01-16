@@ -16,6 +16,8 @@ class CommandFactory
 		ACommand *TopicFactory(std::string, Server&, User&);
 		ACommand *PrivmsgFactory(std::string, Server&, User&);
 		ACommand *PartFactory(std::string, Server &, User &);
+		ACommand *InviteFactory(std::string, Server &, User &);
+		ACommand *KickFactory(std::string, Server &, User &);
 	public:
 		CommandFactory();
 		~CommandFactory();
