@@ -14,7 +14,7 @@ Join_Command::~Join_Command()
 
 bool Join_Command::parse()
 {
-	std::pair<string, string> pair;
+	pair<string, string> pair;
 	string channels;
 	string passwords;
 	string channel_token;
@@ -24,8 +24,8 @@ bool Join_Command::parse()
 	if (_msg.find(' ') != string::npos)
 		passwords = _msg.substr(_msg.find(' '));
 
-	std::stringstream channel_stream(channels);
-	std::stringstream password_stream(passwords);
+	stringstream channel_stream(channels);
+	stringstream password_stream(passwords);
 
 	while (std::getline(channel_stream, channel_token, ','))
 	{
@@ -51,7 +51,7 @@ bool Join_Command::passIsOk(Channel *channel, string password)
 	return ERROR;
 }
 
-void Join_Command::joinChannel(std::pair<string, string> *channel_name_pass)
+void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 {
 	Channel	*channel = _server.getChannel(channel_name_pass->first);
 	string 	channelName = channel_name_pass->first;
@@ -89,7 +89,7 @@ void Join_Command::execute()
 		std::cout << "Cannot join, user not connected" << std::endl;
 		return ;
 	}
-	for (std::vector< std::pair<string, string> >::iterator it  = _channelNamePass.begin(); it != _channelNamePass.end(); it++)
+	for (vector< pair<string, string> >::iterator it  = _channelNamePass.begin(); it != _channelNamePass.end(); it++)
 	{
 		joinChannel(&(*it));
 	}

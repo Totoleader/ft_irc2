@@ -38,8 +38,8 @@ void Nick_Command::execute()
 	}
 
 	// Broadcast aux channels du user: "old_nick is now known as new_nick" et resend la list des users
-	std::vector<Channel *> channels = _server.getUserChannels(_sender);
-	std::vector<Channel *>::iterator it;
+	vector<Channel *> channels = _server.getUserChannels(_sender);
+	vector<Channel *>::iterator it;
 	for (it = channels.begin(); it != channels.end(); it++)
 	{
 		string msg = _sender.getID() + " NICK " + _new_nick + "\r\n";

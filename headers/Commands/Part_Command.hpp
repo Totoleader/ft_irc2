@@ -6,7 +6,7 @@
 class Part_Command : public ACommand
 {
 	private:
-		std::vector<Channel *>		_channelsToPart;
+		vector<Channel *>		_channelsToPart;
 		string					_partMessage;
 
 	public:

@@ -9,12 +9,12 @@ class User;
 class Join_Command : public ACommand
 {
 private:
-	std::vector< std::pair<string, string> > _channelNamePass;
+	vector< pair<string, string> > _channelNamePass;
 
 public:
 	Join_Command(string msg, Server &server, User &sender);
 	~Join_Command();
-	void joinChannel(std::pair<string, string> *channel_name_pass);
+	void joinChannel(pair<string, string> *channel_name_pass);
 	bool passIsOk(Channel *channel, string password);
 
 	bool parse();

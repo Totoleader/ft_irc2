@@ -12,7 +12,7 @@ Topic_Command::~Topic_Command()
 
 bool Topic_Command::parse()
 {
-	std::stringstream	ss(_msg);
+	stringstream	ss(_msg);
 	string			arg;
 	
 	ss >> arg;

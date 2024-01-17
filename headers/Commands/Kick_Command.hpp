@@ -6,14 +6,14 @@
 class Kick_Command : public ACommand
 {
 	private:
-		std::vector<Channel>	_channels;
-		std::vector<User>		_users;
+		vector<Channel>	_channels;
+		vector<User>		_users;
 		string				_message;
 
 		bool has_operator_rights();
-		void parse_message(std::stringstream &separator_stream);
-		bool parse_channels(std::stringstream &separator_stream);
-		bool parse_users(std::stringstream &separator_stream);
+		void parse_message(stringstream &separator_stream);
+		bool parse_channels(stringstream &separator_stream);
+		bool parse_users(stringstream &separator_stream);
 		string formatMessage(Channel &channel, User &user);
 
 	public:

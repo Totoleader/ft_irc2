@@ -14,7 +14,7 @@ User_Command::~User_Command()
 
 bool User_Command::parse()
 {
-	std::stringstream ss(_msg);
+	stringstream ss(_msg);
 	string username;
 
 	ss >> _username;

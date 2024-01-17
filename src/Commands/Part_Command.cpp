@@ -86,7 +86,7 @@ void Part_Command::execute()
 	if (parse() == ERROR)
 		return ;
 	
-	std::vector<Channel *>::iterator it;
+	vector<Channel *>::iterator it;
 	for (it = _channelsToPart.begin(); it != _channelsToPart.end(); it++)
 	{
 		Channel * channel = *it;

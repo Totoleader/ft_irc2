@@ -12,12 +12,12 @@ private:
 	string 				_topic;
 	string 				_password;			// mode +k
 
-	std::vector<User *>			_channelUsers;
-	std::vector<User *>			_operators;			// mode +o
+	vector<User *>			_channelUsers;
+	vector<User *>			_operators;			// mode +o
 
 	//mode
 	bool						_isInviteOnly;		// mode +i
-	std::vector<User *>			_inviteList;
+	vector<User *>			_inviteList;
 	bool						_topicRestriction;	// mode +t
 	int							_userLimit;			// mode +l
 

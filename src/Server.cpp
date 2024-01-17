@@ -129,7 +129,7 @@ void Server::handle_event(int client_i)
 	while (trail != string::npos)
 	{
 		command = _users[i].getBuffer().substr(0, trail);
-		
+
 		cmd_to_exec = factory.getCommand(command, *this, _users[i]);
 		if (cmd_to_exec)
 		{
@@ -168,7 +168,7 @@ void Server::disconnect_user(User &user)
 
 bool Server::isNickTaken(string const & nick)
 {
-	for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+	for (vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
 		if (it->getNick() == nick)
 			return true;
@@ -178,7 +178,7 @@ bool Server::isNickTaken(string const & nick)
 
 void Server::removeChannel(Channel & c)
 {
-	std::vector<Channel>::const_iterator it = std::find(_channels.begin(), _channels.end(), c);
+	vector<Channel>::const_iterator it = std::find(_channels.begin(), _channels.end(), c);
 	if (it != _channels.end())
 		_channels.erase(it);
 }
@@ -204,7 +204,7 @@ void Server::disconnect_fdList(User &user)
 {
 	int fd = user.getFd();
 
-	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
+	for (vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
 	{
 		if (fd == (*it).fd)
 		{
@@ -219,7 +219,7 @@ void Server::disconnect_userList(User &user)
 {
 	// string nick = user.getNick();
 
-	// for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+	// for (vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	// {
 	// 	if (nick == (*it).getNick())
 	// 	{
@@ -227,7 +227,7 @@ void Server::disconnect_userList(User &user)
 	// 		return;
 	// 	}
 	// }
-	std::vector<User>::iterator it = std::find(_users.begin(), _users.end(), user);
+	vector<User>::iterator it = std::find(_users.begin(), _users.end(), user);
 	if (it != _users.end())
 		_users.erase(it);
 }
@@ -296,10 +296,10 @@ const string& Server::getPassword() const
 	return (_password);
 }
 
-std::vector<Channel *> Server::getUserChannels(User & user)
+vector<Channel *> Server::getUserChannels(User & user)
 {
-	std::vector<Channel *> out;
-	std::vector<Channel>::iterator it;
+	vector<Channel *> out;
+	vector<Channel>::iterator it;
 
 	for (it = _channels.begin(); it != _channels.end(); it++)
 	{

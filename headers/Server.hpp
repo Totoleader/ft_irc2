@@ -10,9 +10,9 @@ class User;
 class Server
 {
 	private:
-		std::vector<struct pollfd>		_fds;
-		std::vector<User>				_users;
-		std::vector<Channel>			_channels;
+		vector<struct pollfd>		_fds;
+		vector<User>				_users;
+		vector<Channel>			_channels;
 		string						_password;
 		addrinfo						*_servinfo;
 
@@ -43,14 +43,14 @@ class Server
 		User *getUser(int fd);
 		User *getUser(string nick);
 		Channel *getChannel(string channel_name);
-		std::vector<Channel *> getUserChannels(User & user);
+		vector<Channel *> getUserChannels(User & user);
 		void joinExistingChannel(User &u, Channel &chan);
 
 		// void handle_client(int new_fd);
 
 		// void leaveChannel(User &u, string msg);
 		// void joinExistingChannel(User &u, Channel &chan);
-		// void joinChannel(User &u, std::pair<string, string> chan);
+		// void joinChannel(User &u, pair<string, string> chan);
 		// void connectClient(User *u);
 		// void sendMessage(User &u , string message);
 		// void changeMode(User &u , string message);

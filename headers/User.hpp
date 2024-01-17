@@ -7,17 +7,15 @@
 class User
 {
 	private:
-		string				_nick; 
-		string				_username;
-		string				_realname;
-		string				_ip;
-		string				_port;
+		string					_nick; 
+		string					_username;
+		string					_realname;
+		string					_ip;
+		string					_port;
 		bool					_pass_ok;	// !! Initialise a true si pas de server pass
 		bool					_connected;
 		int						_fd;
-		
 		struct sockaddr_storage	*_sock;
-	
 		string					_buffer;
 
 	public:
@@ -29,19 +27,18 @@ class User
 		void clean_buffer(size_t *trail);
 
 		//get
-		const string&	getNick() const;
-		const string&	getUsername() const;
-		const string&	getName() const;
-		const string&	getIp()	const;
-		const string&	getPort() const;
-		const string	getID() const;
-		int					getFd() const;
+		const string&			getNick() const;
+		const string&			getUsername() const;
+		const string&			getName() const;
+		const string&			getIp()	const;
+		const string&			getPort() const;
+		const string			getID() const;
+		int						getFd() const;
 		struct sockaddr_storage	*getSock();
-		string	getBuffer() const;
-		
-		bool			isFirstMsg() const;
-		bool			isConnected() const;
-		bool			isPassAccepted() const;
+		string					getBuffer() const;
+		bool					isFirstMsg() const;
+		bool					isConnected() const;
+		bool					isPassAccepted() const;
 		
 		//set
 		void		setNick(string const & nick);
