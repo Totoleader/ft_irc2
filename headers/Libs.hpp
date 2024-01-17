@@ -5,6 +5,7 @@
 #define SERVER_FD 0
 #define ERROR 0
 #define SUCCESS 1
+#define NO_LIMIT -1
 
 //Libs
 #include <stdio.h>
