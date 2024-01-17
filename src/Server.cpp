@@ -6,7 +6,7 @@ Server::Server()
 	
 }
 
-Server::Server(std::string password): _password(password)
+Server::Server(string password): _password(password)
 {
 	
 }
@@ -88,7 +88,7 @@ void Server::new_client()
 }
 
 
-void Server::new_channel(std::string channelName, User &sender, std::string password)
+void Server::new_channel(string channelName, User &sender, string password)
 {
 	Channel newChannel(channelName, sender, password);
 	_channels.push_back(newChannel);
@@ -111,7 +111,7 @@ void Server::new_server(int fd)
 void Server::handle_event(int client_i)
 {
 	char buf[100];
-	std::string command;
+	string command;
 	size_t		trail;
 	int i;
 	i = client_i - 1;
@@ -126,7 +126,7 @@ void Server::handle_event(int client_i)
 
 	_users[i].setBuffer(buf);
 	trail = _users[i].getBuffer().find("\r\n");
-	while (trail != std::string::npos)
+	while (trail != string::npos)
 	{
 		command = _users[i].getBuffer().substr(0, trail);
 		
@@ -166,7 +166,7 @@ void Server::disconnect_user(User &user)
 	//disconnect message here <---
 }
 
-bool Server::isNickTaken(std::string const & nick)
+bool Server::isNickTaken(string const & nick)
 {
 	for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
@@ -217,7 +217,7 @@ void Server::disconnect_fdList(User &user)
 
 void Server::disconnect_userList(User &user)
 {
-	// std::string nick = user.getNick();
+	// string nick = user.getNick();
 
 	// for (std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	// {
@@ -235,9 +235,9 @@ void Server::disconnect_userList(User &user)
 
 void Server::joinExistingChannel(User &u, Channel &chan)
 {
-	std::string	join = u.getID() + " JOIN " + chan.getName() + "\r\n";
-	std::string listBegin = ":127.0.0.1 353 " + u.getNick() + " = " + chan.getName() + " :";
-	std::string listEnd = ":127.0.0.1 366 " + u.getNick() + " " + chan.getName() + " :End of /NAMES list.\r\n";
+	string	join = u.getID() + " JOIN " + chan.getName() + "\r\n";
+	string listBegin = ":127.0.0.1 353 " + u.getNick() + " = " + chan.getName() + " :";
+	string listEnd = ":127.0.0.1 366 " + u.getNick() + " " + chan.getName() + " :End of /NAMES list.\r\n";
 	send(u.getFd(), join.c_str(), join.length(), 0);
 	chan.sendToChannelExcept(join, u);
 
@@ -271,7 +271,7 @@ User *Server::getUser(int fd)
 	return (NULL);
 }
 
-User *Server::getUser(std::string nick)
+User *Server::getUser(string nick)
 {
 	for (unsigned int i = 0; i < _users.size(); i++)
 	{
@@ -281,7 +281,7 @@ User *Server::getUser(std::string nick)
 	return (NULL);
 }
 
-Channel *Server::getChannel(std::string channel)
+Channel *Server::getChannel(string channel)
 {
 	for (unsigned int i = 0; i < _channels.size(); i++)
 	{
@@ -291,7 +291,7 @@ Channel *Server::getChannel(std::string channel)
 	return NULL;
 }
 
-const std::string& Server::getPassword() const
+const string& Server::getPassword() const
 {
 	return (_password);
 }

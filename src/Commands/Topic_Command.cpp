@@ -2,7 +2,7 @@
 
 #include "Commands/Topic_Command.hpp"
 
-Topic_Command::Topic_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg), _new_topic("")
+Topic_Command::Topic_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg), _new_topic("")
 {
 }
 
@@ -13,7 +13,7 @@ Topic_Command::~Topic_Command()
 bool Topic_Command::parse()
 {
 	std::stringstream	ss(_msg);
-	std::string			arg;
+	string			arg;
 	
 	ss >> arg;
 	if (arg.empty())
@@ -35,7 +35,7 @@ bool Topic_Command::parse()
 		_action = CHANGE;
 		if (_new_topic.at(0) == ':')
 		{
-			std::string temp;
+			string temp;
 			while (ss >> temp)
 				_new_topic += " " + temp;
 			_new_topic = _new_topic.substr(1);

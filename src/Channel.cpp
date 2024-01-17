@@ -5,7 +5,7 @@ Channel::Channel()
 {
 }
 
-Channel::Channel(std::string name, User &creator, std::string pass) :
+Channel::Channel(string name, User &creator, string pass) :
 _name(name),
 _topic(""),
 _password(pass),
@@ -17,7 +17,7 @@ _userLimit(NO_LIMIT)
 	this->_operators.push_back(&creator);
 }
 
-Channel::Channel(std::string name, User &creator) :
+Channel::Channel(string name, User &creator) :
 _name(name),
 _topic(""),
 _password(""),
@@ -62,7 +62,7 @@ void	Channel::removeOperator(User & op)
 		_operators.erase(it);
 }
 
-void Channel::sendToChannel(std::string message)
+void Channel::sendToChannel(string message)
 {
 	for (std::vector<User *>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
     {
@@ -70,7 +70,7 @@ void Channel::sendToChannel(std::string message)
     }
 }
 
-void Channel::sendToChannelExcept(std::string message, User &except)
+void Channel::sendToChannelExcept(string message, User &except)
 {
 	for (std::vector<User *>::iterator it = _channelUsers.begin(); it != _channelUsers.end(); it++)
     {
@@ -100,9 +100,9 @@ void	Channel::addToWhiteList(User &newUser)
 	GETTERS
 *********************/
 
-const std::string &	Channel::getName() const		{ return _name; }
-const std::string & Channel::getTopic() const		{ return _topic; }
-const std::string &	Channel::getPassword() const	{ return _password; }
+const string &	Channel::getName() const		{ return _name; }
+const string & Channel::getTopic() const		{ return _topic; }
+const string &	Channel::getPassword() const	{ return _password; }
 bool Channel::isInviteOnly() const					{ return _isInviteOnly; }
 bool Channel::isTopicRestricted() const				{ return _topicRestriction; }
 int Channel::countUsers() const						{ return _channelUsers.size(); }
@@ -127,14 +127,14 @@ bool	Channel::isInChannel(const User & u) const
 }
 
 // TODO: mettre les ops en 1er dans la liste
-const std::string Channel::getUserList()
+const string Channel::getUserList()
 {
 	std::vector<User *>::iterator it = _channelUsers.begin();
-	std::string	userList = "";
+	string	userList = "";
 
 	for (; it != _channelUsers.end(); it++)
 	{
-		std::string user = "";
+		string user = "";
 		if (isOperator(**it))
 			user += "@";
 		user += (*it)->getNick();
@@ -148,6 +148,6 @@ const std::string Channel::getUserList()
 /********************
 	SETTERS
 *********************/
-void	Channel::setTopic(const std::string & new_topic)	{ _topic = new_topic; }
-void	Channel::setPassword(const std::string & new_pass)	{ _password = new_pass; }
+void	Channel::setTopic(const string & new_topic)	{ _topic = new_topic; }
+void	Channel::setPassword(const string & new_pass)	{ _password = new_pass; }
 void	Channel::setUserLimit(int userLimit)				{ _userLimit = userLimit; }

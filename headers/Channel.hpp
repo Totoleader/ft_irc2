@@ -8,9 +8,9 @@
 class Channel
 {
 private:
-	std::string 				_name;
-	std::string 				_topic;
-	std::string 				_password;			// mode +k
+	string 				_name;
+	string 				_topic;
+	string 				_password;			// mode +k
 
 	std::vector<User *>			_channelUsers;
 	std::vector<User *>			_operators;			// mode +o
@@ -23,8 +23,8 @@ private:
 
 public:
 	Channel();
-	Channel(std::string name, User &creator, std::string pass);
-	Channel(std::string name, User &creator);
+	Channel(string name, User &creator, string pass);
+	Channel(string name, User &creator);
 	~Channel();
 
 	// **** OPERATORS ****
@@ -38,15 +38,15 @@ public:
 	void				removeUser(User & u);
 	void				removeOperator(User & op);
 
-	void				sendToChannel(std::string message);
-	void 				sendToChannelExcept(std::string message, User &except);
+	void				sendToChannel(string message);
+	void 				sendToChannelExcept(string message, User &except);
 	void				addToWhiteList(User &newUser);
 
 	// **** GETTERS ****
 
-	const std::string &	getName() const;
-	const std::string &	getTopic() const;
-	const std::string &	getPassword() const;
+	const string &	getName() const;
+	const string &	getTopic() const;
+	const string &	getPassword() const;
 	bool				isOperator(User & u) const;
 	bool				isInviteOnly() const;
 	bool				isTopicRestricted() const;
@@ -55,12 +55,12 @@ public:
 	int					countUsers() const;
 	int					getUserLimit() const;
 	bool 				isWhitelisted(User &u);
-	const std::string	getUserList();
+	const string	getUserList();
 
 	// **** SETTERS ****
 
-	void	setTopic(const std::string & new_topic);
-	void	setPassword(const std::string & new_pass); // mode +k 123
+	void	setTopic(const string & new_topic);
+	void	setPassword(const string & new_pass); // mode +k 123
 	void	setUserLimit(int userLimit);
 };
 

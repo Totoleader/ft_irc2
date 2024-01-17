@@ -42,32 +42,32 @@ void User::clean_buffer(size_t *trail)
 
 //getset crap->>
 
-const std::string & User::getIp() const
+const string & User::getIp() const
 {
 	return _ip;
 }
 
-const std::string & User::getPort() const
+const string & User::getPort() const
 {
 	return _port;
 }
 
-const std::string & User::getNick() const
+const string & User::getNick() const
 {
 	return _nick;
 }
 
-const std::string & User::getUsername() const
+const string & User::getUsername() const
 {
 	return _username;
 }
 
-const std::string & User::getName() const
+const string & User::getName() const
 {
 	return _realname;
 }
 
-const std::string User::getID() const
+const string User::getID() const
 {
 	return ":" + _nick + "!" + _username + "@127.0.0.1:" + _port;
 }
@@ -77,17 +77,17 @@ struct sockaddr_storage	* User::getSock()
 	return (_sock);
 }
 
-void User::setNick(std::string const & nick)
+void User::setNick(string const & nick)
 {
 	_nick = nick;
 }
 
-void User::setUsername(std::string const & username)
+void User::setUsername(string const & username)
 {
 	_username = username;
 }
 
-void User::setName(std::string const & name)
+void User::setName(string const & name)
 {
 	_realname = name;
 }
@@ -127,7 +127,7 @@ void User::setBuffer(char *buf)
 	_buffer += buf;
 }
 
-std::string User::getBuffer() const
+string User::getBuffer() const
 {
 	return (_buffer);
 }

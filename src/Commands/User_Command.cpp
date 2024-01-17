@@ -2,7 +2,7 @@
 
 #include "Commands/User_Command.hpp"
 
-User_Command::User_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg), _username(""), _realname("")
+User_Command::User_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg), _username(""), _realname("")
 {
 	std::cout << "User command created" << std::endl;
 }
@@ -15,7 +15,7 @@ User_Command::~User_Command()
 bool User_Command::parse()
 {
 	std::stringstream ss(_msg);
-	std::string username;
+	string username;
 
 	ss >> _username;
 	if (!_username.empty() && _username.at(0) == ':')
@@ -23,7 +23,7 @@ bool User_Command::parse()
 	ss >> _realname >> _realname >> _realname;
 	if (_realname.at(0) == ':')
 	{
-		std::string temp;
+		string temp;
 		while (ss >> temp)	
 			_realname += " " + temp;
 	}

@@ -2,7 +2,7 @@
 
 #include "Commands/Pass_Command.hpp"
 
-Pass_Command::Pass_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg)
+Pass_Command::Pass_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg)
 {
 	
 }
@@ -30,7 +30,7 @@ bool Pass_Command::parse()
 
 void Pass_Command::execute()
 {
-	const std::string server_pass = _server.getPassword();
+	const string server_pass = _server.getPassword();
 
 	if (parse() == ERROR || server_pass == "")
 		return ;

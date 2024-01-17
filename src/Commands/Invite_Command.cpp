@@ -2,7 +2,7 @@
 
 #include "Commands/Invite_Command.hpp"
 
-Invite_Command::Invite_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Invite_Command::Invite_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
 {
 }
 
@@ -13,8 +13,8 @@ Invite_Command::~Invite_Command()
 
 bool Invite_Command::parse()
 {
-	std::string userName;
-	std::string channelName;
+	string userName;
+	string channelName;
 
 	userName = _msg.substr(0, ' ');
 	_userToInvite = _server.getUser(userName);

@@ -15,12 +15,12 @@ class Topic_Command : public ACommand
 			CLEAR	//	/TOPIC #channel :
 		} t_action;
 
-		std::string _new_topic;
+		string _new_topic;
 		Channel *	_channel;
 		t_action	_action;
 
 	public:
-		Topic_Command(std::string msg, Server &server, User &sender);
+		Topic_Command(string msg, Server &server, User &sender);
 		~Topic_Command();
 
 		bool	parse();

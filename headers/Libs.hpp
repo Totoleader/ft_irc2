@@ -27,6 +27,9 @@
 #include <cstdlib>
 #include <unistd.h>
 
+using std::string;
+using std::vector;
+
 # include "Server.hpp"
 # include "User.hpp"
 # include "Channel.hpp"

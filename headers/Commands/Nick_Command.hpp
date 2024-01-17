@@ -8,10 +8,10 @@ class User;
 class Nick_Command : public ACommand
 {
 	private:
-		std::string _new_nick;
+		string _new_nick;
 
 	public:
-		Nick_Command(std::string msg, Server &server, User &sender);
+		Nick_Command(string msg, Server &server, User &sender);
 		~Nick_Command();
 
 		bool	parse();

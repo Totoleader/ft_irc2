@@ -13,7 +13,7 @@ class Server
 		std::vector<struct pollfd>		_fds;
 		std::vector<User>				_users;
 		std::vector<Channel>			_channels;
-		std::string						_password;
+		string						_password;
 		addrinfo						*_servinfo;
 
 		bool check_password(char *buf);
@@ -22,14 +22,14 @@ class Server
 
 	public:
 		Server();
-		Server(std::string password);
+		Server(string password);
 		~Server();
 
 		void init();
 		void listenForEvents();
 
 		void new_client();
-		void new_channel(std::string channelName, User &sender, std::string password);
+		void new_channel(string channelName, User &sender, string password);
 		void new_server(int fd);
 		void handle_event(int client_i);
 
@@ -37,47 +37,47 @@ class Server
 		void removeChannel(Channel & c);
 		void partUserFromChannel(User & u, Channel & c);
 
-		bool isNickTaken(std::string const & nick);
+		bool isNickTaken(string const & nick);
 
-		const std::string &getPassword() const;
+		const string &getPassword() const;
 		User *getUser(int fd);
-		User *getUser(std::string nick);
-		Channel *getChannel(std::string channel_name);
+		User *getUser(string nick);
+		Channel *getChannel(string channel_name);
 		std::vector<Channel *> getUserChannels(User & user);
 		void joinExistingChannel(User &u, Channel &chan);
 
 		// void handle_client(int new_fd);
 
-		// void leaveChannel(User &u, std::string msg);
+		// void leaveChannel(User &u, string msg);
 		// void joinExistingChannel(User &u, Channel &chan);
-		// void joinChannel(User &u, std::pair<std::string, std::string> chan);
+		// void joinChannel(User &u, std::pair<string, string> chan);
 		// void connectClient(User *u);
-		// void sendMessage(User &u , std::string message);
-		// void changeMode(User &u , std::string message);
+		// void sendMessage(User &u , string message);
+		// void changeMode(User &u , string message);
 
 		// void new_client();
 		// void new_client(int fd);
 		// void disconnect_user(int client_i);
-		// void parse_UserCommandinfo(int client_i, std::string parseUserInfo);
+		// void parse_UserCommandinfo(int client_i, string parseUserInfo);
 
 		// //utils
-		// void createChannelMsg(User &u, std::string chan) const;
-		// void getAndJoinChannels(User &u, std::string channels);
+		// void createChannelMsg(User &u, string chan) const;
+		// void getAndJoinChannels(User &u, string channels);
 
 		// User	*getUser(int fd);
-		// User	*getUser(std::string nick);
+		// User	*getUser(string nick);
 
-		// void 		setPassword(std::string newPassword);
+		// void 		setPassword(string newPassword);
 		// const char	*getPassword()	const;
 		// int			getSocket()		const;
 
 		// 	//AJOUT DE ALEX // 
-		// void kickChannels(User &u, std::string str);
-		// void skipWhitespace(std::string &str);
-		// bool isUser(std::string UserCommandto_kick, std::string channel_name);
-		// bool userExist(std::string UserCommandto_invite);
-		// bool channelExist(std::string channel_name);
-		// void inviteChannels(User &u, std::string str);
+		// void kickChannels(User &u, string str);
+		// void skipWhitespace(string &str);
+		// bool isUser(string UserCommandto_kick, string channel_name);
+		// bool userExist(string UserCommandto_invite);
+		// bool channelExist(string channel_name);
+		// void inviteChannels(User &u, string str);
 };
 
 

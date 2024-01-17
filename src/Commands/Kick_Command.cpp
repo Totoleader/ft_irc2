@@ -2,7 +2,7 @@
 
 #include "Commands/Kick_Command.hpp"
 
-Kick_Command::Kick_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Kick_Command::Kick_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
 {
 }
 
@@ -27,7 +27,7 @@ bool Kick_Command::has_operator_rights()
 
 void Kick_Command::parse_message(std::stringstream &separator_stream)
 {
-	std::string msg;
+	string msg;
 
 	separator_stream >> _message;
 	while (separator_stream >> msg)
@@ -38,8 +38,8 @@ void Kick_Command::parse_message(std::stringstream &separator_stream)
 
 bool Kick_Command::parse_channels(std::stringstream &separator_stream)
 {
-	std::string rawChannels;
-	std::string channel_token;
+	string rawChannels;
+	string channel_token;
 	Channel 	*channel;
 
 
@@ -62,8 +62,8 @@ bool Kick_Command::parse_channels(std::stringstream &separator_stream)
 bool Kick_Command::parse_users(std::stringstream &separator_stream)
 {
 	User 		*user;
-	std::string rawUsers;
-	std::string user_token;
+	string rawUsers;
+	string user_token;
 
 	separator_stream >> rawUsers;
 	std::stringstream user_stream(rawUsers);
@@ -108,7 +108,7 @@ bool Kick_Command::parse()
 	return SUCCESS;
 }
 
-std::string Kick_Command::formatMessage(Channel &channel, User &user)
+string Kick_Command::formatMessage(Channel &channel, User &user)
 {
 	return (_sender.getID() + " KICK " + channel.getName() + " " + user.getNick() + " " + _message + "\r\n");
 }
