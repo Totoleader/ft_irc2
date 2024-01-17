@@ -2,7 +2,7 @@
 
 #include "Commands/Part_Command.hpp"
 
-Part_Command::Part_Command(std::string msg, Server &server, User &sender) :
+Part_Command::Part_Command(string msg, Server &server, User &sender) :
 ACommand(server, sender, msg),
 _partMessage("")
 {
@@ -15,10 +15,10 @@ Part_Command::~Part_Command()
 
 // Split une liste de channels en string "#chan1,#chan2" vers une list d'instance Channel
 // existants si le user est dans le channel
-void Part_Command::fillChannels(std::string fillChannelsList)
+void Part_Command::fillChannels(string fillChannelsList)
 {
 	std::istringstream	iss(fillChannelsList);
-	std::string			chanName;
+	string			chanName;
 
 	while (std::getline(iss, chanName, ','))
 	{
@@ -50,7 +50,7 @@ bool Part_Command::parse()
 	}
 
 	std::istringstream	iss(_msg);
-	std::string			chanStringList;
+	string			chanStringList;
 	if (!(iss >> chanStringList) || chanStringList == ":")
 	{
 		// !!! needmore params
@@ -71,7 +71,7 @@ bool Part_Command::parse()
 		// Si le message a le sufixe ':', va chercher les mots apres espaces
 		if (_partMessage.at(0) == ':')
 		{
-			std::string temp;
+			string temp;
 			while (iss >> temp)
 				_partMessage += " " + temp;
 			//_partMessage = _partMessage.substr(1);	// remove prefix ':'
@@ -86,14 +86,14 @@ void Part_Command::execute()
 	if (parse() == ERROR)
 		return ;
 	
-	std::vector<Channel *>::iterator it;
+	vector<Channel *>::iterator it;
 	for (it = _channelsToPart.begin(); it != _channelsToPart.end(); it++)
 	{
 		Channel * channel = *it;
 		std::cout << "Parted channel: " << channel->getName() << std::endl;
 		std::cout << "Reason: " << _partMessage << std::endl;
 
-		std::string msg = _sender.getID() + " PART " + channel->getName() + " " + _partMessage + "\r\n";
+		string msg = _sender.getID() + " PART " + channel->getName() + " " + _partMessage + "\r\n";
 		channel->sendToChannel(msg);
 
 		_server.partUserFromChannel(_sender, *channel);

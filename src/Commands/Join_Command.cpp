@@ -2,7 +2,7 @@
 
 #include "Commands/Join_Command.hpp"
 
-Join_Command::Join_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Join_Command::Join_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
 {
 	
 }
@@ -14,18 +14,18 @@ Join_Command::~Join_Command()
 
 bool Join_Command::parse()
 {
-	std::pair<string, string> pair;
+	pair<string, string> pair;
 	string channels;
 	string passwords;
 	string channel_token;
 	string password_token;
 
 	channels = _msg.substr(0, _msg.find(' '));
-	if (_msg.find(' ') != std::string::npos)
+	if (_msg.find(' ') != string::npos)
 		passwords = _msg.substr(_msg.find(' '));
 
-	std::stringstream channel_stream(channels);
-	std::stringstream password_stream(passwords);
+	stringstream channel_stream(channels);
+	stringstream password_stream(passwords);
 
 	while (std::getline(channel_stream, channel_token, ','))
 	{

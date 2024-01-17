@@ -2,7 +2,7 @@
 
 #include "Commands/Nick_Command.hpp"
 
-Nick_Command::Nick_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg)
+Nick_Command::Nick_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg)
 {
 	std::cout << "Nick command created" << std::endl;
 }
@@ -38,11 +38,11 @@ void Nick_Command::execute()
 	}
 
 	// Broadcast aux channels du user: "old_nick is now known as new_nick" et resend la list des users
-	std::vector<Channel *> channels = _server.getUserChannels(_sender);
-	std::vector<Channel *>::iterator it;
+	vector<Channel *> channels = _server.getUserChannels(_sender);
+	vector<Channel *>::iterator it;
 	for (it = channels.begin(); it != channels.end(); it++)
 	{
-		std::string msg = _sender.getID() + " NICK " + _new_nick + "\r\n";
+		string msg = _sender.getID() + " NICK " + _new_nick + "\r\n";
 		(*it)->sendToChannel(msg);
 	}
 	_sender.setNick(_new_nick);

@@ -7,17 +7,17 @@ class Server;
 class User;
 class Invite_Command : public ACommand
 {
-private:
-	User	*_userToInvite;
-	Channel	*_channel;
+	private:
+		User	*_userToInvite;
+		Channel	*_channel;
 
-public:
-	Invite_Command();
-	Invite_Command(std::string msg, Server &server, User &sender);
-	~Invite_Command();
+	public:
+		Invite_Command();
+		Invite_Command(string msg, Server &server, User &sender);
+		~Invite_Command();
 
-	bool parse();
-	void execute();
+		bool parse();
+		void execute();
 };
 
 #endif // __INVITE_COMMAND_H__

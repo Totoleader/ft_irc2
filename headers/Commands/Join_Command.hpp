@@ -2,9 +2,7 @@
 #define __JOIN_COMMAND_H__
 
 #include "Libs.hpp"
-using std::string;
-using std::pair;
-using std::vector;
+
 
 class Server;
 class User;
@@ -22,10 +20,5 @@ public:
 	bool parse();
 	void execute();
 };
-
-
-
-
-
 
 #endif // __JOIN_COMMAND_H__

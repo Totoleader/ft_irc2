@@ -12,7 +12,7 @@ Kick_Command::~Kick_Command()
 
 bool Kick_Command::has_operator_rights()
 {
-	std::vector<Channel>::iterator it_channel = _channels.begin();
+	vector<Channel>::iterator it_channel = _channels.begin();
 
 	for (; it_channel != _channels.end(); it_channel++)
 	{
@@ -25,9 +25,9 @@ bool Kick_Command::has_operator_rights()
 	return SUCCESS;
 }
 
-void Kick_Command::parse_message(std::stringstream &separator_stream)
+void Kick_Command::parse_message(stringstream &separator_stream)
 {
-	std::string msg;
+	string msg;
 
 	separator_stream >> _message;
 	while (separator_stream >> msg)
@@ -36,15 +36,15 @@ void Kick_Command::parse_message(std::stringstream &separator_stream)
 	}
 }
 
-bool Kick_Command::parse_channels(std::stringstream &separator_stream)
+bool Kick_Command::parse_channels(stringstream &separator_stream)
 {
-	std::string rawChannels;
-	std::string channel_token;
+	string rawChannels;
+	string channel_token;
 	Channel 	*channel;
 
 
 	separator_stream >> rawChannels;
-	std::stringstream channel_stream(rawChannels);
+	stringstream channel_stream(rawChannels);
 
 	while (std::getline(channel_stream, channel_token, ','))
 	{
@@ -59,14 +59,14 @@ bool Kick_Command::parse_channels(std::stringstream &separator_stream)
 	return SUCCESS;
 }
 
-bool Kick_Command::parse_users(std::stringstream &separator_stream)
+bool Kick_Command::parse_users(stringstream &separator_stream)
 {
 	User 		*user;
-	std::string rawUsers;
-	std::string user_token;
+	string rawUsers;
+	string user_token;
 
 	separator_stream >> rawUsers;
-	std::stringstream user_stream(rawUsers);
+	stringstream user_stream(rawUsers);
 	while (std::getline(user_stream, user_token, ','))
 	{
 		user = _server.getUser(user_token);
@@ -86,7 +86,7 @@ bool Kick_Command::parse_users(std::stringstream &separator_stream)
 
 bool Kick_Command::parse()
 {
-	std::stringstream separator_stream(_msg);
+	stringstream separator_stream(_msg);
 
 	if (!parse_channels(separator_stream))
 		return ERROR;
@@ -108,7 +108,7 @@ bool Kick_Command::parse()
 	return SUCCESS;
 }
 
-std::string Kick_Command::formatMessage(Channel &channel, User &user)
+string Kick_Command::formatMessage(Channel &channel, User &user)
 {
 	return (_sender.getID() + " KICK " + channel.getName() + " " + user.getNick() + " " + _message + "\r\n");
 }
@@ -118,8 +118,8 @@ void Kick_Command::execute()
 	if (parse() == ERROR)
 		return ;
 
-	std::vector<Channel>::iterator it_channel = _channels.begin();
-	std::vector<User>::iterator it_user = _users.begin();
+	vector<Channel>::iterator it_channel = _channels.begin();
+	vector<User>::iterator it_user = _users.begin();
 	Channel channel;
 	User user;
 	

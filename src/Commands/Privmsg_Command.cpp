@@ -2,7 +2,7 @@
 
 #include "Commands/Privmsg_Command.hpp"
 
-Privmsg_Command::Privmsg_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg)
+Privmsg_Command::Privmsg_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg)
 , _channel(NULL)
 , _user(NULL) 
 {
@@ -12,7 +12,7 @@ Privmsg_Command::~Privmsg_Command()
 {
 }
 
-bool Privmsg_Command::channel_is_ok(std::string name)
+bool Privmsg_Command::channel_is_ok(string name)
 {
 	_channel = _server.getChannel(name);
 
@@ -30,7 +30,7 @@ bool Privmsg_Command::channel_is_ok(std::string name)
 	return SUCCESS;
 }
 
-bool Privmsg_Command::user_is_ok(std::string name)
+bool Privmsg_Command::user_is_ok(string name)
 {
 	_user = _server.getUser(name);
 
@@ -44,7 +44,7 @@ bool Privmsg_Command::user_is_ok(std::string name)
 
 bool Privmsg_Command::parse()
 {
-	std::string channelName;
+	string channelName;
 
 	channelName = _msg.substr(0, _msg.find(" "));
 
