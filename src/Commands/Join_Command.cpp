@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.2.1
+
 #include "Commands/Join_Command.hpp"
 
 Join_Command::Join_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg)

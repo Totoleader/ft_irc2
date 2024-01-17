@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.1.1
+
 #include "Commands/Pass_Command.hpp"
 
 Pass_Command::Pass_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg)

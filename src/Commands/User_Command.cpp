@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.1.3
+
 #include "Commands/User_Command.hpp"
 
 User_Command::User_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg), _username(""), _realname("")

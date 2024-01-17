@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.1.2
+
 #include "Commands/Nick_Command.hpp"
 
 Nick_Command::Nick_Command(std::string msg, Server &server, User &sender): ACommand(server, sender, msg)

@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.2.4
+
 #include "Commands/Topic_Command.hpp"
 
 Topic_Command::Topic_Command(std::string msg, Server &server, User &sender) : ACommand(server, sender, msg), _new_topic("")
@@ -65,5 +66,4 @@ void Topic_Command::execute()
 	default:
 		break;
 	}
-	
 }

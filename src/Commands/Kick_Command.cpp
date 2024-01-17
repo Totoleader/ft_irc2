@@ -1,4 +1,5 @@
-#include "Libs.hpp"
+// https://datatracker.ietf.org/doc/html/rfc2812#section-3.2.8
+
 #include "Commands/Kick_Command.hpp"
 
 Kick_Command::Kick_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
