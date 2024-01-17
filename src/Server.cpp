@@ -37,7 +37,9 @@ void Server::init()
 		exit (EXIT_FAILURE);
 	}
 
-	listen(_fds[SERVER_FD].fd, 10);//!!!10 = max connection
+	int status = listen(_fds[SERVER_FD].fd, 5);//!!!5 = max connection
+	if (status == -1)
+		std::cout << "!!!! ERROR LISTEN FAILED !!!!" << std::endl;
 }
 
 //boucle principale d'ecoute du serveur
@@ -73,7 +75,9 @@ void Server::new_client()
 	
 	socklen_t	addr_size = sizeof cl;
 	new_fd = accept(_fds[0].fd, (struct sockaddr *)&cl, &addr_size);
-	fcntl(new_fd, F_SETFL, O_NONBLOCK);
+	int status = fcntl(new_fd, F_SETFL, O_NONBLOCK);
+	if (status == -1)
+		std::cout << "!!!!! ERROR SETTING SOCKET AS NONBLOCK !!!!!!" << std::endl;
 
 	User newUser(new_fd, (struct sockaddr*)&cl);
 	_users.push_back(newUser);
@@ -95,7 +99,9 @@ void Server::new_server(int fd)
 {
 	struct pollfd	newClient;
 	
-	fcntl(fd, F_SETFL, O_NONBLOCK);
+	int status = fcntl(fd, F_SETFL, O_NONBLOCK);
+	if (status == -1)
+		std::cout << "!!!!!! ERROR SETTING SERVER SOCKET AS NONBLOCK !!!!!!" << std::endl;
 	newClient.events = POLLIN;
 	newClient.fd = fd;
 	_fds.push_back(newClient);
