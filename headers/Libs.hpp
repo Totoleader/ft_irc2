@@ -42,6 +42,7 @@
 # include "Commands/Part_Command.hpp"
 # include "Commands/Invite_Command.hpp"
 # include "Commands/Kick_Command.hpp"
+# include "Commands/Mode_Command.hpp"
 
 
 

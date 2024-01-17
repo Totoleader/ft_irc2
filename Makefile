@@ -18,6 +18,7 @@ SRCS	:=	src/main.cpp \
 			src/Commands/Invite_Command.cpp \
 			src/Commands/Kick_Command.cpp \
 			src/Commands/Part_Command.cpp \
+			src/Commands/Mode_Command.cpp \
 			src/Commands/ACommand.cpp \
 
 OBJS	:= $(patsubst src/%.cpp,bin/%.o,$(SRCS))
