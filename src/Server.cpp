@@ -110,15 +110,15 @@ void Server::new_server(int fd)
 
 void Server::handle_event(int client_i)
 {
-	char buf[100];
+	char buf[1024]; // CHECK OVERFLOW!!!!!!!!!!!
 	string command;
 	size_t		trail;
 	int i;
 	i = client_i - 1;
-	memset(buf, 0, 100); // memset bad
+	memset(buf, 0, 1024); // memset bad
 	CommandFactory factory;
 	ACommand *cmd_to_exec;
-	if (recv(_fds[client_i].fd, buf, 100, 0) <= 0)
+	if (recv(_fds[client_i].fd, buf, 1024, 0) <= 0)
 	{
 		disconnect_user(_users[client_i - 1]); 
 		return ;
