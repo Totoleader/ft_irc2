@@ -10,8 +10,8 @@ CommandFactory::~CommandFactory()
 
 ACommand *CommandFactory::getCommand(string msg, Server &serv, User &u)
 {
-	const int N_CMDS = 9;
-	const string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART", "INVITE", "KICK"};
+	const int N_CMDS = 10;
+	const string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART", "INVITE", "KICK", "MODE"};
 	ACommand * (CommandFactory::*f[N_CMDS])(string, Server&, User&) = {
 		&CommandFactory::NickFactory,
 		&CommandFactory::UserFactory,
@@ -21,18 +21,25 @@ ACommand *CommandFactory::getCommand(string msg, Server &serv, User &u)
 		&CommandFactory::PrivmsgFactory,
 		&CommandFactory::PartFactory,
 		&CommandFactory::InviteFactory,
-		&CommandFactory::KickFactory
+		&CommandFactory::KickFactory,
+		&CommandFactory::ModeFactory
 
 	};
 	
+	// MODE
+	// MODE blablalba
+	// MODEdjsajdsaj
 	for (int i = 0; i < N_CMDS; i++)
 	{
 		size_t cmd_len = cmds[i].length();
 		string cmd_check = msg.substr(0, cmd_len);
+		if (msg.length() == cmd_len && msg == cmds[i])
+			return (this->*(f[i]))(msg, serv, u);
 		if ( msg.length() > cmd_len && !isspace( msg.at(cmd_len)))
 			continue ;
 		if (cmd_check == cmds[i])
 			return (this->*(f[i]))(msg.substr(cmd_len + 1), serv, u);
+		
 	}
 	return NULL;
 }
@@ -80,4 +87,9 @@ ACommand *CommandFactory::InviteFactory(string msg, Server &server, User &sender
 ACommand *CommandFactory::KickFactory(string msg, Server &server, User &sender)
 {
 	return (new Kick_Command(msg, server, sender));
+}
+
+ACommand *CommandFactory::ModeFactory(string msg, Server &server, User &sender)
+{
+	return (new Mode_Command(msg, server, sender));
 }
