@@ -14,16 +14,17 @@ Quit_Command::~Quit_Command()
 
 void Quit_Command::execute()
 {
-	string msg = _sender->getID() + " QUIT " + _msg + "\r\n";
-	
-	vector<Channel *> _channelsToPart = _server.getUserChannels(_sender);
+	_channelsToPart =  _server.getUserChannels(_sender);
 
 	vector<Channel *>::iterator it;
 	for (it = _channelsToPart.begin(); it != _channelsToPart.end(); it++)
 	{
 		Channel * channel = *it;
+		// std::cout << "Parted channel: " << channel->getName() << std::endl;
+		// std::cout << "Reason: " << _msg << std::endl;
 
+		string msg = _sender->getID() + " QUIT " + _msg + "\r\n";
+		channel->sendToChannelExcept(msg, _sender);
 		_server.partUserFromChannel(_sender, *channel);
-		channel->sendToChannel(_msg);
 	}
 }

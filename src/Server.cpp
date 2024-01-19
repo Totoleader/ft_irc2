@@ -121,7 +121,7 @@ void Server::handle_event(int client_i)
 	ACommand *cmd_to_exec;
 	if (recv(_fds[client_i].fd, buf, 1024, 0) <= 0)
 	{
-		disconnect_user(&_users[client_i - 1]); 
+		disconnect_user(&_users[client_i - 1]);
 		return ;
 	}
 
