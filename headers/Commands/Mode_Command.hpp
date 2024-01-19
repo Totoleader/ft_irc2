@@ -29,6 +29,11 @@ private:
 	
 
 	void			_addMode(char mode, t_operation op);
+	void Mode_Command::changeMode_i(t_operation op);
+	void Mode_Command::changeMode_t(t_operation op);
+	void Mode_Command::changeMode_k(t_operation op);
+	void Mode_Command::changeMode_o(t_operation op);
+
 public:
 	Mode_Command(string msg, Server &server, User *sender);
 	~Mode_Command();

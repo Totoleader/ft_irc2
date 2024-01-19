@@ -10,6 +10,9 @@ class Join_Command : public ACommand
 {
 private:
 	vector< pair<string, string> > _channelNamePass;
+	Channel	*_channel;
+	string 	_channelName;
+	string 	_password;
 
 public:
 	Join_Command(string msg, Server &server, User *sender);

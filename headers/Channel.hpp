@@ -41,6 +41,7 @@ public:
 	void				sendToChannel(string message);
 	void 				sendToChannelExcept(string message, User * except);
 	void				addToWhiteList(User * newUser);
+	void				RemoveFromWhiteList(User * newUser);
 
 	// **** GETTERS ****
 
@@ -62,6 +63,10 @@ public:
 	void	setTopic(const string & new_topic);
 	void	setPassword(const string & new_pass); // mode +k 123
 	void	setUserLimit(int userLimit);
+	void 	setInviteOnlyOn();
+	void 	setInviteOnlyOff();
+	void 	topicRestrictionOn();
+	void 	topicRestrictionOff();
 };
 
 #endif // __CHANNEL_H__

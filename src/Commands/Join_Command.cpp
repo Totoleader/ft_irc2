@@ -53,29 +53,30 @@ bool Join_Command::passIsOk(Channel *channel, string password)
 
 void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 {
-	Channel	*channel = _server.getChannel(channel_name_pass->first);
-	string 	channelName = channel_name_pass->first;
-	string 	password = channel_name_pass->second;
+	_channel = _server.getChannel(channel_name_pass->first);
+	_channelName = channel_name_pass->first;
+	_password = channel_name_pass->second;
 
-	if (channel == NULL)//si le channel n'existe pas
+	if (_channel == NULL)//si le _channel n'existe pas
 	{
 		// createChannel()
-		_server.new_channel(channelName, _sender, password);
-		_server.joinExistingChannel(_sender, *_server.getChannel(channelName));
-		//send client channel created message !!!
+		_server.new_channel(_channelName, _sender, _password);
+		_server.joinExistingChannel(_sender, *_server.getChannel(_channelName));
+		//send client _channel created message !!!
 	}
-	else if (channel->isInviteOnly() && !channel->isWhitelisted(_sender)) //bouncer
+	else if (_channel->isInviteOnly() && !_channel->isWhitelisted(_sender)) //bouncer
 	{
 		// is not whitelisted message !!!
 	}
-	else if (!passIsOk(channel, password))
+	else if (!passIsOk(_channel, _password))
 	{
-		// wrong channel password message !!!
+		// wrong _channel password message !!!
 	}
 	else // join
 	{
-		channel->addUser(_sender);
-		_server.joinExistingChannel(_sender, *channel);
+		_channel->addUser(_sender);
+		_server.joinExistingChannel(_sender, *_channel);
+		_channel->RemoveFromWhiteList(_sender);
 	}
 }
 
