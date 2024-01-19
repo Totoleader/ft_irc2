@@ -25,6 +25,6 @@ void Quit_Command::execute()
 
 		string msg = _sender->getID() + " QUIT " + _msg + "\r\n";
 		channel->sendToChannelExcept(msg, _sender);
-		_server.partUserFromChannel(_sender, *channel);
+		_server.partUserFromChannel(_sender, channel);
 	}
 }

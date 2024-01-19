@@ -96,6 +96,6 @@ void Part_Command::execute()
 		string msg = _sender->getID() + " PART " + channel->getName() + " " + _partMessage + "\r\n";
 		channel->sendToChannel(msg);
 
-		_server.partUserFromChannel(_sender, *channel);
+		_server.partUserFromChannel(_sender, channel);
 	}
 }

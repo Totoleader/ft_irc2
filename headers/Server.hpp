@@ -10,11 +10,11 @@ class User;
 class Server
 {
 	private:
-		vector<struct pollfd>		_fds;
-		vector<User>				_users;
+		vector<struct pollfd>	_fds;
+		list<User>				_users;
 		vector<Channel>			_channels;
-		string						_password;
-		addrinfo						*_servinfo;
+		string					_password;
+		addrinfo				*_servinfo;
 
 		bool check_password(char *buf);
 		void disconnect_userList(User * user);
@@ -31,11 +31,11 @@ class Server
 		void new_client();
 		void new_channel(string channelName, User * sender, string password);
 		void new_server(int fd);
-		void handle_event(int client_i);
+		void handle_event(int fd);
 
 		void disconnect_user(User * user);
 		void removeChannel(Channel & c);
-		void partUserFromChannel(User * u, Channel & c);
+		void partUserFromChannel(User * u, Channel * c);
 
 		bool isNickTaken(string const & nick);
 
