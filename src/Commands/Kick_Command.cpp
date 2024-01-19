@@ -12,11 +12,11 @@ Kick_Command::~Kick_Command()
 
 bool Kick_Command::has_operator_rights()
 {
-	vector<Channel>::iterator it_channel = _channels.begin();
+	vector<Channel *>::iterator it_channel = _channels.begin();
 
 	for (; it_channel != _channels.end(); it_channel++)
 	{
-		if (!(*it_channel).isOperator(_sender))
+		if (!(*it_channel)->isOperator(_sender))
 		{
 			//user is not operator message !!!
 			return ERROR;
@@ -54,7 +54,7 @@ bool Kick_Command::parse_channels(stringstream &separator_stream)
 			// channel not found message !!!
 			return ERROR;
 		}
-		_channels.push_back(*channel);
+		_channels.push_back(channel);
 	}
 	return SUCCESS;
 }
@@ -108,9 +108,9 @@ bool Kick_Command::parse()
 	return SUCCESS;
 }
 
-string Kick_Command::formatMessage(Channel &channel, User * user)
+string Kick_Command::formatMessage(Channel * channel, User * user)
 {
-	return (_sender->getID() + " KICK " + channel.getName() + " " + user->getNick() + " " + _message + "\r\n");
+	return (_sender->getID() + " KICK " + channel->getName() + " " + user->getNick() + " " + _message + "\r\n");
 }
 
 void Kick_Command::execute()
@@ -118,9 +118,9 @@ void Kick_Command::execute()
 	if (parse() == ERROR)
 		return ;
 
-	vector<Channel>::iterator it_channel = _channels.begin();
+	vector<Channel *>::iterator it_channel = _channels.begin();
 	vector<User *>::iterator it_user = _users.begin();
-	Channel channel;
+	Channel * channel;
 	User * user;
 	
 	for (; it_channel != _channels.end(); it_channel++)
@@ -131,14 +131,14 @@ void Kick_Command::execute()
 		{
 			user = *it_user;
 
-			if (channel.isOperator(user))
+			if (channel->isOperator(user))
 			{
 				//cannot kick operator message !!!
 			}
-			else if (channel.isInChannel(user))
+			else if (channel->isInChannel(user))
 			{
-				channel.sendToChannel(formatMessage(channel, user));
-				channel.removeUser(user);
+				channel->sendToChannel(formatMessage(channel, user));
+				channel->removeUser(user);
 			}
 			else
 			{
