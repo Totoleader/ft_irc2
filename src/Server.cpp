@@ -158,7 +158,7 @@ void Server::disconnect_user(User * user)
 	//déconnecter de chaque channel<----!!!!! @@@
 
 
-	std::for_each(_channels.begin(), _channels.end(), RemoveUserFunctor(user));///////////////////////////////////
+	// std::for_each(_channels.begin(), _channels.end(), RemoveUserFunctor(user));///////////////////////////////////
 	// std::for_each(_channels.begin(), _channels.end(), Channel::removeOperator(user));///////////////////////////////////
 	// std::for_each(_channels.begin(), _channels.end(), Channel::remove);///////////////////////////////////
 	disconnect_fdList(user);

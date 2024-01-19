@@ -17,6 +17,7 @@ class CommandFactory
 		ACommand *InviteFactory(string, Server &, User *);
 		ACommand *KickFactory(string, Server &, User *);
 		ACommand *ModeFactory(string, Server &, User *);
+		ACommand *QuitFactory(string, Server &, User *);
 
 	public:
 		CommandFactory();

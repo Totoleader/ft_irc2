@@ -10,9 +10,8 @@ CommandFactory::~CommandFactory()
 
 ACommand *CommandFactory::getCommand(string msg, Server &serv, User * u)
 {
-	const int N_CMDS = 10;
-	const string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART", "INVITE", "KICK", "MODE"};
-	ACommand * (CommandFactory::*f[N_CMDS])(string, Server&, User*) = {
+	const string cmds[] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART", "INVITE", "KICK", "MODE", "QUIT", "NULL"};
+	ACommand * (CommandFactory::*f[])(string, Server&, User*) = {
 		&CommandFactory::NickFactory,
 		&CommandFactory::UserFactory,
 		&CommandFactory::JoinFactory,
@@ -22,14 +21,15 @@ ACommand *CommandFactory::getCommand(string msg, Server &serv, User * u)
 		&CommandFactory::PartFactory,
 		&CommandFactory::InviteFactory,
 		&CommandFactory::KickFactory,
-		&CommandFactory::ModeFactory
+		&CommandFactory::ModeFactory,
+		&CommandFactory::QuitFactory
 
 	};
 	
 	// MODE
 	// MODE blablalba
 	// MODEdjsajdsaj
-	for (int i = 0; i < N_CMDS; i++)
+	for (int i = 0; cmds[i] != "NULL"; i++)
 	{
 		size_t cmd_len = cmds[i].length();
 		string cmd_check = msg.substr(0, cmd_len);
@@ -92,4 +92,9 @@ ACommand *CommandFactory::KickFactory(string msg, Server &server, User * sender)
 ACommand *CommandFactory::ModeFactory(string msg, Server &server, User * sender)
 {
 	return (new Mode_Command(msg, server, sender));
+}
+
+ACommand *CommandFactory::QuitFactory(string msg, Server &server, User * sender)
+{
+	return (new Quit_Command(msg, server, sender));
 }

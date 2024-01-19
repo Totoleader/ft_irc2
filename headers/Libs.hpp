@@ -46,6 +46,7 @@ using std::pair;
 # include "Commands/Invite_Command.hpp"
 # include "Commands/Kick_Command.hpp"
 # include "Commands/Mode_Command.hpp"
+# include "Commands/Quit_Command.hpp"
 
 
 #endif // __LIBS_H__
