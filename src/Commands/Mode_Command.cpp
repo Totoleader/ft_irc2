@@ -36,48 +36,48 @@ void Mode_Command::_addMode(char mode, t_operation op)
 }
 
 
-void Mode_Command::changeMode_i(t_operation op)
-{
-	if (op == OP_ADD)
-		_channel->setInviteOnlyOn();
-	else 
-		_channel->setInviteOnlyOff();
-}
+// void Mode_Command::changeMode_i(t_operation op)
+// {
+// 	if (op == OP_ADD)
+// 		_channel->setInviteOnlyOn();
+// 	else 
+// 		_channel->setInviteOnlyOff();
+// }
 
-void Mode_Command::changeMode_t(t_operation op)
-{
-	if (op == OP_ADD)
-		_channel->_topicRestriction();
-	else 
-		_channel->_topicRestriction();
-}
+// void Mode_Command::changeMode_t(t_operation op)
+// {
+// 	if (op == OP_ADD)
+// 		_channel->_topicRestriction();
+// 	else 
+// 		_channel->_topicRestriction();
+// }
 
-void Mode_Command::changeMode_k(t_operation op)
-{
-	if (op == OP_ADD)
-		//get next arg
-	else 
-		_channel->setPassword("");
-}
+// void Mode_Command::changeMode_k(t_operation op)
+// {
+// 	if (op == OP_ADD)
+// 		//get next arg
+// 	else 
+// 		_channel->setPassword("");
+// }
 
-void Mode_Command::changeMode_o(t_operation op)
-{
-	if (op == OP_ADD && !_channel.isOperator(/*user to add*/))
-		_channel->addOperator(/*user to add*/)
-	else 
-		_channel->removeOperator(_sender);
-}
+// void Mode_Command::changeMode_o(t_operation op)
+// {
+// 	if (op == OP_ADD && !_channel.isOperator(/*user to add*/))
+// 		_channel->addOperator(/*user to add*/)
+// 	else 
+// 		_channel->removeOperator(_sender);
+// }
 
-void Mode_Command::changeMode_l(t_operation op)
-{
-	if (op == OP_ADD)
-	{
-		int newLimit = std::stoi(/*arg (check if valid before)*/);
-		_channel->setUserLimit(newLimit);
-	}
-	else 
-		_channel->setUserLimit(NO_LIMIT);
-}
+// void Mode_Command::changeMode_l(t_operation op)
+// {
+// 	if (op == OP_ADD)
+// 	{
+// 		int newLimit = std::stoi(/*arg (check if valid before)*/);
+// 		_channel->setUserLimit(newLimit);
+// 	}
+// 	else 
+// 		_channel->setUserLimit(NO_LIMIT);
+// }
 
 bool Mode_Command::_fillModeVector(string modes)
 {
