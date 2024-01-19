@@ -35,6 +35,7 @@ void Mode_Command::_addMode(char mode, t_operation op)
 	_modes.push_back(m);
 }
 
+
 void Mode_Command::changeMode_i(t_operation op)
 {
 	if (op == OP_ADD)
@@ -78,12 +79,34 @@ void Mode_Command::changeMode_l(t_operation op)
 		_channel->setUserLimit(NO_LIMIT);
 }
 
+bool Mode_Command::_fillModeVector(string modes)
+{
+	t_operation op = OP_ADD;	// si aucun signe, ajoute par defaut
+
+	for (size_t i = 0; i < modes.length(); i++)
+	{
+		if (modes[i] == '+')
+			op = OP_ADD;
+		else if (modes[i] == '-')
+			op = OP_REMOVE;
+		else if (std::find(_availableModes.begin(), _availableModes.end(), modes[i]) != _availableModes.end())
+			_addMode(modes[i], op);
+		else
+		{
+			std::cout << "ERROR " << modes[i] << " not available!!" << std::endl;
+			/// !!! ERR 472 (MODE x is unavailable)
+			return ERROR; // ne pas continuer
+		}
+	}
+	return SUCCESS;
+}
+
 bool Mode_Command::parse()
 {
 	std::istringstream	iss(_msg);
 	string				channel;
 	string				mode_str;
-	string				args;
+	string				_args;
 
 	if (!(iss >> channel))
 	{
@@ -111,10 +134,13 @@ bool Mode_Command::parse()
 	else
 		_action = CHANGE;
 
+	if (_fillModeVector(mode_str) == ERROR)
+		return ERROR;
+
 	string temp;
-	iss >> args;
+	iss >> _args;
 	while (iss >> temp)
-		args += " " + temp;
+		_args += " " + temp;
 
 	return SUCCESS;
 }
@@ -127,5 +153,10 @@ void Mode_Command::execute()
 	if (_action == SHOW)
 		std::cout << "Action: SHOW | Channel: " << _channel->getName() << std::endl;
 	else if (_action == CHANGE)
-		std::cout << "Action: CHANGE | Channel: " << _channel->getName() << std::endl;
+	{
+		for (vector<t_mode>::iterator it = _modes.begin(); it != _modes.end(); it++)
+		{
+			std::cout << "Mode " << it->mode << " | " << it->operation << std::endl;
+		}
+	}
 }
