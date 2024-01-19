@@ -96,6 +96,39 @@ void	Channel::addToWhiteList(User * newUser)
 	_inviteList.push_back(newUser);
 }
 
+void	Channel::RemoveFromWhiteList(User * user)
+{
+	vector<User *>::iterator it = _inviteList.begin();
+	for (; it != _inviteList.end() ; it++)
+	{
+		if (user == *it)
+			_inviteList.erase(it); return ;
+	}
+}
+
+void Channel::setInviteOnlyOn()
+{
+	_isInviteOnly = true;
+}
+
+void Channel::setInviteOnlyOff()
+{
+	_inviteList.clear();
+	_isInviteOnly = false;
+}
+
+void Channel::topicRestrictionOn()
+{
+	_topicRestriction = true;
+}
+
+void Channel::topicRestrictionOff()
+{
+	_topicRestriction = false;
+}
+
+
+
 /********************
 	GETTERS
 *********************/

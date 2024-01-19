@@ -52,6 +52,7 @@ void Server::listenForEvents()
 	{
 		poll_events = poll(_fds.data(), _fds.size(), -1);//attend un event...
 	
+
 		if (_fds[SERVER_FD].revents & POLLIN)//nouveau user
 		{
 			new_client();
