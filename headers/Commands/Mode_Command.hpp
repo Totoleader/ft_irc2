@@ -26,9 +26,12 @@ private:
 	string			_availableModes;
 	Channel *		_channel;
 	vector<t_mode>	_modes;
-	
+	string			_args;
 
 	void			_addMode(char mode, t_operation op);
+	bool			_fillModeVector(string modes);
+	
+
 public:
 	Mode_Command(string msg, Server &server, User *sender);
 	~Mode_Command();
