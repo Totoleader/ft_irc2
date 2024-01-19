@@ -8,7 +8,7 @@ Server::Server()
 
 Server::Server(string password): _password(password)
 {
-	_users.reserve(100);
+	//_users.reserve(100);
 	_channels.reserve(15);
 }
 
@@ -61,7 +61,7 @@ void Server::listenForEvents()
 		{
 			if (_fds[i].revents & POLLIN)
 			{
-				handle_event(i);
+				handle_event(_fds[i].fd);
 				poll_events--;
 			}
 		}
@@ -109,36 +109,37 @@ void Server::new_server(int fd)
 }
 
 
-void Server::handle_event(int client_i)
+void Server::handle_event(int fd)
 {
 	char buf[1024]; // CHECK OVERFLOW!!!!!!!!!!!
 	string command;
 	size_t		trail;
-	int i;
-	i = client_i - 1;
+	User * u = getUser(fd);
+	if (!u)
+		return ;
 	memset(buf, 0, 1024); // memset bad
 	CommandFactory factory;
 	ACommand *cmd_to_exec;
-	if (recv(_fds[client_i].fd, buf, 1024, 0) <= 0)
+	if (recv(u->getFd(), buf, 1024, 0) <= 0)
 	{
-		disconnect_user(&_users[client_i - 1]);
+		disconnect_user(u);
 		return ;
 	}
 
-	_users[i].setBuffer(buf);
-	trail = _users[i].getBuffer().find("\r\n");
+	u->setBuffer(buf);
+	trail = u->getBuffer().find("\r\n");
 	while (trail != string::npos)
 	{
-		command = _users[i].getBuffer().substr(0, trail);
+		command = u->getBuffer().substr(0, trail);
 
-		cmd_to_exec = factory.getCommand(command, *this, &_users[i]);
+		cmd_to_exec = factory.getCommand(command, *this, u);
 		if (cmd_to_exec)
 		{
 			cmd_to_exec->execute();
 			delete cmd_to_exec;
 		}
 		std::cout << std::endl << "client send: " << command.c_str() << std::endl;
-		_users[i].clean_buffer(&trail);
+		u->clean_buffer(&trail);
 	}
 }
 
@@ -169,7 +170,7 @@ void Server::disconnect_user(User * user)
 
 bool Server::isNickTaken(string const & nick)
 {
-	for (vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+	for (list<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
 		if (it->getNick() == nick)
 			return true;
@@ -184,18 +185,18 @@ void Server::removeChannel(Channel & c)
 		_channels.erase(it);
 }
 
-void Server::partUserFromChannel(User * u, Channel & c)
+void Server::partUserFromChannel(User * u, Channel * c)
 {
-	if (!c.isInChannel(u))
+	if (!c->isInChannel(u))
 		return ;
 
-	if (c.isOperator(u))
+	if (c->isOperator(u))
 	{
-		c.removeOperator(u); // TODO: appointe nouveau operateur si vide
+		c->removeOperator(u); // TODO: appointe nouveau operateur si vide
 	}
-	c.removeUser(u);
-	if (c.countUsers() == 0)
-		removeChannel(c);
+	c->removeUser(u);
+	// if (c->countUsers() == 0)
+	// 	removeChannel(c);
 }
 
 
@@ -228,7 +229,7 @@ void Server::disconnect_userList(User * user)
 	// 		return;
 	// 	}
 	// }
-	vector<User>::iterator it = std::find(_users.begin(), _users.end(), *user);
+	list<User>::iterator it = std::find(_users.begin(), _users.end(), *user);
 	if (it != _users.end())
 		_users.erase(it);
 }
@@ -264,20 +265,32 @@ void Server::joinExistingChannel(User * u, Channel &chan)
 
 User *Server::getUser(int fd)
 {
-	for (unsigned int i = 0; i < _users.size(); i++)
+	// for (unsigned int i = 0; i < _users.size(); i++)
+	// {
+	// 	if (fd == _users[i].getFd())
+	// 		return &_users[i];
+	// }
+	// return (NULL);
+	for (list<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if (fd == _users[i].getFd())
-			return &_users[i];
+		if (fd == it->getFd())
+			return &*it;
 	}
 	return (NULL);
 }
 
 User *Server::getUser(string nick)
 {
-	for (unsigned int i = 0; i < _users.size(); i++)
+	// for (unsigned int i = 0; i < _users.size(); i++)
+	// {
+	// 	if (nick == _users[i].getNick())
+	// 		return &_users[i];
+	// }
+	// return (NULL);
+	for (list<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
-		if (nick == _users[i].getNick())
-			return &_users[i];
+		if (nick == it->getNick())
+			return &*it;
 	}
 	return (NULL);
 }
