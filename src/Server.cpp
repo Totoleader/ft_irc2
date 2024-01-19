@@ -121,7 +121,7 @@ void Server::handle_event(int client_i)
 	ACommand *cmd_to_exec;
 	if (recv(_fds[client_i].fd, buf, 1024, 0) <= 0)
 	{
-		disconnect_user(&_users[client_i - 1]); 
+		disconnect_user(&_users[client_i - 1]);
 		return ;
 	}
 
@@ -158,7 +158,7 @@ void Server::disconnect_user(User * user)
 	//déconnecter de chaque channel<----!!!!! @@@
 
 
-	std::for_each(_channels.begin(), _channels.end(), RemoveUserFunctor(user));///////////////////////////////////
+	// std::for_each(_channels.begin(), _channels.end(), RemoveUserFunctor(user));///////////////////////////////////
 	// std::for_each(_channels.begin(), _channels.end(), Channel::removeOperator(user));///////////////////////////////////
 	// std::for_each(_channels.begin(), _channels.end(), Channel::remove);///////////////////////////////////
 	disconnect_fdList(user);
