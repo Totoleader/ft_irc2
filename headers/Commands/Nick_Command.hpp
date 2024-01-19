@@ -11,7 +11,7 @@ class Nick_Command : public ACommand
 		string _new_nick;
 
 	public:
-		Nick_Command(string msg, Server &server, User &sender);
+		Nick_Command(string msg, Server &server, User *sender);
 		~Nick_Command();
 
 		bool	parse();

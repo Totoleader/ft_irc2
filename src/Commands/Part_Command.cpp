@@ -2,7 +2,7 @@
 
 #include "Commands/Part_Command.hpp"
 
-Part_Command::Part_Command(string msg, Server &server, User &sender) :
+Part_Command::Part_Command(string msg, Server &server, User * sender) :
 ACommand(server, sender, msg),
 _partMessage("")
 {
@@ -93,7 +93,7 @@ void Part_Command::execute()
 		std::cout << "Parted channel: " << channel->getName() << std::endl;
 		std::cout << "Reason: " << _partMessage << std::endl;
 
-		string msg = _sender.getID() + " PART " + channel->getName() + " " + _partMessage + "\r\n";
+		string msg = _sender->getID() + " PART " + channel->getName() + " " + _partMessage + "\r\n";
 		channel->sendToChannel(msg);
 
 		_server.partUserFromChannel(_sender, *channel);

@@ -11,7 +11,7 @@ class Pass_Command : public ACommand
 		string _password;
 
 	public:
-		Pass_Command( string msg, Server &server, User &sender);
+		Pass_Command( string msg, Server &server, User *sender);
 		~Pass_Command();
 
 		bool	parse();

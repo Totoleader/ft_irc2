@@ -30,7 +30,7 @@ private:
 
 	void			_addMode(char mode, t_operation op);
 public:
-	Mode_Command(string msg, Server &server, User &sender);
+	Mode_Command(string msg, Server &server, User *sender);
 	~Mode_Command();
 
 	bool parse();

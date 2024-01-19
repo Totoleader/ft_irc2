@@ -13,7 +13,7 @@ class Invite_Command : public ACommand
 
 	public:
 		Invite_Command();
-		Invite_Command(string msg, Server &server, User &sender);
+		Invite_Command(string msg, Server &server, User *sender);
 		~Invite_Command();
 
 		bool parse();

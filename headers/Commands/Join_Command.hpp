@@ -12,7 +12,7 @@ private:
 	vector< pair<string, string> > _channelNamePass;
 
 public:
-	Join_Command(string msg, Server &server, User &sender);
+	Join_Command(string msg, Server &server, User *sender);
 	~Join_Command();
 	void joinChannel(pair<string, string> *channel_name_pass);
 	bool passIsOk(Channel *channel, string password);

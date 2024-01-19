@@ -1,7 +1,7 @@
 #include "Commands/Mode_Command.hpp"
 // https://datatracker.ietf.org/doc/html/rfc2812#section-3.2.3
 
-Mode_Command::Mode_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Mode_Command::Mode_Command(string msg, Server &server, User * sender) : ACommand(server, sender, msg)
 {
 	_action = NONE;
 	_availableModes = "itkol";

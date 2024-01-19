@@ -2,7 +2,7 @@
 
 #include "Commands/Join_Command.hpp"
 
-Join_Command::Join_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Join_Command::Join_Command(string msg, Server &server, User * sender) : ACommand(server, sender, msg)
 {
 	
 }
@@ -84,7 +84,7 @@ void Join_Command::execute()
 	// vector< pair<string, string> >::iterator it  = _channelNamePass.begin();
 	if (parse() == ERROR)
 		return ;
-	if (!_sender.isConnected())
+	if (!_sender->isConnected())
 	{
 		std::cout << "Cannot join, user not connected" << std::endl;
 		return ;

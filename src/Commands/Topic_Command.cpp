@@ -2,7 +2,7 @@
 
 #include "Commands/Topic_Command.hpp"
 
-Topic_Command::Topic_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg), _new_topic("")
+Topic_Command::Topic_Command(string msg, Server &server, User * sender) : ACommand(server, sender, msg), _new_topic("")
 {
 }
 

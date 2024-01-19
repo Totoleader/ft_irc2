@@ -2,7 +2,7 @@
 
 #include "Commands/Pass_Command.hpp"
 
-Pass_Command::Pass_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg)
+Pass_Command::Pass_Command(string msg, Server &server, User * sender): ACommand(server, sender, msg)
 {
 	
 }
@@ -14,7 +14,7 @@ Pass_Command::~Pass_Command()
 
 bool Pass_Command::parse()
 {
-	if (_sender.isConnected())
+	if (_sender->isConnected())
 	{
 		// ### send client is already connected msg (462) ###
 		return (ERROR);
@@ -47,6 +47,6 @@ void Pass_Command::execute()
 	else
 	{
 		std::cout << "Password accepted." << std::endl;
-		_sender.passwordAccepted();
+		_sender->passwordAccepted();
 	}
 }

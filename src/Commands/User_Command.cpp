@@ -2,7 +2,7 @@
 
 #include "Commands/User_Command.hpp"
 
-User_Command::User_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg), _username(""), _realname("")
+User_Command::User_Command(string msg, Server &server, User * sender): ACommand(server, sender, msg), _username(""), _realname("")
 {
 	std::cout << "User command created" << std::endl;
 }
@@ -32,12 +32,12 @@ bool User_Command::parse()
 
 void User_Command::execute()
 {
-	// if (!_sender.) check pass
+	// if (!_sender->) check pass
 	// 	return ; // ERR OR DISCONNECT
 	if (parse() == ERROR)
 		return ; // ERR 
-	_sender.setUsername(_username);
-	_sender.setName(_realname);
-	if (!_sender.isConnected() && !_sender.getUsername().empty() && !_sender.getName().empty())
+	_sender->setUsername(_username);
+	_sender->setName(_realname);
+	if (!_sender->isConnected() && !_sender->getUsername().empty() && !_sender->getName().empty())
 		_connectUser();
 }

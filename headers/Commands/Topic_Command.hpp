@@ -20,7 +20,7 @@ class Topic_Command : public ACommand
 		t_action	_action;
 
 	public:
-		Topic_Command(string msg, Server &server, User &sender);
+		Topic_Command(string msg, Server &server, User *sender);
 		~Topic_Command();
 
 		bool	parse();

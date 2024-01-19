@@ -8,11 +8,11 @@ CommandFactory::~CommandFactory()
 {
 }
 
-ACommand *CommandFactory::getCommand(string msg, Server &serv, User &u)
+ACommand *CommandFactory::getCommand(string msg, Server &serv, User * u)
 {
 	const int N_CMDS = 10;
 	const string cmds[N_CMDS] = { "NICK", "USER", "JOIN", "PASS", "TOPIC", "PRIVMSG", "PART", "INVITE", "KICK", "MODE"};
-	ACommand * (CommandFactory::*f[N_CMDS])(string, Server&, User&) = {
+	ACommand * (CommandFactory::*f[N_CMDS])(string, Server&, User*) = {
 		&CommandFactory::NickFactory,
 		&CommandFactory::UserFactory,
 		&CommandFactory::JoinFactory,
@@ -44,52 +44,52 @@ ACommand *CommandFactory::getCommand(string msg, Server &serv, User &u)
 	return NULL;
 }
 
-ACommand *CommandFactory::NickFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::NickFactory(string msg, Server &server, User * sender)
 {
 	return (new Nick_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::UserFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::UserFactory(string msg, Server &server, User * sender)
 {
 	return (new User_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::JoinFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::JoinFactory(string msg, Server &server, User * sender)
 {
 	return (new Join_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::PassFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::PassFactory(string msg, Server &server, User * sender)
 {
 	return (new Pass_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::TopicFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::TopicFactory(string msg, Server &server, User * sender)
 {
 	return (new Topic_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::PrivmsgFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::PrivmsgFactory(string msg, Server &server, User * sender)
 {
 	return (new Privmsg_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::PartFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::PartFactory(string msg, Server &server, User * sender)
 {
 	return (new Part_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::InviteFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::InviteFactory(string msg, Server &server, User * sender)
 {
 	return (new Invite_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::KickFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::KickFactory(string msg, Server &server, User * sender)
 {
 	return (new Kick_Command(msg, server, sender));
 }
 
-ACommand *CommandFactory::ModeFactory(string msg, Server &server, User &sender)
+ACommand *CommandFactory::ModeFactory(string msg, Server &server, User * sender)
 {
 	return (new Mode_Command(msg, server, sender));
 }

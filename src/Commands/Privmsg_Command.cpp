@@ -2,7 +2,7 @@
 
 #include "Commands/Privmsg_Command.hpp"
 
-Privmsg_Command::Privmsg_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg)
+Privmsg_Command::Privmsg_Command(string msg, Server &server, User * sender): ACommand(server, sender, msg)
 , _channel(NULL)
 , _user(NULL) 
 {
@@ -58,7 +58,7 @@ bool Privmsg_Command::parse()
 	{
 		return ERROR;
 	}
-	_msg = _sender.getID() + " PRIVMSG " + _msg + "\r\n";
+	_msg = _sender->getID() + " PRIVMSG " + _msg + "\r\n";
 	return SUCCESS;
 }
 

@@ -23,8 +23,8 @@ private:
 
 public:
 	Channel();
-	Channel(string name, User &creator, string pass);
-	Channel(string name, User &creator);
+	Channel(string name, User * creator, string pass);
+	Channel(string name, User * creator);
 	~Channel();
 
 	// **** OPERATORS ****
@@ -32,29 +32,29 @@ public:
 	bool		operator==(Channel const & rhs) const;
 
 	// **** METHODS ****
-	void				addUser(User & u);
-	void				addOperator(User & u);
+	void				addUser(User * u);
+	void				addOperator(User * u);
 
-	void				removeUser(User & u);
-	void				removeOperator(User & op);
+	void				removeUser(User * u);
+	void				removeOperator(User * op);
 
 	void				sendToChannel(string message);
-	void 				sendToChannelExcept(string message, User &except);
-	void				addToWhiteList(User &newUser);
+	void 				sendToChannelExcept(string message, User * except);
+	void				addToWhiteList(User * newUser);
 
 	// **** GETTERS ****
 
 	const string &	getName() const;
 	const string &	getTopic() const;
 	const string &	getPassword() const;
-	bool				isOperator(User & u) const;
-	bool				isInviteOnly() const;
-	bool				isTopicRestricted() const;
-	bool				isInvited(User & u) const;
-	bool				isInChannel(const User & u) const;
-	int					countUsers() const;
-	int					getUserLimit() const;
-	bool 				isWhitelisted(User &u);
+	bool			isOperator(User * u) const;
+	bool			isInviteOnly() const;
+	bool			isTopicRestricted() const;
+	bool			isInvited(User * u) const;
+	bool			isInChannel(User * u) const;
+	int				countUsers() const;
+	int				getUserLimit() const;
+	bool 			isWhitelisted(User * u);
 	const string	getUserList();
 
 	// **** SETTERS ****

@@ -17,8 +17,8 @@ class Server
 		addrinfo						*_servinfo;
 
 		bool check_password(char *buf);
-		void disconnect_userList(User &user);
-		void disconnect_fdList(User &user);
+		void disconnect_userList(User * user);
+		void disconnect_fdList(User * user);
 
 	public:
 		Server();
@@ -29,13 +29,13 @@ class Server
 		void listenForEvents();
 
 		void new_client();
-		void new_channel(string channelName, User &sender, string password);
+		void new_channel(string channelName, User * sender, string password);
 		void new_server(int fd);
 		void handle_event(int client_i);
 
-		void disconnect_user(User &user);
+		void disconnect_user(User * user);
 		void removeChannel(Channel & c);
-		void partUserFromChannel(User & u, Channel & c);
+		void partUserFromChannel(User * u, Channel & c);
 
 		bool isNickTaken(string const & nick);
 
@@ -43,8 +43,8 @@ class Server
 		User *getUser(int fd);
 		User *getUser(string nick);
 		Channel *getChannel(string channel_name);
-		vector<Channel *> getUserChannels(User & user);
-		void joinExistingChannel(User &u, Channel &chan);
+		vector<Channel *> getUserChannels(User * user);
+		void joinExistingChannel(User * u, Channel &chan);
 
 		// void handle_client(int new_fd);
 

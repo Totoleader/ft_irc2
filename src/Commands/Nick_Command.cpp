@@ -2,7 +2,7 @@
 
 #include "Commands/Nick_Command.hpp"
 
-Nick_Command::Nick_Command(string msg, Server &server, User &sender): ACommand(server, sender, msg)
+Nick_Command::Nick_Command(string msg, Server &server, User * sender): ACommand(server, sender, msg)
 {
 	std::cout << "Nick command created" << std::endl;
 }
@@ -24,7 +24,7 @@ bool Nick_Command::parse()
 
 void Nick_Command::execute()
 {
-	if (!_sender.isPassAccepted())
+	if (!_sender->isPassAccepted())
 	{
 		std::cout << "User has not entered password yet." << std::endl;
 		return ; // ERR OR DISCONNECT
@@ -42,12 +42,12 @@ void Nick_Command::execute()
 	vector<Channel *>::iterator it;
 	for (it = channels.begin(); it != channels.end(); it++)
 	{
-		string msg = _sender.getID() + " NICK " + _new_nick + "\r\n";
+		string msg = _sender->getID() + " NICK " + _new_nick + "\r\n";
 		(*it)->sendToChannel(msg);
 	}
-	_sender.setNick(_new_nick);
+	_sender->setNick(_new_nick);
 
 	// Connect user s'il n'est pas connecte
-	if (!_sender.isConnected() && !_sender.getUsername().empty() && !_sender.getName().empty())
+	if (!_sender->isConnected() && !_sender->getUsername().empty() && !_sender->getName().empty())
 		_connectUser();
 }

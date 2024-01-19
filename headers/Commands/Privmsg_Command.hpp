@@ -14,7 +14,7 @@ class Privmsg_Command : public ACommand
 		bool user_is_ok(string name);
 
 	public:
-		Privmsg_Command( string msg, Server &server, User &sender );
+		Privmsg_Command( string msg, Server &server, User *sender );
 		~Privmsg_Command();
 		
 		bool parse();

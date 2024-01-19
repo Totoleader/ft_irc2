@@ -10,7 +10,7 @@ class Part_Command : public ACommand
 		string					_partMessage;
 
 	public:
-		Part_Command(string msg, Server &server, User &sender);
+		Part_Command(string msg, Server &server, User *sender);
 		~Part_Command();
 
 		void fillChannels(string channelStringList);

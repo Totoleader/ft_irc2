@@ -2,7 +2,7 @@
 
 #include "Commands/Invite_Command.hpp"
 
-Invite_Command::Invite_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Invite_Command::Invite_Command(string msg, Server &server, User * sender) : ACommand(server, sender, msg)
 {
 }
 
@@ -44,7 +44,7 @@ bool Invite_Command::parse()
 		return ERROR;
 	}
 
-	if (_channel->isInChannel(*_userToInvite))
+	if (_channel->isInChannel(_userToInvite))
 	{
 		// User already in the channel !!!
 		return ERROR;
@@ -57,6 +57,6 @@ void Invite_Command::execute()
 {
 	if (parse() == ERROR)
 		return ;
-	_channel->addToWhiteList(*_userToInvite);
+	_channel->addToWhiteList(_userToInvite);
 	//added to whitelist message !!!
 }

@@ -8,7 +8,8 @@ Server::Server()
 
 Server::Server(string password): _password(password)
 {
-	
+	_users.reserve(100);
+	_channels.reserve(15);
 }
 
 Server::~Server()
@@ -88,7 +89,7 @@ void Server::new_client()
 }
 
 
-void Server::new_channel(string channelName, User &sender, string password)
+void Server::new_channel(string channelName, User * sender, string password)
 {
 	Channel newChannel(channelName, sender, password);
 	_channels.push_back(newChannel);
@@ -120,7 +121,7 @@ void Server::handle_event(int client_i)
 	ACommand *cmd_to_exec;
 	if (recv(_fds[client_i].fd, buf, 1024, 0) <= 0)
 	{
-		disconnect_user(_users[client_i - 1]); 
+		disconnect_user(&_users[client_i - 1]); 
 		return ;
 	}
 
@@ -130,7 +131,7 @@ void Server::handle_event(int client_i)
 	{
 		command = _users[i].getBuffer().substr(0, trail);
 
-		cmd_to_exec = factory.getCommand(command, *this, _users[i]);
+		cmd_to_exec = factory.getCommand(command, *this, &_users[i]);
 		if (cmd_to_exec)
 		{
 			cmd_to_exec->execute();
@@ -144,16 +145,16 @@ void Server::handle_event(int client_i)
 
 //WTF
 struct RemoveUserFunctor {
-    User& user;
-    RemoveUserFunctor(User& u) : user(u) {}
+    User * user;
+    RemoveUserFunctor(User * u) : user(u) {}
     void operator()(Channel& channel) {
         channel.removeUser(user);
     }
 };
 
-void Server::disconnect_user(User &user)
+void Server::disconnect_user(User * user)
 {
-	std::cout << std::endl << "User " << user.getNick() << " disconnected.(message to client not implemented)" << std::endl;
+	std::cout << std::endl << "User " << user->getNick() << " disconnected.(message to client not implemented)" << std::endl;
 	//déconnecter de chaque channel<----!!!!! @@@
 
 
@@ -183,7 +184,7 @@ void Server::removeChannel(Channel & c)
 		_channels.erase(it);
 }
 
-void Server::partUserFromChannel(User & u, Channel & c)
+void Server::partUserFromChannel(User * u, Channel & c)
 {
 	if (!c.isInChannel(u))
 		return ;
@@ -200,9 +201,9 @@ void Server::partUserFromChannel(User & u, Channel & c)
 
 //PRIVATE////////////////////////////////////////////////////////////
 
-void Server::disconnect_fdList(User &user)
+void Server::disconnect_fdList(User * user)
 {
-	int fd = user.getFd();
+	int fd = user->getFd();
 
 	for (vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
 	{
@@ -215,7 +216,7 @@ void Server::disconnect_fdList(User &user)
 	}
 }
 
-void Server::disconnect_userList(User &user)
+void Server::disconnect_userList(User * user)
 {
 	// string nick = user.getNick();
 
@@ -227,26 +228,26 @@ void Server::disconnect_userList(User &user)
 	// 		return;
 	// 	}
 	// }
-	vector<User>::iterator it = std::find(_users.begin(), _users.end(), user);
+	vector<User>::iterator it = std::find(_users.begin(), _users.end(), *user);
 	if (it != _users.end())
 		_users.erase(it);
 }
 
 
-void Server::joinExistingChannel(User &u, Channel &chan)
+void Server::joinExistingChannel(User * u, Channel &chan)
 {
-	string	join = u.getID() + " JOIN " + chan.getName() + "\r\n";
-	string listBegin = ":127.0.0.1 353 " + u.getNick() + " = " + chan.getName() + " :";
-	string listEnd = ":127.0.0.1 366 " + u.getNick() + " " + chan.getName() + " :End of /NAMES list.\r\n";
-	send(u.getFd(), join.c_str(), join.length(), 0);
+	string	join = u->getID() + " JOIN " + chan.getName() + "\r\n";
+	string listBegin = ":127.0.0.1 353 " + u->getNick() + " = " + chan.getName() + " :";
+	string listEnd = ":127.0.0.1 366 " + u->getNick() + " " + chan.getName() + " :End of /NAMES list.\r\n";
+	send(u->getFd(), join.c_str(), join.length(), 0);
 	chan.sendToChannelExcept(join, u);
 
 	listBegin += chan.getUserList() + "\r\n";
 	std::cout << listBegin << std::endl;
 	// chan.sendToChannelExcept(listBegin, u);
 	// chan.sendToChannelExcept(listEnd, u);
-	send(u.getFd(), listBegin.c_str(), listBegin.length(), 0);
-	send(u.getFd(), listEnd.c_str(), listEnd.length(), 0);
+	send(u->getFd(), listBegin.c_str(), listBegin.length(), 0);
+	send(u->getFd(), listEnd.c_str(), listEnd.length(), 0);
 }
 
 
@@ -296,7 +297,7 @@ const string& Server::getPassword() const
 	return (_password);
 }
 
-vector<Channel *> Server::getUserChannels(User & user)
+vector<Channel *> Server::getUserChannels(User * user)
 {
 	vector<Channel *> out;
 	vector<Channel>::iterator it;

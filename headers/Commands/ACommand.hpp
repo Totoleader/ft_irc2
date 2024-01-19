@@ -9,14 +9,14 @@ class ACommand
 {
 	protected:
 		Server	& _server;
-		User	& _sender;
+		User	* _sender;
 		string	_msg;
 
 		void	_connectUser();
 
 	public:
 		// ACommand();
-		ACommand(Server & server, User & sender, string msg);
+		ACommand(Server & server, User * sender, string msg);
 		virtual ~ACommand();
 
 		virtual void	execute() = 0;

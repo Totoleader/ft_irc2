@@ -12,7 +12,7 @@ class User_Command : public ACommand
 		string _realname;
 
 	public:
-		User_Command( string msg, Server &server, User &sender);
+		User_Command( string msg, Server &server, User *sender);
 		~User_Command();
 
 		bool	parse();

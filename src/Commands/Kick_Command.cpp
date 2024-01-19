@@ -2,7 +2,7 @@
 
 #include "Commands/Kick_Command.hpp"
 
-Kick_Command::Kick_Command(string msg, Server &server, User &sender) : ACommand(server, sender, msg)
+Kick_Command::Kick_Command(string msg, Server &server, User * sender) : ACommand(server, sender, msg)
 {
 }
 
@@ -79,7 +79,7 @@ bool Kick_Command::parse_users(stringstream &separator_stream)
 		// {
 		// 	//error message? !!!
 		// }
-		_users.push_back(*user);
+		_users.push_back(user);
 	}
 	return SUCCESS;
 }
@@ -108,9 +108,9 @@ bool Kick_Command::parse()
 	return SUCCESS;
 }
 
-string Kick_Command::formatMessage(Channel &channel, User &user)
+string Kick_Command::formatMessage(Channel &channel, User * user)
 {
-	return (_sender.getID() + " KICK " + channel.getName() + " " + user.getNick() + " " + _message + "\r\n");
+	return (_sender->getID() + " KICK " + channel.getName() + " " + user->getNick() + " " + _message + "\r\n");
 }
 
 void Kick_Command::execute()
@@ -119,9 +119,9 @@ void Kick_Command::execute()
 		return ;
 
 	vector<Channel>::iterator it_channel = _channels.begin();
-	vector<User>::iterator it_user = _users.begin();
+	vector<User *>::iterator it_user = _users.begin();
 	Channel channel;
-	User user;
+	User * user;
 	
 	for (; it_channel != _channels.end(); it_channel++)
 	{
@@ -129,7 +129,7 @@ void Kick_Command::execute()
 
 		for (; it_user != _users.end(); it_user++)
 		{
-			user = (*it_user);
+			user = *it_user;
 
 			if (channel.isOperator(user))
 			{
