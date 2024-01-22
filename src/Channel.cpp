@@ -117,16 +117,10 @@ void Channel::setInviteOnlyOff()
 	_isInviteOnly = false;
 }
 
-void Channel::topicRestrictionOn()
+void Channel::setTopicRestriction(bool state)
 {
-	_topicRestriction = true;
+	_topicRestriction = state;
 }
-
-void Channel::topicRestrictionOff()
-{
-	_topicRestriction = false;
-}
-
 
 
 /********************

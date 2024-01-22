@@ -36,48 +36,61 @@ void Mode_Command::_addMode(char mode, t_operation op)
 }
 
 
-// void Mode_Command::changeMode_i(t_operation op)
-// {
-// 	if (op == OP_ADD)
-// 		_channel->setInviteOnlyOn();
-// 	else 
-// 		_channel->setInviteOnlyOff();
-// }
+void Mode_Command::changeMode_i(t_operation op)
+{
+	(op == OP_ADD) ? _channel->setInviteOnlyOn() : _channel->setInviteOnlyOff();
+	// MODE MSG
+}
 
-// void Mode_Command::changeMode_t(t_operation op)
-// {
-// 	if (op == OP_ADD)
-// 		_channel->_topicRestriction();
-// 	else 
-// 		_channel->_topicRestriction();
-// }
+void Mode_Command::changeMode_t(t_operation op)
+{
+	(op == OP_ADD) ? _channel->setTopicRestriction(true) : _channel->setTopicRestriction(false);
+	// MODE MSG
+}
 
-// void Mode_Command::changeMode_k(t_operation op)
-// {
-// 	if (op == OP_ADD)
-// 		//get next arg
-// 	else 
-// 		_channel->setPassword("");
-// }
+void Mode_Command::changeMode_k(t_operation op, string arg)
+{
+	(op == OP_ADD) ? _channel->setPassword(arg) : _channel->setPassword("");
+	// MODE MSG
+}
 
-// void Mode_Command::changeMode_o(t_operation op)
-// {
-// 	if (op == OP_ADD && !_channel.isOperator(/*user to add*/))
-// 		_channel->addOperator(/*user to add*/)
-// 	else 
-// 		_channel->removeOperator(_sender);
-// }
+void Mode_Command::changeMode_o(t_operation op, string arg)
+{
+	User * target = _server.getUser(arg);
 
-// void Mode_Command::changeMode_l(t_operation op)
-// {
-// 	if (op == OP_ADD)
-// 	{
-// 		int newLimit = std::stoi(/*arg (check if valid before)*/);
-// 		_channel->setUserLimit(newLimit);
-// 	}
-// 	else 
-// 		_channel->setUserLimit(NO_LIMIT);
-// }
+	if (!_channel->isInChannel(target)) // sais pas si c'est safe si NULL
+	{
+		// !!! ERR NOT IN CHANNEL
+		return ;
+	}
+
+	if (op == OP_ADD && _channel->isOperator(target)) // deja op, rien faire
+		return ;
+
+	(op == OP_ADD) ? _channel->addOperator(target) : _channel->removeOperator(target);
+	// MODE MSG
+}
+
+void Mode_Command::changeMode_l(t_operation op, string arg)
+{
+	std::istringstream iss(arg);
+	int newLimit = -1;
+
+	iss >> newLimit;
+	if (op == OP_ADD)
+	{
+		if (newLimit >= 1 && newLimit <= 100)
+		{
+			_channel->setUserLimit(newLimit);
+			// MODE MSG avec arg
+		}
+	}
+	else
+	{
+		_channel->setUserLimit(NO_LIMIT);
+		// MODE MSG sans arg
+	}
+}
 
 bool Mode_Command::_fillModeVector(string modes)
 {
@@ -89,7 +102,7 @@ bool Mode_Command::_fillModeVector(string modes)
 			op = OP_ADD;
 		else if (modes[i] == '-')
 			op = OP_REMOVE;
-		else if (std::find(_availableModes.begin(), _availableModes.end(), modes[i]) != _availableModes.end())
+		else if (std::find(_availableModes.begin(), _availableModes.end(), modes[i]) != _availableModes.end()) // cherche le mode dans la list de modes permis
 			_addMode(modes[i], op);
 		else
 		{
@@ -152,11 +165,40 @@ void Mode_Command::execute()
 	
 	if (_action == SHOW)
 		std::cout << "Action: SHOW | Channel: " << _channel->getName() << std::endl;
-	else if (_action == CHANGE)
+	else if (_action == CHANGE && _channel->isOperator(_sender))
 	{
+		std::istringstream iss(_args);
+		// itere la liste de modes pour call les fonctions
 		for (vector<t_mode>::iterator it = _modes.begin(); it != _modes.end(); it++)
 		{
-			std::cout << "Mode " << it->mode << " | " << it->operation << std::endl;
+			string arg;
+			switch (it->mode)
+			{
+			case 'i':
+				changeMode_i(it->operation);
+				break;
+			case 't':
+				changeMode_t(it->operation);
+				break;
+			case 'k':
+				iss >> arg;	// erreur si pas d'args, meme si c'est pour enlever le mdp (-k * pour enlever)
+				changeMode_k(it->operation, arg);
+				break;
+			case 'o':
+				iss >> arg;
+				changeMode_o(it->operation, arg);
+				break;
+			case 'l':
+				iss >> arg;
+				changeMode_l(it->operation, arg);
+				break;
+			default:
+				break;
+			}
 		}
+	}
+	else
+	{
+		// ERR NOT OP !!!
 	}
 }

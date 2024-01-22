@@ -65,8 +65,7 @@ public:
 	void	setUserLimit(int userLimit);
 	void 	setInviteOnlyOn();
 	void 	setInviteOnlyOff();
-	void 	topicRestrictionOn();
-	void 	topicRestrictionOff();
+	void 	setTopicRestriction(bool state);
 };
 
 #endif // __CHANNEL_H__

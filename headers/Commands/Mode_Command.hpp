@@ -32,8 +32,9 @@ private:
 
 	void			changeMode_i(t_operation op);
 	void			changeMode_t(t_operation op);
-	void			changeMode_k(t_operation op);
-	void			changeMode_o(t_operation op);
+	void			changeMode_k(t_operation op, string arg);
+	void			changeMode_o(t_operation op, string arg);
+	void			changeMode_l(t_operation op, string arg);
   
 	bool			_fillModeVector(string modes);
 	
