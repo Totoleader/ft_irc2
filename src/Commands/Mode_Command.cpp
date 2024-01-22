@@ -79,7 +79,7 @@ void Mode_Command::changeMode_l(t_operation op, string arg)
 	iss >> newLimit;
 	if (op == OP_ADD)
 	{
-		if (newLimit >= 1 && newLimit <= 100)
+		if (newLimit >= 1 && newLimit <= 100) // Limite user?
 		{
 			_channel->setUserLimit(newLimit);
 			// MODE MSG avec arg
@@ -114,12 +114,32 @@ bool Mode_Command::_fillModeVector(string modes)
 	return SUCCESS;
 }
 
+// montre seulement les modes actifs
+void Mode_Command::_showModes()
+{
+	string modes = "+";
+
+	if (_channel->isInviteOnly())
+		modes += "i";
+	if (_channel->isTopicRestricted())
+		modes += "t";
+	if (_channel->getPassword() != "")
+		modes += "k";
+	if (_channel->getUserLimit() > NO_LIMIT)
+		modes += "l";
+
+	if (modes != "+")
+	{
+		std::cout << modes << std::endl;
+		// SHOW MODES MSG !!!
+	}
+}
+
 bool Mode_Command::parse()
 {
 	std::istringstream	iss(_msg);
 	string				channel;
 	string				mode_str;
-	string				_args;
 
 	if (!(iss >> channel))
 	{
@@ -164,7 +184,10 @@ void Mode_Command::execute()
 		return ;
 	
 	if (_action == SHOW)
+	{
 		std::cout << "Action: SHOW | Channel: " << _channel->getName() << std::endl;
+		_showModes();
+	}
 	else if (_action == CHANGE && _channel->isOperator(_sender))
 	{
 		std::istringstream iss(_args);
