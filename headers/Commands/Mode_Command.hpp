@@ -37,9 +37,7 @@ private:
 	void			changeMode_l(t_operation op, string arg);
   
 	bool			_fillModeVector(string modes);
-	
-
-
+	void			_showModes();
 public:
 	Mode_Command(string msg, Server &server, User *sender);
 	~Mode_Command();

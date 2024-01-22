@@ -9,7 +9,7 @@ Server::Server()
 Server::Server(string password): _password(password)
 {
 	//_users.reserve(100);
-	_channels.reserve(15);
+	_channels.reserve(15); // peut etre pas necessaire
 }
 
 Server::~Server()
