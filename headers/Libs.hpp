@@ -20,6 +20,8 @@
 # include <algorithm>
 # include <cstdlib>
 # include <unistd.h>
+# include "Commands/messages.hpp" //AJOUT ALEX
+
 
 #define SERVER_FD 0
 #define ERROR 0

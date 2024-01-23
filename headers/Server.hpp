@@ -38,7 +38,7 @@ class Server
 		void partUserFromChannel(User * u, Channel * c);
 
 		bool isNickTaken(string const & nick);
-
+		bool isChannelExist(string const &channel); //AJOUT ALEX
 		const string &getPassword() const;
 		User *getUser(int fd);
 		User *getUser(string nick);

@@ -14,17 +14,29 @@ bool Topic_Command::parse()
 {
 	stringstream	ss(_msg);
 	string			arg;
-	
-	ss >> arg;
-	if (arg.empty())
+	string 			msg; 
+
+	//ss >> arg;
+	if (_msg.empty() || !(ss >> arg) || arg == ":")
 	{
+		msg = errorMessage(461, "TOPIC", "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
 		return ERROR; // ERR need more args
 	}
 	_channel = _server.getChannel(arg);
 	if (!_channel)
 	{
+		msg = errorMessage(403, arg, "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
 		return ERROR; // ERR CHANNEL NOT FOUND
 	}
+	if (_channel->isInChannel(_sender) == false)
+	{
+		msg = errorMessage(442, arg, "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+		return ERROR; // ERR NOT ON CHANNEL
+	}
+
 	ss >> _new_topic;
 	if (_new_topic.empty())
 		_action = SHOW;
@@ -46,6 +58,8 @@ bool Topic_Command::parse()
 
 void Topic_Command::execute()
 {
+	string msg;
+
 	if (parse() == ERROR)
 		return ;
 	switch (_action)
@@ -56,9 +70,20 @@ void Topic_Command::execute()
 	case CLEAR:
 		// Check mode +t
 		// Check isOperator si restriction
+		if (_channel->isTopicRestricted() && _channel->isOperator(_sender) == false)
+		{
+			msg = errorMessage(482, _channel->getName(), "0", "0");
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0);
+			break;
+		}
 		_new_topic = "";
 	case CHANGE:
-		
+		if (_channel->isTopicRestricted() && _channel->isOperator(_sender) == false)
+		{
+			msg = errorMessage(482, _channel->getName(), "0", "0");
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0);
+			break;
+		}
 		std::cout << "TOPIC set to :" << _new_topic << std::endl;
 		_channel->setTopic(_new_topic);
 		break;

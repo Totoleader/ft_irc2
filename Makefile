@@ -21,6 +21,7 @@ SRCS	:=	src/main.cpp \
 			src/Commands/Mode_Command.cpp \
 			src/Commands/Quit_Command.cpp \
 			src/Commands/ACommand.cpp \
+			src/Commands/messages.cpp \
 
 OBJS	:= $(patsubst src/%.cpp,bin/%.o,$(SRCS))
 

@@ -53,6 +53,8 @@ bool Join_Command::passIsOk(Channel *channel, string password)
 
 void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 {
+	string msg;
+
 	_channel = _server.getChannel(channel_name_pass->first);
 	_channelName = channel_name_pass->first;
 	_password = channel_name_pass->second;
