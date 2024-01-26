@@ -56,11 +56,14 @@ void Mode_Command::changeMode_k(t_operation op, string arg)
 
 void Mode_Command::changeMode_o(t_operation op, string arg)
 {
+	string msg;
 	User * target = _server.getUser(arg);
 
 	if (!_channel->isInChannel(target)) // sais pas si c'est safe si NULL
 	{
 		// !!! ERR NOT IN CHANNEL
+		msg = errorMessage(441, arg, _channel->getName(), "0"); //AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 		return ;
 	}
 
@@ -73,7 +76,8 @@ void Mode_Command::changeMode_o(t_operation op, string arg)
 
 void Mode_Command::changeMode_l(t_operation op, string arg)
 {
-	std::istringstream iss(arg);
+	std::istringstream 	iss(arg);
+	string 				msg;
 	int newLimit = -1;
 
 	iss >> newLimit;
@@ -82,7 +86,7 @@ void Mode_Command::changeMode_l(t_operation op, string arg)
 		if (newLimit >= 1 && newLimit <= 100) // Limite user?
 		{
 			_channel->setUserLimit(newLimit);
-			// MODE MSG avec arg
+			// MODE MSG 
 		}
 	}
 	else
@@ -94,6 +98,7 @@ void Mode_Command::changeMode_l(t_operation op, string arg)
 
 bool Mode_Command::_fillModeVector(string modes)
 {
+	string msg;
 	t_operation op = OP_ADD;	// si aucun signe, ajoute par defaut
 
 	for (size_t i = 0; i < modes.length(); i++)
@@ -108,6 +113,8 @@ bool Mode_Command::_fillModeVector(string modes)
 		{
 			std::cout << "ERROR " << modes[i] << " not available!!" << std::endl;
 			/// !!! ERR 472 (MODE x is unavailable)
+			msg = errorMessage(472, modes, _channel->getName(), "0"); //AJOUT ALEX
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 			return ERROR; // ne pas continuer
 		}
 	}
@@ -140,22 +147,29 @@ bool Mode_Command::parse()
 	std::istringstream	iss(_msg);
 	string				channel;
 	string				mode_str;
+	string 				msg;
 
-	if (!(iss >> channel))
+	if (!(iss >> channel) || channel == "MODE")
 	{
 		// !!! ERR NO ENOUGH PARAMS
+		msg = errorMessage(461, "MODE", "0", "0"); //AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 		return ERROR;
 	}
 
 	_channel = _server.getChannel(channel);
 	if (!_channel)
 	{
-		// !!! NO SUCH CHANNER
+		// !!! NO SUCH CHANNEL
+		msg = errorMessage(403, channel, "0", "0"); //AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 		return ERROR;
 	}
 	else if (!_channel->isInChannel(_sender))
 	{
 		// !!! NOT IN CHANNEL
+		msg = errorMessage(442, channel, "0", "0"); // AJOUT ALEX
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
 		return ERROR;
 	}
 
@@ -180,6 +194,8 @@ bool Mode_Command::parse()
 
 void Mode_Command::execute()
 {
+	string msg;
+
 	if (parse() == ERROR)
 		return ;
 	
@@ -223,5 +239,7 @@ void Mode_Command::execute()
 	else
 	{
 		// ERR NOT OP !!!
+		msg = errorMessage(482, _channel->getName(), "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
 	}
 }

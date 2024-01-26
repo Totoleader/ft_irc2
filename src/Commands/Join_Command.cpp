@@ -88,11 +88,11 @@ void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 		msg = errorMessage(475, _channel->getName(), "0", "0"); // AJOUT ALEX
 		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
 	}
-	// else if (_channel->countUsers() == _channel->getUserLimit())
-	// {
-	// 	msg = errorMessage(471, _channel->getName(), "0", "0");
-	// 	send(_sender->getFd(), msg.c_str(), msg.length(), 0);     
-	// } // pas nécessaire car on ne gère pas le mode l
+	else if (_channel->countUsers() == _channel->getUserLimit())
+	{
+	 	msg = errorMessage(471, _channel->getName(), "0", "0");
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0);     
+	} // User Limit
 	else // join
 	{
 		_channel->addUser(_sender);
