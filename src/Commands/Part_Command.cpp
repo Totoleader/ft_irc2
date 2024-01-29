@@ -19,6 +19,7 @@ void Part_Command::fillChannels(string fillChannelsList)
 {
 	std::istringstream	iss(fillChannelsList);
 	string			chanName;
+	string			msg;
 
 	while (std::getline(iss, chanName, ','))
 	{
@@ -27,13 +28,15 @@ void Part_Command::fillChannels(string fillChannelsList)
 		if (!c)
 		{
 			// !!! ERR_NOSUCHCHANNEL
-			std::cout << "NO SUCH CHANNEL" << std::endl;
+			msg = errorMessage(403, chanName, "0", "0"); //AJOUT ALEX
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 			continue ;
 		}
 		else if (!c->isInChannel(_sender))
 		{
 			// !!! ERR_NOTONCHANNEL
-			std::cout << "NOT IN CHANNEL" << std::endl;
+			msg = errorMessage(442, chanName, "0", "0"); //AJOUT ALEX
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 			continue ;
 		}
 		else
@@ -43,9 +46,12 @@ void Part_Command::fillChannels(string fillChannelsList)
 
 bool Part_Command::parse()
 {
+	string msg;
+
 	if (_msg.empty())
 	{
-		/// !!! needmoreparams
+		msg = errorMessage(461, "PART", "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
 		return ERROR;
 	}
 
@@ -53,15 +59,14 @@ bool Part_Command::parse()
 	string			chanStringList;
 	if (!(iss >> chanStringList) || chanStringList == ":")
 	{
-		// !!! needmore params
-		std::cout << "NEED MORE PARAMS" << std::endl;
+		msg = errorMessage(461, "PART", "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX 
 		return ERROR;
 	}
 
 	fillChannels(chanStringList);
 	if (_channelsToPart.empty())	// Liste vide, aucun channel a PART
 	{
-		std::cout << "LIST EMPTY... RETURNING" << std::endl;
 		return ERROR;
 	}
 	
@@ -90,6 +95,7 @@ void Part_Command::execute()
 	for (it = _channelsToPart.begin(); it != _channelsToPart.end(); it++)
 	{
 		Channel * channel = *it;
+
 		std::cout << "Parted channel: " << channel->getName() << std::endl;
 		std::cout << "Reason: " << _partMessage << std::endl;
 

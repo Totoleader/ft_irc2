@@ -14,17 +14,29 @@ bool Topic_Command::parse()
 {
 	stringstream	ss(_msg);
 	string			arg;
-	
-	ss >> arg;
-	if (arg.empty())
+	string 			msg; 
+
+	//ss >> arg;
+	if (_msg.empty() || !(ss >> arg) || arg == ":")
 	{
+		msg = errorMessage(461, "TOPIC", "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
 		return ERROR; // ERR need more args
 	}
 	_channel = _server.getChannel(arg);
 	if (!_channel)
 	{
+		msg = errorMessage(403, arg, "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
 		return ERROR; // ERR CHANNEL NOT FOUND
 	}
+	if (_channel->isInChannel(_sender) == false)
+	{
+		msg = errorMessage(442, arg, "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+		return ERROR; // ERR NOT ON CHANNEL
+	}
+
 	ss >> _new_topic;
 	if (_new_topic.empty())
 		_action = SHOW;
@@ -46,21 +58,38 @@ bool Topic_Command::parse()
 
 void Topic_Command::execute()
 {
+	string msg;
+
 	if (parse() == ERROR)
 		return ;
 	switch (_action)
 	{
 	case SHOW:
-		std::cout << "TOPIC :" << _channel->getTopic() << std::endl; // !!! RPL_TOPIC au user
+		if (!_channel->getTopic().empty())
+			msg = replyMessage(332, _channel->getName(), _channel->getTopic(), "0");
+		else
+			msg = replyMessage(331, _channel->getName(), "0", "0");
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);
 		break;
 	case CLEAR:
 		// Check mode +t
 		// Check isOperator si restriction
+		if (_channel->isTopicRestricted() && _channel->isOperator(_sender) == false)
+		{
+			msg = errorMessage(482, _channel->getName(), "0", "0");
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0);
+			break;
+		}
 		_new_topic = "";
 	case CHANGE:
-		
-		std::cout << "TOPIC set to :" << _new_topic << std::endl;
+		if (_channel->isTopicRestricted() && _channel->isOperator(_sender) == false)
+		{
+			msg = errorMessage(482, _channel->getName(), "0", "0");
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0);
+			break;
+		}
 		_channel->setTopic(_new_topic);
+		_channel->sendToChannel(_sender->getID() + " TOPIC " + _msg + "\r\n");
 		break;
 	
 	default:

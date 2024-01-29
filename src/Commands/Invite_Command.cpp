@@ -13,41 +13,57 @@ Invite_Command::~Invite_Command()
 
 bool Invite_Command::parse()
 {
-	string userName;
-	string channelName;
+	string			userName;
+	string			channelName;
+	stringstream	ss(_msg);
+	stringstream	bb(_msg);
+	string			arg;
+	string 			msg;
 
-	userName = _msg.substr(0, ' ');
+	if (_msg.empty() || !(ss >> arg) || arg == ":" || !(ss >> arg))
+	{
+		msg = errorMessage(461, "INVITE", "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		return ERROR; // ERR need more args
+	}
+
+	bb >> userName;
 	_userToInvite = _server.getUser(userName);
 	if (_userToInvite == NULL)
 	{
-		// User not found message !!!
-		return ERROR;
+		msg = errorMessage(401, userName, "0", "0");
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  
+		return ERROR; // User not found message !!!
 	}
 
-	channelName = _msg.substr(' ');
+	bb >> channelName;
 	_channel = _server.getChannel(channelName);
 	if (_channel == NULL)
 	{
-		// Channel not found message !!!
-		return ERROR;
+	 	msg = errorMessage(403, channelName, "0", "0"); // AJOUT ALEX
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+	 	return ERROR; // Channel not found message !!!
 	}
 
-	if (!_channel->isInviteOnly())
+	if (_channel->isInChannel(_sender) == false)
 	{
-		// no need to invite message !!!
-		return ERROR;
+	 	msg = errorMessage(442, channelName, "0", "0"); // AJOUT ALEX
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+	 	return ERROR; // ERR NOT ON CHANNEL
 	}
-
-	if (!_channel->isOperator(_sender))
+	
+	if (_channel->isInviteOnly() && !_channel->isOperator(_sender))
 	{
-		// Don't have Operator rights message !!!
-		return ERROR;
+	 	msg = errorMessage(482, channelName, "0", "0");
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+	 	return ERROR; // Don't have Operator rights message !!!
 	}
 
 	if (_channel->isInChannel(_userToInvite))
 	{
-		// User already in the channel !!!
-		return ERROR;
+	 	msg = errorMessage(443, userName, channelName, "0");
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+	 	return ERROR; // User already in the channel !!!
 	}
 
 	return SUCCESS;
@@ -55,8 +71,14 @@ bool Invite_Command::parse()
 
 void Invite_Command::execute()
 {
+	string msg;
+
 	if (parse() == ERROR)
 		return ;
 	_channel->addToWhiteList(_userToInvite);
 	//added to whitelist message !!!
+	msg = replyMessage(341, _userToInvite->getNick(), _channel->getName(), "0");
+	send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+	msg = ":"+ _sender->getNick() + "!" + _sender->getUsername() + "@127.0.0.1 INVITE " + _userToInvite->getNick() + " " + _channel->getName() + "\r\n";
+	send(_userToInvite->getFd(), msg.c_str(), msg.length(), 0); 
 }

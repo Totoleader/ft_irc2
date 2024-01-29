@@ -19,11 +19,22 @@ bool Join_Command::parse()
 	string passwords;
 	string channel_token;
 	string password_token;
+	string msg;
 
 	channels = _msg.substr(0, _msg.find(' '));
 	if (_msg.find(' ') != string::npos)
 		passwords = _msg.substr(_msg.find(' '));
-
+	if (channels == "#")
+	{
+		msg = errorMessage(475, channels, "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		return ERROR; // ERR ERR_BADCHANNELKEY
+	}
+	if (channels == "0")
+	{
+		//Leave all currently joined channels.
+		return ERROR;
+	}
 	stringstream channel_stream(channels);
 	stringstream password_stream(passwords);
 
@@ -53,6 +64,8 @@ bool Join_Command::passIsOk(Channel *channel, string password)
 
 void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 {
+	string msg;
+
 	_channel = _server.getChannel(channel_name_pass->first);
 	_channelName = channel_name_pass->first;
 	_password = channel_name_pass->second;
@@ -66,12 +79,20 @@ void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 	}
 	else if (_channel->isInviteOnly() && !_channel->isWhitelisted(_sender)) //bouncer
 	{
-		// is not whitelisted message !!!
+		msg = errorMessage(473, _channel->getName(), "0", "0");
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 	}
 	else if (!passIsOk(_channel, _password))
 	{
 		// wrong _channel password message !!!
+		msg = errorMessage(475, _channel->getName(), "0", "0"); // AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
 	}
+	else if (_channel->countUsers() == _channel->getUserLimit())
+	{
+	 	msg = errorMessage(471, _channel->getName(), "0", "0");
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0);     
+	} // User Limit
 	else // join
 	{
 		_channel->addUser(_sender);

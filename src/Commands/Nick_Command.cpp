@@ -24,18 +24,32 @@ bool Nick_Command::parse()
 
 void Nick_Command::execute()
 {
+	std::string msg; //AJOUT ALEX
+
 	if (!_sender->isPassAccepted())
 	{
 		std::cout << "User has not entered password yet." << std::endl;
 		return ; // ERR OR DISCONNECT
 	}
 	if (parse() == ERROR)
+	{
+		msg = errorMessage(431, "0", "0", "0"); //AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 		return ; // ERR MSG
+	}
 	if (_server.isNickTaken(_new_nick))
 	{
-		std::cout << "ERROR nick is taken" << std::endl;
+		msg = errorMessage(433, _new_nick, "0", "0"); //AJOUT ALEX
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
 		return ; // !!! ERR NICK TAKEN
 	}
+
+
+	//REMARQUE ALEX 
+	// ERREUR 484
+	// Sent by the server to a user upon connection to indicate
+    //the restricted nature of the connection (user mode "+r").
+
 
 	// Broadcast aux channels du user: "old_nick is now known as new_nick" et resend la list des users
 	vector<Channel *> channels = _server.getUserChannels(_sender);

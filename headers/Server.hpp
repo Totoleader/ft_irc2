@@ -38,7 +38,6 @@ class Server
 		void partUserFromChannel(User * u, Channel * c);
 
 		bool isNickTaken(string const & nick);
-
 		const string &getPassword() const;
 		User *getUser(int fd);
 		User *getUser(string nick);
