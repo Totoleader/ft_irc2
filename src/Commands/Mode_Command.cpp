@@ -106,7 +106,7 @@ bool Mode_Command::_fillModeVector(string modes)
 			_addMode(modes[i], op);
 		else
 		{
-			std::cout << "ERROR " << modes[i] << " not available!!" << std::endl;
+			std::cout << "ERROR '" << modes[i] << "' not available!!" << std::endl;
 			/// !!! ERR 472 (MODE x is unavailable)
 			return ERROR; // ne pas continuer
 		}
