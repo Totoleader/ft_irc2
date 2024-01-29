@@ -65,7 +65,11 @@ void Topic_Command::execute()
 	switch (_action)
 	{
 	case SHOW:
-		std::cout << "TOPIC :" << _channel->getTopic() << std::endl; // !!! RPL_TOPIC au user
+		if (!_channel->getTopic().empty())
+			msg = replyMessage(332, _channel->getName(), _channel->getTopic(), "0");
+		else
+			msg = replyMessage(331, _channel->getName(), "0", "0");
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);
 		break;
 	case CLEAR:
 		// Check mode +t
@@ -84,8 +88,8 @@ void Topic_Command::execute()
 			send(_sender->getFd(), msg.c_str(), msg.length(), 0);
 			break;
 		}
-		std::cout << "TOPIC set to :" << _new_topic << std::endl;
 		_channel->setTopic(_new_topic);
+		_channel->sendToChannel(_sender->getID() + " TOPIC " + _msg + "\r\n");
 		break;
 	
 	default:
