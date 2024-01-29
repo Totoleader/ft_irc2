@@ -39,19 +39,22 @@ void Mode_Command::_addMode(char mode, t_operation op)
 void Mode_Command::changeMode_i(t_operation op)
 {
 	(op == OP_ADD) ? _channel->setInviteOnlyOn() : _channel->setInviteOnlyOff();
-	// MODE MSG
+	string sign = (_channel->isInviteOnly()) ? "+" : "-";
+	_channel->sendToChannel(_sender->getID() + " MODE " + _channel->getName() + " " + sign + "i\r\n");
 }
 
 void Mode_Command::changeMode_t(t_operation op)
 {
 	(op == OP_ADD) ? _channel->setTopicRestriction(true) : _channel->setTopicRestriction(false);
-	// MODE MSG
+	string sign = (_channel->isTopicRestricted()) ? "+" : "-";
+	_channel->sendToChannel(_sender->getID() + " MODE " + _channel->getName() + " " + sign + "t\r\n");
 }
 
 void Mode_Command::changeMode_k(t_operation op, string arg)
 {
 	(op == OP_ADD) ? _channel->setPassword(arg) : _channel->setPassword("");
-	// MODE MSG
+	string sign = (_channel->getPassword().empty()) ? "-" : "+";
+	_channel->sendToChannel(_sender->getID() + " MODE " + _channel->getName() + " " + sign + "k " + arg + "\r\n");
 }
 
 void Mode_Command::changeMode_o(t_operation op, string arg)
@@ -71,7 +74,8 @@ void Mode_Command::changeMode_o(t_operation op, string arg)
 		return ;
 
 	(op == OP_ADD) ? _channel->addOperator(target) : _channel->removeOperator(target);
-	// MODE MSG
+	string sign = (_channel->isOperator(target)) ? "+" : "-";
+	_channel->sendToChannel(_sender->getID() + " MODE " + _channel->getName() + " " + sign + "o " + target->getNick() + "\r\n");
 }
 
 void Mode_Command::changeMode_l(t_operation op, string arg)
@@ -86,13 +90,16 @@ void Mode_Command::changeMode_l(t_operation op, string arg)
 		if (newLimit >= 1 && newLimit <= 100) // Limite user?
 		{
 			_channel->setUserLimit(newLimit);
-			// MODE MSG 
+			stringstream ss;
+			ss << newLimit;
+			string limitStr = ss.str();
+			_channel->sendToChannel(_sender->getID() + " MODE " + _channel->getName() + " +l " + limitStr + "\r\n");
 		}
 	}
 	else
 	{
 		_channel->setUserLimit(NO_LIMIT);
-		// MODE MSG sans arg
+		_channel->sendToChannel(_sender->getID() + " MODE " + _channel->getName() + " -l\r\n");
 	}
 }
 
@@ -138,7 +145,8 @@ void Mode_Command::_showModes()
 	if (modes != "+")
 	{
 		std::cout << modes << std::endl;
-		// SHOW MODES MSG !!!
+		string msg = replyMessage(324, _channel->getName(), modes, "");
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);
 	}
 }
 
