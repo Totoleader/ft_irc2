@@ -24,4 +24,5 @@ void Quit_Command::execute()
 		channel->sendToChannelExcept(msg, _sender);
 		_server.partUserFromChannel(_sender, channel);
 	}
+	//Server::exit_cleanup(0);
 }

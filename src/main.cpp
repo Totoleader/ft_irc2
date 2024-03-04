@@ -9,6 +9,14 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	
+	string password = argv[2];
+
+	if (password == "")
+	{
+		std::cerr << "Please enter a password." << std::endl;
+		return 1;
+	}
+
 	Server serveur(argv[2]);
 	
 	serveur.init(argv[1]);
