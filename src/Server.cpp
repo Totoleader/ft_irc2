@@ -41,7 +41,13 @@ void Server::init(string port)
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE;
 
-	getaddrinfo(NULL, port.c_str(), &hints, &_servinfo);
+	int res = getaddrinfo(NULL, port.c_str(), &hints, &_servinfo);
+	if (res != 0)
+	{
+		std::cerr << "Could not get address info" << std::endl;
+		freeaddrinfo(_servinfo);
+		exit(EXIT_FAILURE);
+	}
 
 	servSocket = socket(_servinfo->ai_family, _servinfo->ai_socktype, _servinfo->ai_protocol);
 	new_server(servSocket);
@@ -49,13 +55,20 @@ void Server::init(string port)
 	if (bind(_fds[SERVER_FD].fd, _servinfo->ai_addr, _servinfo->ai_addrlen) != 0)
 	{
 		std::cerr << "Bind failed." << std::endl;
+		freeaddrinfo(_servinfo);
 		exit (EXIT_FAILURE);
 	}
-	signal(SIGINT, Server::exit_cleanup);
 
 	int status = listen(_fds[SERVER_FD].fd, 5);
 	if (status == -1)
+	{
 		std::cout << "!!!! ERROR LISTEN FAILED !!!!" << std::endl;
+		freeaddrinfo(_servinfo);
+		exit(EXIT_FAILURE);
+	}
+
+	freeaddrinfo(_servinfo);
+	signal(SIGINT, Server::exit_cleanup);
 }
 
 void Server::listenForEvents()
@@ -91,9 +104,9 @@ void Server::new_client()
 	
 	socklen_t	addr_size = sizeof cl;
 	new_fd = accept(_fds[0].fd, (struct sockaddr *)&cl, &addr_size);
-	int status = fcntl(new_fd, F_SETFL, O_NONBLOCK);
-	if (status == -1)
-		std::cout << "!!!!! ERROR SETTING SOCKET AS NONBLOCK !!!!!!" << std::endl;
+	std::cout << "Opened fd " << new_fd << std::endl;
+
+	fcntl(new_fd, F_SETFL, O_NONBLOCK);
 
 	User newUser(new_fd, (struct sockaddr*)&cl);
 	_users.push_back(newUser);
@@ -114,9 +127,7 @@ void Server::new_server(int fd)
 {
 	struct pollfd	newClient;
 	
-	int status = fcntl(fd, F_SETFL, O_NONBLOCK);
-	if (status == -1)
-		std::cout << "!!!!!! ERROR SETTING SERVER SOCKET AS NONBLOCK !!!!!!" << std::endl;
+	fcntl(fd, F_SETFL, O_NONBLOCK);
 	newClient.events = POLLIN;
 	newClient.fd = fd;
 	_fds.push_back(newClient);
@@ -134,9 +145,16 @@ void Server::handle_event(int fd)
 	memset(buf, 0, 1024);
 	CommandFactory factory;
 	ACommand *cmd_to_exec;
-	if (recv(u->getFd(), buf, 1024, 0) <= 0)
+	int bytes_received = recv(u->getFd(), buf, 1024, 0);
+	if (bytes_received <= 0)
 	{
 		disconnect_user(u);
+		return ;
+	}
+	else if (bytes_received > 100)
+	{
+		string errmsg = ":127.0.0.1 666 " + u->getNick() + " :Message too long\r\n";
+		send(u->getFd(), errmsg.c_str(), errmsg.length(), 0);
 		return ;
 	}
 
