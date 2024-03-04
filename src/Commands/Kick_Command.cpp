@@ -56,14 +56,14 @@ bool Kick_Command::parse_channels(stringstream &separator_stream)
 		if (channel == NULL)
 		{
 			// channel not found message !!!
-			msg = errorMessage(403, rawChannels, "0", "0"); // AJOUT ALEX
-	 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+			msg = errorMessage(403, rawChannels, "0", "0"); 
+	 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 			return ERROR;
 		}
 		if (channel->isInChannel(_sender) == false)
 		{
-			msg = errorMessage(442, channel->getName(), "0", "0"); // AJOUT ALEX
-	 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+			msg = errorMessage(442, channel->getName(), "0", "0"); 
+	 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 	 		return ERROR; // ERR NOT ON CHANNEL
 		}
 		_channels.push_back(channel);
@@ -86,8 +86,8 @@ bool Kick_Command::parse_users(stringstream &separator_stream)
 		if (user == NULL)
 		{
 			// user does not exist message !!!
-			msg = errorMessage(403, rawUsers, "0", "0"); // AJOUT ALEX
-	 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+			msg = errorMessage(403, rawUsers, "0", "0"); 
+	 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 			return ERROR;
 		}
 		// if ()//is not part of channel
@@ -108,8 +108,8 @@ bool Kick_Command::parse()
 
 	if (_msg.empty() || !(ss >> arg) || arg == ":" || !(ss >> arg) || arg == ":")
 	{
-		msg = errorMessage(461, "KICK", "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		msg = errorMessage(461, "KICK", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  
 		return ERROR; // ERR need more args
 	}
 
@@ -159,20 +159,19 @@ void Kick_Command::execute()
 
 			if(channel->isInChannel(*it_user) == false)
 			{
-				msg = errorMessage(441, (*it_user)->getNick(), channel->getName(), "0"); // AJOUT ALEX
-	 			send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
-	 			// ERR USER NOT ON CHANNEL
+				msg = errorMessage(441, (*it_user)->getNick(), channel->getName(), "0"); 
+	 			send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 			}
 
 			else if (channel->isOperator(user) && !channel->isOperator(_sender))
 			{
-				//cannot kick operator message !!!
 				msg = errorMessage(482,  channel->getName(), "0", "0");
 	 			send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 			}
 			else if (channel->isInChannel(user))
 			{
 				channel->sendToChannel(formatMessage(channel, user));
+				channel->removeOperator(user);
 				channel->removeUser(user);
 			}
 		}

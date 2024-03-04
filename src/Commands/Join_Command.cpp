@@ -23,16 +23,15 @@ bool Join_Command::parse()
 
 	channels = _msg.substr(0, _msg.find(' '));
 	if (_msg.find(' ') != string::npos)
-		passwords = _msg.substr(_msg.find(' '));
+		passwords = _msg.substr(_msg.find(' ') + 1);
 	if (channels == "#")
 	{
-		msg = errorMessage(475, channels, "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
-		return ERROR; // ERR ERR_BADCHANNELKEY
+		msg = errorMessage(475, channels, "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);
+		return ERROR;
 	}
 	if (channels == "0")
 	{
-		//Leave all currently joined channels.
 		return ERROR;
 	}
 	stringstream channel_stream(channels);
@@ -47,17 +46,12 @@ bool Join_Command::parse()
 		pair.second = password_token;
 		_channelNamePass.push_back(pair);
 	}
-	return SUCCESS;//error case???
+	return SUCCESS;
 }
-
-// void joinChannel()
-// {
-
-// }
 
 bool Join_Command::passIsOk(Channel *channel, string password)
 {
-	if (password == channel->getPassword())
+	if (password == channel->getPassword() || channel->getPassword() == "")
 		return SUCCESS;
 	return ERROR;
 }
@@ -70,30 +64,27 @@ void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 	_channelName = channel_name_pass->first;
 	_password = channel_name_pass->second;
 
-	if (_channel == NULL)//si le _channel n'existe pas
+	if (_channel == NULL && _server.getChannelSize() < MAX_CHANNELS)
 	{
-		// createChannel()
 		_server.new_channel(_channelName, _sender, _password);
 		_server.joinExistingChannel(_sender, *_server.getChannel(_channelName));
-		//send client _channel created message !!!
 	}
-	else if (_channel->isInviteOnly() && !_channel->isWhitelisted(_sender)) //bouncer
+	else if (_channel->isInviteOnly() && !_channel->isWhitelisted(_sender))
 	{
 		msg = errorMessage(473, _channel->getName(), "0", "0");
 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 	}
 	else if (!passIsOk(_channel, _password))
 	{
-		// wrong _channel password message !!!
-		msg = errorMessage(475, _channel->getName(), "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		msg = errorMessage(475, _channel->getName(), "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);
 	}
 	else if (_channel->countUsers() == _channel->getUserLimit())
 	{
 	 	msg = errorMessage(471, _channel->getName(), "0", "0");
 	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0);     
-	} // User Limit
-	else // join
+	}
+	else
 	{
 		_channel->addUser(_sender);
 		_server.joinExistingChannel(_sender, *_channel);
@@ -103,7 +94,6 @@ void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 
 void Join_Command::execute()
 {
-	// vector< pair<string, string> >::iterator it  = _channelNamePass.begin();
 	if (parse() == ERROR)
 		return ;
 	if (!_sender->isConnected())

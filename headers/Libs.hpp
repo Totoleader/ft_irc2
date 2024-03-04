@@ -20,13 +20,14 @@
 # include <algorithm>
 # include <cstdlib>
 # include <unistd.h>
-# include "Commands/messages.hpp" //AJOUT ALEX
+# include "Commands/messages.hpp" 
 
 
 #define SERVER_FD 0
 #define ERROR 0
 #define SUCCESS 1
 #define NO_LIMIT -1
+#define MAX_CHANNELS 15
 
 using std::string;
 using std::vector;

@@ -32,15 +32,8 @@ void User::clean_buffer(size_t *trail)
 {
 	_buffer = _buffer.substr(*trail + 2);
 	*trail = getBuffer().find("\r\n");
-	// msgReceived();
 }
 
-
-
-
-
-
-//getset crap->>
 
 const string & User::getIp() const
 {

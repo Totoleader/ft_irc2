@@ -24,34 +24,26 @@ bool Nick_Command::parse()
 
 void Nick_Command::execute()
 {
-	std::string msg; //AJOUT ALEX
+	std::string msg; 
 
 	if (!_sender->isPassAccepted())
 	{
 		std::cout << "User has not entered password yet." << std::endl;
-		return ; // ERR OR DISCONNECT
+		return ;
 	}
 	if (parse() == ERROR)
 	{
-		msg = errorMessage(431, "0", "0", "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
-		return ; // ERR MSG
+		msg = errorMessage(431, "0", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+		return ;
 	}
 	if (_server.isNickTaken(_new_nick))
 	{
-		msg = errorMessage(433, _new_nick, "0", "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
-		return ; // !!! ERR NICK TAKEN
+		msg = errorMessage(433, _new_nick, "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+		return ;
 	}
 
-
-	//REMARQUE ALEX 
-	// ERREUR 484
-	// Sent by the server to a user upon connection to indicate
-    //the restricted nature of the connection (user mode "+r").
-
-
-	// Broadcast aux channels du user: "old_nick is now known as new_nick" et resend la list des users
 	vector<Channel *> channels = _server.getUserChannels(_sender);
 	vector<Channel *>::iterator it;
 	for (it = channels.begin(); it != channels.end(); it++)
@@ -61,7 +53,6 @@ void Nick_Command::execute()
 	}
 	_sender->setNick(_new_nick);
 
-	// Connect user s'il n'est pas connecte
 	if (!_sender->isConnected() && !_sender->getUsername().empty() && !_sender->getName().empty())
 		_connectUser();
 }

@@ -13,8 +13,6 @@ Part_Command::~Part_Command()
 {
 }
 
-// Split une liste de channels en string "#chan1,#chan2" vers une list d'instance Channel
-// existants si le user est dans le channel
 void Part_Command::fillChannels(string fillChannelsList)
 {
 	std::istringstream	iss(fillChannelsList);
@@ -27,16 +25,14 @@ void Part_Command::fillChannels(string fillChannelsList)
 		c = _server.getChannel(chanName);
 		if (!c)
 		{
-			// !!! ERR_NOSUCHCHANNEL
-			msg = errorMessage(403, chanName, "0", "0"); //AJOUT ALEX
-			send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
+			msg = errorMessage(403, chanName, "0", "0"); 
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 			continue ;
 		}
 		else if (!c->isInChannel(_sender))
 		{
-			// !!! ERR_NOTONCHANNEL
-			msg = errorMessage(442, chanName, "0", "0"); //AJOUT ALEX
-			send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
+			msg = errorMessage(442, chanName, "0", "0"); 
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 			continue ;
 		}
 		else
@@ -50,8 +46,8 @@ bool Part_Command::parse()
 
 	if (_msg.empty())
 	{
-		msg = errorMessage(461, "PART", "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		msg = errorMessage(461, "PART", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  
 		return ERROR;
 	}
 
@@ -59,27 +55,24 @@ bool Part_Command::parse()
 	string			chanStringList;
 	if (!(iss >> chanStringList) || chanStringList == ":")
 	{
-		msg = errorMessage(461, "PART", "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX 
+		msg = errorMessage(461, "PART", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);   
 		return ERROR;
 	}
 
 	fillChannels(chanStringList);
-	if (_channelsToPart.empty())	// Liste vide, aucun channel a PART
+	if (_channelsToPart.empty())
 	{
 		return ERROR;
 	}
 	
-	// Check si une raison est donnee
 	if (iss >> _partMessage)
 	{
-		// Si le message a le sufixe ':', va chercher les mots apres espaces
 		if (_partMessage.at(0) == ':')
 		{
 			string temp;
 			while (iss >> temp)
 				_partMessage += " " + temp;
-			//_partMessage = _partMessage.substr(1);	// remove prefix ':'
 		}
 	}
 

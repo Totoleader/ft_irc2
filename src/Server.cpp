@@ -1,15 +1,17 @@
 #include "Libs.hpp"
 #include "Server.hpp"
 
+Server *Server::stat_serv = NULL;
+
 Server::Server()
 {
-	
+
 }
 
 Server::Server(string password): _password(password)
 {
-	//_users.reserve(100);
-	_channels.reserve(15); // peut etre pas necessaire
+	_channels.reserve(MAX_CHANNELS);
+	stat_serv = this;
 }
 
 Server::~Server()
@@ -17,17 +19,29 @@ Server::~Server()
 	
 }
 
-void Server::init()
+void Server::exit_cleanup(int signo)
+{
+	(void)signo;
+
+	std::cout << "*** Shutting down server... ***" << std::endl;
+	for (vector<struct pollfd>::iterator it = stat_serv->_fds.begin(); it != stat_serv->_fds.end(); it++)
+	{
+		close((*it).fd);
+	}
+	exit(0);
+}
+
+void Server::init(string port)
 {
 	addrinfo hints;
 	int servSocket;
 
 	hints.ai_family = AF_INET;
-	memset(&hints, 0, sizeof hints); // memset bad
+	memset(&hints, 0, sizeof hints);
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE;
 
-	getaddrinfo(NULL, "6667", &hints, &_servinfo);
+	getaddrinfo(NULL, port.c_str(), &hints, &_servinfo);
 
 	servSocket = socket(_servinfo->ai_family, _servinfo->ai_socktype, _servinfo->ai_protocol);
 	new_server(servSocket);
@@ -37,28 +51,28 @@ void Server::init()
 		std::cerr << "Bind failed." << std::endl;
 		exit (EXIT_FAILURE);
 	}
+	signal(SIGINT, Server::exit_cleanup);
 
-	int status = listen(_fds[SERVER_FD].fd, 5);//!!!5 = max connection
+	int status = listen(_fds[SERVER_FD].fd, 5);
 	if (status == -1)
 		std::cout << "!!!! ERROR LISTEN FAILED !!!!" << std::endl;
 }
 
-//boucle principale d'ecoute du serveur
 void Server::listenForEvents()
 {
 	int poll_events;
 
 	while (true)
 	{
-		poll_events = poll(_fds.data(), _fds.size(), -1);//attend un event...
+		poll_events = poll(_fds.data(), _fds.size(), -1);
 	
 
-		if (_fds[SERVER_FD].revents & POLLIN)//nouveau user
+		if (_fds[SERVER_FD].revents & POLLIN)
 		{
 			new_client();
 			poll_events--;
 		}
-		for (size_t i = 1; i < _fds.size() && poll_events; i++)//nouveau message provenant du client
+		for (size_t i = 1; i < _fds.size() && poll_events; i++)
 		{
 			if (_fds[i].revents & POLLIN)
 			{
@@ -94,7 +108,6 @@ void Server::new_channel(string channelName, User * sender, string password)
 {
 	Channel newChannel(channelName, sender, password);
 	_channels.push_back(newChannel);
-	// new channel created message !!!
 }
 
 void Server::new_server(int fd)
@@ -112,13 +125,13 @@ void Server::new_server(int fd)
 
 void Server::handle_event(int fd)
 {
-	char buf[1024]; // CHECK OVERFLOW!!!!!!!!!!!
+	char buf[1024];
 	string command;
 	size_t		trail;
 	User * u = getUser(fd);
 	if (!u)
 		return ;
-	memset(buf, 0, 1024); // memset bad
+	memset(buf, 0, 1024);
 	CommandFactory factory;
 	ACommand *cmd_to_exec;
 	if (recv(u->getFd(), buf, 1024, 0) <= 0)
@@ -144,29 +157,15 @@ void Server::handle_event(int fd)
 	}
 }
 
-
-//WTF
-struct RemoveUserFunctor {
-    User * user;
-    RemoveUserFunctor(User * u) : user(u) {}
-    void operator()(Channel& channel) {
-        channel.removeUser(user);
-    }
-};
-
 void Server::disconnect_user(User * user)
 {
+	Quit_Command *quit = new Quit_Command("", *this, user);
+	quit->execute();
+	delete quit;
+
 	std::cout << std::endl << "User " << user->getNick() << " disconnected.(message to client not implemented)" << std::endl;
-	//déconnecter de chaque channel<----!!!!! @@@
-
-
-	// std::for_each(_channels.begin(), _channels.end(), RemoveUserFunctor(user));///////////////////////////////////
-	// std::for_each(_channels.begin(), _channels.end(), Channel::removeOperator(user));///////////////////////////////////
-	// std::for_each(_channels.begin(), _channels.end(), Channel::remove);///////////////////////////////////
 	disconnect_fdList(user);
 	disconnect_userList(user);
-
-	//disconnect message here <---
 }
 
 bool Server::isNickTaken(string const & nick)
@@ -193,15 +192,10 @@ void Server::partUserFromChannel(User * u, Channel * c)
 
 	if (c->isOperator(u))
 	{
-		c->removeOperator(u); // TODO: appointe nouveau operateur si vide
+		c->removeOperator(u);
 	}
 	c->removeUser(u);
-	// if (c->countUsers() == 0)
-	// 	removeChannel(c);
 }
-
-
-//PRIVATE////////////////////////////////////////////////////////////
 
 void Server::disconnect_fdList(User * user)
 {
@@ -220,16 +214,6 @@ void Server::disconnect_fdList(User * user)
 
 void Server::disconnect_userList(User * user)
 {
-	// string nick = user.getNick();
-
-	// for (vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
-	// {
-	// 	if (nick == (*it).getNick())
-	// 	{
-	// 		_users.erase(it); 
-	// 		return;
-	// 	}
-	// }
 	list<User>::iterator it = std::find(_users.begin(), _users.end(), *user);
 	if (it != _users.end())
 		_users.erase(it);
@@ -246,32 +230,13 @@ void Server::joinExistingChannel(User * u, Channel &chan)
 
 	listBegin += chan.getUserList() + "\r\n";
 	std::cout << listBegin << std::endl;
-	// chan.sendToChannelExcept(listBegin, u);
-	// chan.sendToChannelExcept(listEnd, u);
 	send(u->getFd(), listBegin.c_str(), listBegin.length(), 0);
 	send(u->getFd(), listEnd.c_str(), listEnd.length(), 0);
 }
 
 
-
-
-
-
-
-
-
-
-
-//get
-
 User *Server::getUser(int fd)
 {
-	// for (unsigned int i = 0; i < _users.size(); i++)
-	// {
-	// 	if (fd == _users[i].getFd())
-	// 		return &_users[i];
-	// }
-	// return (NULL);
 	for (list<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
 		if (fd == it->getFd())
@@ -282,12 +247,6 @@ User *Server::getUser(int fd)
 
 User *Server::getUser(string nick)
 {
-	// for (unsigned int i = 0; i < _users.size(); i++)
-	// {
-	// 	if (nick == _users[i].getNick())
-	// 		return &_users[i];
-	// }
-	// return (NULL);
 	for (list<User>::iterator it = _users.begin(); it != _users.end(); it++)
 	{
 		if (nick == it->getNick())
@@ -309,6 +268,11 @@ Channel *Server::getChannel(string channel)
 const string& Server::getPassword() const
 {
 	return (_password);
+}
+
+int Server::getChannelSize()
+{
+	return _channels.size();
 }
 
 vector<Channel *> Server::getUserChannels(User * user)

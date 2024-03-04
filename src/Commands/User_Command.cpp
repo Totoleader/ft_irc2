@@ -34,21 +34,19 @@ void User_Command::execute()
 {
 	string msg;
 
-	// if (!_sender->) check pass
-	// 	return ; // ERR OR DISCONNECT
 	if (parse() == ERROR)
 	{
-		msg = errorMessage(461, "USER", "0", "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
-		return ; // ERR 
+		msg = errorMessage(461, "USER", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+		return ;
 	}
 	_sender->setUsername(_username);
 	_sender->setName(_realname);
-	if (_sender->isConnected())//AJOUT ALEX
+	if (_sender->isConnected())
 	{
-		msg = errorMessage(462, "0", "0", "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
-		return ; //AJOUT ALEX
+		msg = errorMessage(462, "0", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+		return ; 
 	}
 	if (!_sender->isConnected() && !_sender->getUsername().empty() && !_sender->getName().empty())
 		_connectUser();

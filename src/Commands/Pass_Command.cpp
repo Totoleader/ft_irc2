@@ -18,9 +18,8 @@ bool Pass_Command::parse()
 
 	if (_sender->isConnected())
 	{
-		// ### send client is already connected msg (462) ###
-		msg = errorMessage(462, "0", "0", "0"); // AJOUT ALEX
-	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+		msg = errorMessage(462, "0", "0", "0"); 
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 		return (ERROR);
 	}
 
@@ -42,9 +41,8 @@ void Pass_Command::execute()
 	
 	if (_password == "")
 	{
-		// ### send client no password enter msg ###
-		msg = errorMessage(461, "PASS", "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		msg = errorMessage(461, "PASS", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  
 	}
 	if (_password != server_pass)
 	{

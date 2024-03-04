@@ -12,13 +12,10 @@ Mode_Command::~Mode_Command()
 {
 }
 
-// Remplace ou ajoute un mode dans la liste
-// Faire check de validite avant!
 void Mode_Command::_addMode(char mode, t_operation op)
 {
 	std::vector<t_mode>::iterator	it;
 
-	// Cherche si le mode est deja present et le met a jour
 	for (it = _modes.begin(); it != _modes.end(); it++)
 	{
 		if (it->mode == mode)
@@ -27,7 +24,6 @@ void Mode_Command::_addMode(char mode, t_operation op)
 			return ;
 		}
 	}
-	// S'il le trouve pas, ajoute
 	t_mode m;
 
 	m.mode = mode;
@@ -62,15 +58,14 @@ void Mode_Command::changeMode_o(t_operation op, string arg)
 	string msg;
 	User * target = _server.getUser(arg);
 
-	if (!_channel->isInChannel(target)) // sais pas si c'est safe si NULL
+	if (!_channel->isInChannel(target))
 	{
-		// !!! ERR NOT IN CHANNEL
-		msg = errorMessage(441, arg, _channel->getName(), "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
+		msg = errorMessage(441, arg, _channel->getName(), "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 		return ;
 	}
 
-	if (op == OP_ADD && _channel->isOperator(target)) // deja op, rien faire
+	if (op == OP_ADD && _channel->isOperator(target))
 		return ;
 
 	(op == OP_ADD) ? _channel->addOperator(target) : _channel->removeOperator(target);
@@ -87,7 +82,7 @@ void Mode_Command::changeMode_l(t_operation op, string arg)
 	iss >> newLimit;
 	if (op == OP_ADD)
 	{
-		if (newLimit >= 1 && newLimit <= 100) // Limite user?
+		if (newLimit >= 1 && newLimit <= 100)
 		{
 			_channel->setUserLimit(newLimit);
 			stringstream ss;
@@ -106,7 +101,7 @@ void Mode_Command::changeMode_l(t_operation op, string arg)
 bool Mode_Command::_fillModeVector(string modes)
 {
 	string msg;
-	t_operation op = OP_ADD;	// si aucun signe, ajoute par defaut
+	t_operation op = OP_ADD;
 
 	for (size_t i = 0; i < modes.length(); i++)
 	{
@@ -119,16 +114,14 @@ bool Mode_Command::_fillModeVector(string modes)
 		else
 		{
 			std::cout << "ERROR '" << modes[i] << "' not available!!" << std::endl;
-			/// !!! ERR 472 (MODE x is unavailable)
-			msg = errorMessage(472, modes, _channel->getName(), "0"); //AJOUT ALEX
-			send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
-			return ERROR; // ne pas continuer
+			msg = errorMessage(472, modes, _channel->getName(), "0"); 
+			send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
+			return ERROR;
 		}
 	}
 	return SUCCESS;
 }
 
-// montre seulement les modes actifs
 void Mode_Command::_showModes()
 {
 	string modes = "+";
@@ -159,25 +152,22 @@ bool Mode_Command::parse()
 
 	if (!(iss >> channel) || channel == "MODE")
 	{
-		// !!! ERR NO ENOUGH PARAMS
-		msg = errorMessage(461, "MODE", "0", "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
+		msg = errorMessage(461, "MODE", "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 		return ERROR;
 	}
 
 	_channel = _server.getChannel(channel);
 	if (!_channel)
 	{
-		// !!! NO SUCH CHANNEL
-		msg = errorMessage(403, channel, "0", "0"); //AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0); //AJOUT ALEX
+		msg = errorMessage(403, channel, "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 		return ERROR;
 	}
 	else if (!_channel->isInChannel(_sender))
 	{
-		// !!! NOT IN CHANNEL
-		msg = errorMessage(442, channel, "0", "0"); // AJOUT ALEX
-	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); // AJOUT ALEX
+		msg = errorMessage(442, channel, "0", "0"); 
+	 	send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 		return ERROR;
 	}
 
@@ -215,7 +205,6 @@ void Mode_Command::execute()
 	else if (_action == CHANGE && _channel->isOperator(_sender))
 	{
 		std::istringstream iss(_args);
-		// itere la liste de modes pour call les fonctions
 		for (vector<t_mode>::iterator it = _modes.begin(); it != _modes.end(); it++)
 		{
 			string arg;
@@ -228,7 +217,7 @@ void Mode_Command::execute()
 				changeMode_t(it->operation);
 				break;
 			case 'k':
-				iss >> arg;	// erreur si pas d'args, meme si c'est pour enlever le mdp (-k * pour enlever)
+				iss >> arg;
 				changeMode_k(it->operation, arg);
 				break;
 			case 'o':
@@ -246,8 +235,7 @@ void Mode_Command::execute()
 	}
 	else
 	{
-		// ERR NOT OP !!!
-		msg = errorMessage(482, _channel->getName(), "0", "0"); // AJOUT ALEX
-		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  //AJOUT ALEX
+		msg = errorMessage(482, _channel->getName(), "0", "0"); 
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0);  
 	}
 }

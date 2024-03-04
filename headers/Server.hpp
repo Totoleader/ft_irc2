@@ -15,6 +15,7 @@ class Server
 		vector<Channel>			_channels;
 		string					_password;
 		addrinfo				*_servinfo;
+		static Server 			*stat_serv;
 
 		bool check_password(char *buf);
 		void disconnect_userList(User * user);
@@ -25,7 +26,7 @@ class Server
 		Server(string password);
 		~Server();
 
-		void init();
+		void init(string port);
 		void listenForEvents();
 
 		void new_client();
@@ -41,42 +42,12 @@ class Server
 		const string &getPassword() const;
 		User *getUser(int fd);
 		User *getUser(string nick);
+		int	getChannelSize();
 		Channel *getChannel(string channel_name);
 		vector<Channel *> getUserChannels(User * user);
 		void joinExistingChannel(User * u, Channel &chan);
 
-		// void handle_client(int new_fd);
-
-		// void leaveChannel(User &u, string msg);
-		// void joinExistingChannel(User &u, Channel &chan);
-		// void joinChannel(User &u, pair<string, string> chan);
-		// void connectClient(User *u);
-		// void sendMessage(User &u , string message);
-		// void changeMode(User &u , string message);
-
-		// void new_client();
-		// void new_client(int fd);
-		// void disconnect_user(int client_i);
-		// void parse_UserCommandinfo(int client_i, string parseUserInfo);
-
-		// //utils
-		// void createChannelMsg(User &u, string chan) const;
-		// void getAndJoinChannels(User &u, string channels);
-
-		// User	*getUser(int fd);
-		// User	*getUser(string nick);
-
-		// void 		setPassword(string newPassword);
-		// const char	*getPassword()	const;
-		// int			getSocket()		const;
-
-		// 	//AJOUT DE ALEX // 
-		// void kickChannels(User &u, string str);
-		// void skipWhitespace(string &str);
-		// bool isUser(string UserCommandto_kick, string channel_name);
-		// bool userExist(string UserCommandto_invite);
-		// bool channelExist(string channel_name);
-		// void inviteChannels(User &u, string str);
+		static void exit_cleanup(int signo);
 };
 
 

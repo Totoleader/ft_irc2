@@ -26,9 +26,6 @@ ACommand *CommandFactory::getCommand(string msg, Server &serv, User * u)
 
 	};
 	
-	// MODE
-	// MODE blablalba
-	// MODEdjsajdsaj
 	for (int i = 0; cmds[i] != "NULL"; i++)
 	{
 		size_t cmd_len = cmds[i].length();

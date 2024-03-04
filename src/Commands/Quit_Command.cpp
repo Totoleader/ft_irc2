@@ -20,9 +20,6 @@ void Quit_Command::execute()
 	for (it = _channelsToPart.begin(); it != _channelsToPart.end(); it++)
 	{
 		Channel * channel = *it;
-		// std::cout << "Parted channel: " << channel->getName() << std::endl;
-		// std::cout << "Reason: " << _msg << std::endl;
-
 		string msg = _sender->getID() + " QUIT " + _msg + "\r\n";
 		channel->sendToChannelExcept(msg, _sender);
 		_server.partUserFromChannel(_sender, channel);
