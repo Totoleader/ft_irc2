@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 	}
 	
 	Server serveur(argv[2]);
-	
+
 	serveur.init(argv[1]);
 	serveur.listenForEvents();
 
