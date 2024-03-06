@@ -24,6 +24,8 @@ bool Join_Command::parse()
 	channels = _msg.substr(0, _msg.find(' '));
 	if (_msg.find(' ') != string::npos)
 		passwords = _msg.substr(_msg.find(' ') + 1);
+	if (!passwords.empty() && passwords.at(0) == ':')
+		passwords = passwords.substr(1);
 	if (channels == "#")
 	{
 		msg = errorMessage(475, channels, "0", "0"); 
@@ -42,13 +44,16 @@ bool Join_Command::parse()
 		if (!std::getline(password_stream, password_token, ','))
 			password_token = "";
 
-		pair.first = channel_token;
-		pair.second = password_token;
 		if (channel_token.at(0) != '#' || channel_token.find_first_of("\a, ") != std::string::npos)
 		{
 			std::cout << "BAD CHANNEL FORMAT\n";
 			continue ;
 		}
+		
+
+		pair.first = channel_token;
+		pair.second = password_token;
+		
 		_channelNamePass.push_back(pair);
 	}
 	return SUCCESS;

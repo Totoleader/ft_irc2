@@ -18,8 +18,7 @@ class Server
 		static Server 			*stat_serv;
 
 		bool check_password(char *buf);
-		void disconnect_userList(User * user);
-		void disconnect_fdList(User * user);
+		
 
 	public:
 		Server();
@@ -48,6 +47,8 @@ class Server
 		void joinExistingChannel(User * u, Channel &chan);
 
 		static void exit_cleanup(int signo);
+		void disconnect_userList(User * user);
+		void disconnect_fdList(User * user);
 };
 
 

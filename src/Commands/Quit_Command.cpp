@@ -24,5 +24,8 @@ void Quit_Command::execute()
 		channel->sendToChannelExcept(msg, _sender);
 		_server.partUserFromChannel(_sender, channel);
 	}
+	std::cout << std::endl << "User " << _sender->getNick() << " disconnected. (QUIT)" << std::endl;
+	_server.disconnect_fdList(_sender);
+	_server.disconnect_userList(_sender);
 	//Server::exit_cleanup(0);
 }

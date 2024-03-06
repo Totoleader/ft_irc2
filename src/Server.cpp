@@ -89,7 +89,14 @@ void Server::listenForEvents()
 		{
 			if (_fds[i].revents & POLLIN)
 			{
-				handle_event(_fds[i].fd);
+				try
+				{
+					handle_event(_fds[i].fd);
+				}
+				catch (std::exception &e)
+				{
+					std::cerr << "Caught exception " << e.what() << std::endl; 
+				}
 				poll_events--;
 			}
 		}
@@ -181,7 +188,7 @@ void Server::disconnect_user(User * user)
 	quit->execute();
 	delete quit;
 
-	std::cout << std::endl << "User " << user->getNick() << " disconnected.(message to client not implemented)" << std::endl;
+	std::cout << std::endl << "User " << user->getNick() << " disconnected." << std::endl;
 	disconnect_fdList(user);
 	disconnect_userList(user);
 }
@@ -213,6 +220,11 @@ void Server::partUserFromChannel(User * u, Channel * c)
 		c->removeOperator(u);
 	}
 	c->removeUser(u);
+
+	// if (c->countUsers() == 0)
+	// {
+	// 	removeChannel(*c);
+	// }
 }
 
 void Server::disconnect_fdList(User * user)
