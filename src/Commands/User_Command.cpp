@@ -18,9 +18,15 @@ bool User_Command::parse()
 	string username;
 
 	ss >> _username;
-	if (!_username.empty() && _username.at(0) == ':')
-		return ERROR;  
+	if (_username.empty() || _username.at(0) == '#')
+		return ERROR;
+	if (_username.at(0) == ':')
+		return ERROR;
+
 	ss >> _realname >> _realname >> _realname;
+	if (_realname.empty() || _realname.at(0) == '#')
+		return ERROR;
+	
 	if (_realname.at(0) == ':')
 	{
 		string temp;
@@ -48,6 +54,6 @@ void User_Command::execute()
 		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 		return ; 
 	}
-	if (!_sender->isConnected() && !_sender->getUsername().empty() && !_sender->getName().empty())
+	if (!_sender->isConnected() && !_sender->getNick().empty() && !_sender->getUsername().empty() && !_sender->getName().empty())
 		_connectUser();
 }

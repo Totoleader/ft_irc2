@@ -44,6 +44,11 @@ bool Join_Command::parse()
 
 		pair.first = channel_token;
 		pair.second = password_token;
+		if (channel_token.at(0) != '#' || channel_token.find_first_of("\a, ") != std::string::npos)
+		{
+			std::cout << "BAD CHANNEL FORMAT\n";
+			continue ;
+		}
 		_channelNamePass.push_back(pair);
 	}
 	return SUCCESS;
@@ -68,6 +73,11 @@ void Join_Command::joinChannel(pair<string, string> *channel_name_pass)
 	{
 		_server.new_channel(_channelName, _sender, _password);
 		_server.joinExistingChannel(_sender, *_server.getChannel(_channelName));
+	}
+	else if (_channel->isInChannel(_sender))
+	{
+		msg = errorMessage(443, _sender->getNick(), _channel->getName(), "0");
+		send(_sender->getFd(), msg.c_str(), msg.length(), 0); 
 	}
 	else if (_channel->isInviteOnly() && !_channel->isWhitelisted(_sender))
 	{
