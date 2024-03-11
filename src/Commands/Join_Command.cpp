@@ -23,7 +23,6 @@ bool Join_Command::parse()
 
 	channels = _msg.substr(0, _msg.find(' '));
 	if (_msg.find(' ') != string::npos)
-	{
 		passwords = _msg.substr(_msg.find(' ') + 1);
 	if (!passwords.empty() && passwords.at(0) == ':')
 		passwords = passwords.substr(1);

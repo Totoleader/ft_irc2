@@ -27,5 +27,4 @@ void Quit_Command::execute()
 	std::cout << std::endl << "User " << _sender->getNick() << " disconnected. (QUIT)" << std::endl;
 	_server.disconnect_fdList(_sender);
 	_server.disconnect_userList(_sender);
-	//Server::exit_cleanup(0);
 }
