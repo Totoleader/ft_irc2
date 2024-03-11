@@ -10,7 +10,6 @@ Server::Server()
 
 Server::Server(string password): _password(password)
 {
-	_channels.reserve(MAX_CHANNELS);
 	stat_serv = this;
 }
 
@@ -205,7 +204,7 @@ bool Server::isNickTaken(string const & nick)
 
 void Server::removeChannel(const string & name)
 {
-	vector<Channel>::iterator it;
+	list<Channel>::iterator it;
 	for (it = _channels.begin(); it != _channels.end(); it++)
 	{
 		if (it->getName() == name)
@@ -296,10 +295,11 @@ User *Server::getUser(string nick)
 
 Channel *Server::getChannel(string channel)
 {
-	for (unsigned int i = 0; i < _channels.size(); i++)
+	list<Channel>::iterator it;
+	for (it = _channels.begin(); it != _channels.end(); it++)
 	{
-		if (channel == _channels[i].getName())
-			return &_channels[i];
+		if (channel == it->getName())
+			return &*it;
 	}
 	return NULL;
 }
@@ -317,7 +317,7 @@ int Server::getChannelSize()
 vector<Channel *> Server::getUserChannels(User * user)
 {
 	vector<Channel *> out;
-	vector<Channel>::iterator it;
+	list<Channel>::iterator it;
 
 	for (it = _channels.begin(); it != _channels.end(); it++)
 	{
