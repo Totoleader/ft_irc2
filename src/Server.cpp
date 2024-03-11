@@ -78,7 +78,6 @@ void Server::listenForEvents()
 	while (true)
 	{
 		poll_events = poll(_fds.data(), _fds.size(), -1);
-	
 
 		if (_fds[SERVER_FD].revents & POLLIN)
 		{
@@ -126,7 +125,7 @@ void Server::new_channel(string channelName, User * sender, string password)
 void Server::new_server(int fd)
 {
 	struct pollfd	newClient;
-	
+
 	fcntl(fd, F_SETFL, O_NONBLOCK);
 	newClient.events = POLLIN;
 	newClient.fd = fd;
