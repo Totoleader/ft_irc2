@@ -18,8 +18,7 @@ class Server
 		static Server 			*stat_serv;
 
 		bool check_password(char *buf);
-		void disconnect_userList(User * user);
-		void disconnect_fdList(User * user);
+		
 
 	public:
 		Server();
@@ -35,7 +34,7 @@ class Server
 		void handle_event(int fd);
 
 		void disconnect_user(User * user);
-		void removeChannel(Channel & c);
+		void removeChannel(const string & name);
 		void partUserFromChannel(User * u, Channel * c);
 
 		bool isNickTaken(string const & nick);
@@ -48,6 +47,8 @@ class Server
 		void joinExistingChannel(User * u, Channel &chan);
 
 		static void exit_cleanup(int signo);
+		void disconnect_userList(User * user);
+		void disconnect_fdList(User * user);
 };
 
 

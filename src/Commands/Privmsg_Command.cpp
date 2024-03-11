@@ -54,6 +54,9 @@ bool Privmsg_Command::parse()
 
 	channelName = _msg.substr(0, _msg.find(" "));
 
+	if (channelName.empty())
+		return ERROR;
+
 	if (channelName.at(0) == '#' && !channel_is_ok(channelName))
 		return ERROR;
 	else if (channelName.at(0) != '#' && !user_is_ok(channelName))

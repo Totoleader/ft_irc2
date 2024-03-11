@@ -23,7 +23,7 @@ bool Pass_Command::parse()
 		return (ERROR);
 	}
 
-	if (_msg.at(0) == ':')
+	if (!_msg.empty() && _msg.at(0) == ':')
 		_password = _msg.substr(1);
 	else
 		_password = _msg;

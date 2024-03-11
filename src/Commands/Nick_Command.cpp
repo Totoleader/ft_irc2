@@ -16,7 +16,7 @@ bool Nick_Command::parse()
 {
 	if (_msg.empty())
 		return ERROR;
-	else if (_msg.at(0) == ':')
+	else if (_msg.at(0) == ':' || _msg.at(0) == '#')
 		return ERROR;
 	_new_nick = _msg;
 	return SUCCESS;
@@ -53,6 +53,6 @@ void Nick_Command::execute()
 	}
 	_sender->setNick(_new_nick);
 
-	if (!_sender->isConnected() && !_sender->getUsername().empty() && !_sender->getName().empty())
+	if (!_sender->isConnected() && !_sender->getNick().empty() && !_sender->getUsername().empty() && !_sender->getName().empty())
 		_connectUser();
 }
