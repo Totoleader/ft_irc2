@@ -153,7 +153,6 @@ bool	Channel::isInChannel(User * u) const
 	return (it != _channelUsers.end());
 }
 
-// TODO: mettre les ops en 1er dans la liste (ou pas)
 const string Channel::getUserList()
 {
 	vector<User *>::iterator it = _channelUsers.begin();

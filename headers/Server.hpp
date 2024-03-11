@@ -34,7 +34,7 @@ class Server
 		void handle_event(int fd);
 
 		void disconnect_user(User * user);
-		void removeChannel(Channel & c);
+		void removeChannel(const string & name);
 		void partUserFromChannel(User * u, Channel * c);
 
 		bool isNickTaken(string const & nick);

@@ -203,15 +203,24 @@ bool Server::isNickTaken(string const & nick)
 	return false;
 }
 
-void Server::removeChannel(Channel & c)
+void Server::removeChannel(const string & name)
 {
-	vector<Channel>::const_iterator it = std::find(_channels.begin(), _channels.end(), c);
-	if (it != _channels.end())
-		_channels.erase(it);
+	vector<Channel>::iterator it;
+	for (it = _channels.begin(); it != _channels.end(); it++)
+	{
+		if (it->getName() == name)
+		{
+			_channels.erase(it);
+			return ;
+		}
+	}
 }
 
 void Server::partUserFromChannel(User * u, Channel * c)
 {
+	if (!u || !c)
+		return ;
+
 	if (!c->isInChannel(u))
 		return ;
 
@@ -221,10 +230,10 @@ void Server::partUserFromChannel(User * u, Channel * c)
 	}
 	c->removeUser(u);
 
-	// if (c->countUsers() == 0)
-	// {
-	// 	removeChannel(*c);
-	// }
+	if (c->countUsers() <= 0)
+	{
+		removeChannel(c->getName());
+	}
 }
 
 void Server::disconnect_fdList(User * user)
@@ -236,7 +245,7 @@ void Server::disconnect_fdList(User * user)
 		if (fd == (*it).fd)
 		{
 			close((*it).fd);
-			_fds.erase(it); 
+			_fds.erase(it);
 			return;
 		}
 	}
