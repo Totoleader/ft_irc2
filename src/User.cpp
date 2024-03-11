@@ -5,7 +5,7 @@ User::User()
 {
 }
 
-User::User(int fd, struct sockaddr *cl): _pass_ok(false), _connected(false), _fd(fd), _sock((struct sockaddr_storage*)cl)
+User::User(int fd, struct sockaddr *cl): _pass_ok(false), _connected(false), _fd(fd), _sock((struct sockaddr_storage*)cl), _buffer("")
 {
 	setIp();
 }
@@ -30,6 +30,12 @@ void User::setIp()
 
 void User::clean_buffer(size_t *trail)
 {
+	if (_buffer.length() >= *trail + 2)
+	{
+		*trail = string::npos;
+		_buffer = "";
+		return ;
+	}
 	_buffer = _buffer.substr(*trail + 2);
 	*trail = getBuffer().find("\r\n");
 }

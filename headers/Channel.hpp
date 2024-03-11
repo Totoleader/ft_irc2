@@ -17,7 +17,7 @@ private:
 
 	//mode
 	bool						_isInviteOnly;		// mode +i
-	vector<User *>			_inviteList;
+	vector<User *>				_inviteList;
 	bool						_topicRestriction;	// mode +t
 	int							_userLimit;			// mode +l
 
