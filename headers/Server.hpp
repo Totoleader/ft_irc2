@@ -12,7 +12,7 @@ class Server
 	private:
 		vector<struct pollfd>	_fds;
 		list<User>				_users;
-		vector<Channel>			_channels;
+		list<Channel>			_channels;
 		string					_password;
 		addrinfo				*_servinfo;
 		static Server 			*stat_serv;
